@@ -7,11 +7,11 @@ const app:Application = express()
 
 const port = 5000
 
-const pruebaRoute = require('./routes/pruebaRoute')
+const usuarioRoute = require('./routes/usuarioRoute')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(pruebaRoute)
+app.use(usuarioRoute)
 
 app.listen(port, () => {
     console.log("Aplicación en línea")

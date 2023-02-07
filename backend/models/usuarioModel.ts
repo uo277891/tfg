@@ -1,7 +1,7 @@
 const mongooseBD = require('mongoose')
 const {Schema}  = mongooseBD
 
-const pruebaSchema = new Schema({
+const usuarioSchema = new Schema({
     _id:{
         type: String,
         require: true
@@ -12,6 +12,6 @@ const pruebaSchema = new Schema({
     }
 })
 
-const pruebaModel = mongooseBD.model('usuarios', pruebaSchema)
+const usuariosModel = mongooseBD.model('usuarios', usuarioSchema)
 
-module.exports = pruebaModel
+module.exports = usuariosModel
