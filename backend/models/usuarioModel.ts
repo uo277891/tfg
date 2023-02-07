@@ -4,10 +4,24 @@ const {Schema}  = mongooseBD
 const usuarioSchema = new Schema({
     _id:{
         type: String,
-        require: true
+        require: true,
+        unique: true
     },nombre:{
-        type: String
-    },apellidos:{
+        type: String,
+        require: true,
+        unique: true
+    },contraseña:{
+        type: String,
+        require: true
+    },pais:{
+        type: String,
+        require: true
+    },localidad:{
+        type: String,
+    },fecha_nac:{
+        type: Date,
+        require: true
+    },nombre_spotify:{
         type: String
     }
 })
