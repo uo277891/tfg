@@ -1,11 +1,11 @@
 import express, {Router} from 'express';
 const api:Router = express.Router()
 
-const {getUsuarioByName, insertarUsuario} = require("../controllers/usuarioController")
+const {inicioSesion, insertarUsuario} = require("../controllers/usuarioController")
 
 api.get(
-    "/usuario/nombre/:nombre",
-    getUsuarioByName
+    "/usuario/login",
+    inicioSesion
   );
 
   api.post(

@@ -1,11 +1,21 @@
 import { Request, Response } from 'express';
 const usuarioSquema = require('../models/usuarioModel');
 
-const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
+const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
-    var respuesta = await usuarioSquema.find({nombre: req.params.nombre});
-    console.log(respuesta)
-    return res.status(200).json(respuesta);
+    const {nombre, contraseña} = req.body;
+    const usuarioAsociado = await usuarioSquema.find({nombre: nombre});
+    if(!usuarioAsociado){
+      return res.status(500).send("No hay usuario con ese nombre");
+    }
+    else{
+      if(usuarioAsociado.contraseña === contraseña){
+        return res.status(200).send("Todo correcto");
+      }
+      else{
+        return res.status(400).send("Credenciales incorrectas");
+      }
+    }
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -25,4 +35,4 @@ const insertarUsuario = async (req: Request, res: Response): Promise<Response> =
   }
 }
 
-module.exports = {getUsuarioByName, insertarUsuario}
+module.exports = {inicioSesion, insertarUsuario}

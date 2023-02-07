@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Collapse from '@mui/material/Collapse';
 
+const llamadaBase = "http://localhost:5000/usuario"
 const Login = () => {
 
     const[userName, setUserName] = React.useState("");
@@ -24,10 +25,26 @@ const Login = () => {
             seterror("Algún campo está vacío");
         }
         else{
-            setLogin(true);
-            seterror("Las credenciales no son correctas");
-            setUserName("");
-            setPassword("");
+          const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre: userName, contraseña: password })
+        };
+          fetch(llamadaBase + "/login", requestOptions)
+            .then((response) => 
+            {
+              response.json()
+              if(response.ok){
+                setLogin(true);
+                seterror("Las credenciales SON correctas");
+              }
+              else{
+                setLogin(true);
+                seterror("Las credenciales no son correctas");
+                setUserName("");
+                setPassword("");
+              }
+            })
         }
     }
 
