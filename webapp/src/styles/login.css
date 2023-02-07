@@ -1,0 +1,13 @@
+#login {
+    text-align: center;
+    padding: 1em;
+    margin: 1em;
+}
+
+#login h1 {
+    font-size: 4.5em;
+}
+
+#login .boton {
+    background-color: rgb(133, 39, 39);
+  }
