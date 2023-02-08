@@ -1,19 +1,26 @@
 import { Request, Response } from 'express';
+
 const usuarioSquema = require('../models/usuarioModel');
+const {encriptar, comparaContraseñas} = require("../helpers/encryptContraseña");
 
 const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {nombre, contraseña} = req.body;
-    const usuarioAsociado = await usuarioSquema.find({nombre: nombre});
-    if(!usuarioAsociado){
-      return res.status(500).send("No hay usuario con ese nombre");
+    const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
+    if(usuarioAsociado === null){
+      console.log("sinUsuario")
+      return res.status(400).json("No hay usuario con ese nombre");
     }
     else{
-      if(usuarioAsociado.contraseña === contraseña){
-        return res.status(200).send("Todo correcto");
+      const contraseñasIguales = await comparaContraseñas(contraseña, usuarioAsociado.contrasena)
+      console.log(contraseñasIguales)
+      if(contraseñasIguales) {
+        console.log("usuarioAsociado")
+        return res.status(200).json("Todo correcto");
       }
       else{
-        return res.status(400).send("Credenciales incorrectas");
+        console.log("malContraseña")
+        return res.status(400).json("Credenciales incorrectas");
       }
     }
   } catch (error) {
@@ -23,9 +30,11 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
 
 const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const {nombre, contraseña} = req.body;
+    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify} = req.body;
 
-    const usuarioAInsertar = new usuarioSquema({nombre, contraseña})
+    const contraseñaEncriptada = encriptar(contraseña)
+
+    const usuarioAInsertar = new usuarioSquema({nombre, contraseñaEncriptada, pais, localidad, fecha_nac, nombre_spotify})
     usuarioAInsertar.save();
     console.log("Usuario creado");
     return res.status(200).send("Usuario creado");

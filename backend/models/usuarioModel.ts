@@ -2,15 +2,11 @@ const mongooseBD = require('mongoose')
 const {Schema}  = mongooseBD
 
 const usuarioSchema = new Schema({
-    _id:{
+    nombre:{
         type: String,
         require: true,
         unique: true
-    },nombre:{
-        type: String,
-        require: true,
-        unique: true
-    },contraseña:{
+    },contrasena:{
         type: String,
         require: true
     },pais:{

@@ -3,7 +3,7 @@ const api:Router = express.Router()
 
 const {inicioSesion, insertarUsuario} = require("../controllers/usuarioController")
 
-api.get(
+api.post(
     "/usuario/login",
     inicioSesion
   );
