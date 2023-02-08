@@ -8,26 +8,50 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Collapse from '@mui/material/Collapse';
 
+const llamadaBase = "http://localhost:5000/usuario/"
 const Login = () => {
 
     const[userName, setUserName] = React.useState("");
 
     const[password, setPassword] = React.useState("");
 
+    const [loginError, setLoginError] = React.useState(false);
+
     const [login, setLogin] = React.useState(false);
 
     const [error, seterror] = React.useState("");
 
+    const [loginCompleted, setLoginErrorCompleted] = React.useState("");
+
     const iniciarSesion = () => {
         if(userName === "" || password === ""){
-            setLogin(true);
+            setLoginError(true);
+            setLogin(false);
             seterror("Algún campo está vacío");
         }
         else{
-            setLogin(true);
-            seterror("Las credenciales no son correctas");
-            setUserName("");
-            setPassword("");
+          const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre: userName, contraseña: password })
+        };
+          fetch(llamadaBase + "login", requestOptions)
+            .then((response) => 
+            {
+              response.json()
+              if(response.ok){
+                setLoginError(false);
+                setLogin(true);
+                setLoginErrorCompleted("Inicio de sesión correcto");
+              }
+              else{
+                setLoginError(true);
+                setLogin(false);
+                seterror("Las credenciales no son correctas");
+                setUserName("");
+                setPassword("");
+              }
+            })
         }
     }
 
@@ -45,16 +69,39 @@ const Login = () => {
             <h1>Iniciar Sesión</h1>
             <TextField id="userName" label="Usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
             <div>
-                <TextField id="userName" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
+                <TextField id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
             </div>
             <Button className="boton" variant="contained" onClick={iniciarSesion}>Iniciar Sesión</Button>
         </Box>
         <p>Si no tienes cuenta, ¡crea una ahora pulsando <Link href="/elegirRegistro" >aquí</Link>!</p>
       </main>
       <Box sx={{ width: '100%' }}>
-      <Collapse in={login}>
+      <Collapse in={loginError}>
         <Alert
             severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setLoginError(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {error}
+        </Alert>
+      </Collapse>
+      </Box>
+
+      <Box sx={{ width: '100%' }}>
+      <Collapse in={login}>
+        <Alert
+            severity="success"
           action={
             <IconButton
               aria-label="close"
@@ -69,7 +116,7 @@ const Login = () => {
           }
           sx={{ mb: 2 }}
         >
-          {error}
+          {loginCompleted}
         </Alert>
       </Collapse>
       </Box>
