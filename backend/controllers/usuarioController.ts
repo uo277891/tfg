@@ -32,12 +32,25 @@ const insertarUsuario = async (req: Request, res: Response): Promise<Response> =
   try {
     const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify} = req.body;
 
-    const contraseñaEncriptada = encriptar(contraseña)
+    console.log(nombre)
+    console.log(contraseña)
+    console.log(pais)
+    console.log(localidad)
+    console.log(fecha_nac)
+    console.log(nombre_spotify)
 
-    const usuarioAInsertar = new usuarioSquema({nombre, contraseñaEncriptada, pais, localidad, fecha_nac, nombre_spotify})
-    usuarioAInsertar.save();
-    console.log("Usuario creado");
-    return res.status(200).send("Usuario creado");
+    const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
+    if(usuarioAsociado !== null){
+      console.log("usuarioEscogido")
+      return res.status(400).json("Ya hay usuario con ese nombre");
+    }
+    else{
+      const contrasena = await encriptar(contraseña)
+      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify})
+      usuarioAInsertar.save();
+      console.log("Usuario creado");
+      return res.status(200).send("Usuario creado");
+    }
   } catch (error) {
     console.log("ERROR INSERTAR USUARIO")
     return res.status(500).send(error);
