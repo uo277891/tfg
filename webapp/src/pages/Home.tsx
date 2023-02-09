@@ -11,10 +11,10 @@ const Home = () => {
         <h1>Red social de FreeStyle</h1>
         <p>¡Bienvenido a <strong>SocialFS</strong>, la red social enfocada al mundo del freestyle!</p>
         <Stack spacing={4} direction="row">
-          <Link href="/inicioSesion" underline="none">
+          <Link href="/login" underline="none">
             <Button className="boton" variant="contained">Iniciar Sesión</Button>
           </Link>
-          <Link href="/elegirRegistro" underline="none">
+          <Link href="/register" underline="none">
             <Button className="boton" variant="contained">Registrarse</Button>
           </Link>
         </Stack>
