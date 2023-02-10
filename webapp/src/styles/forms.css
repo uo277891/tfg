@@ -1,0 +1,13 @@
+.forms {
+    text-align: center;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+.forms h1 {
+    font-size: 4em;
+}
+
+.forms .boton {
+    background-color: rgb(133, 39, 39);
+}

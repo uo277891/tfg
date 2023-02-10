@@ -9,7 +9,7 @@ api.post(
   );
 
   api.post(
-    "/usuario/insertar",
+    "/usuario/register",
     insertarUsuario
   );
 

@@ -56,7 +56,7 @@ const Login = () => {
     }
 
   return (
-    <div id="login">
+    <div id="login" className="forms">
       <main>
         <Box
             component="form"
