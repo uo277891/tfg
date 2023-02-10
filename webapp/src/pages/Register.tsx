@@ -15,15 +15,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import DateRegister from '../components/dateRegister';
 import { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import MenuItem from '@mui/material/MenuItem';
+import  listaPaises  from '../util/listaPaises';
 
 const llamadaBase = "http://localhost:5000/usuario/"
 
-const dateRegister = DateRegister
+const paises = listaPaises()
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -108,6 +109,7 @@ const Register = () => {
                 setRegisterError(true);
                 setRegister(false);
                 seterror("El nombre ya está seleccionado");
+                setPassword("")
                 setUserName("");
                 setPasswordConf("");
                 setCountry("");
@@ -132,10 +134,23 @@ const Register = () => {
             <h1>Registro</h1>
             <TextField required id="userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
             <br/>
-            <TextField required id="country" label="Pais" variant="outlined" onChange={(pw) => setCountry(pw.target.value)} value={country}/>
-            <TextField id="location" label="Localidad" variant="outlined" onChange={(pw) => setLocation(pw.target.value)} value={location}/>
+            <TextField
+              id="country"
+              select
+              label="País de nacimiento"
+              defaultValue="España"
+              helperText="Selecciona tu país"
+              onChange={(country) => setCountry(country.target.value)}
+            >
+              {paises.map((pais) => (
+                <MenuItem key={pais} value={pais}>
+                  {pais}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
             <br/>
-            <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(pw) => setNomSpoty(pw.target.value)} value={nomSpoty}/>
+            <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>
             <IconButton onClick={handleClickOpen} sx={{ margin: 2.75 }}>
                 <QuestionMarkIcon id="questionIcon" fontSize="large"></QuestionMarkIcon>
             </IconButton>
