@@ -63,6 +63,17 @@
 	background-color: rgb(77, 133, 39);
   }
 
+#profile{
+	align-items: center;
+	padding: 0.3em;
+	color: black;
+  }
+
+#profile main h1{
+	text-align: center;
+	font-size: 3em;
+}
+
 footer{
   text-align: center;
 }
