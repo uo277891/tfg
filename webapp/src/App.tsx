@@ -5,6 +5,8 @@ import Register from "./pages/Register"
 import AboutSocialFS from './pages/AboutSocialFS';
 import NavBar from "./components/NavBar";
 import Footer from './components/Footer';
+import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 const App = () => {
@@ -19,6 +21,8 @@ const App = () => {
             <Route path='/register' element={<Register/>}/>
             <Route path='/aboutSocialfs' element={<AboutSocialFS/>}/>
             <Route path='/follow' element={<Home/>}/>
+            <Route path='/profile' element={<Profile/>}/>
+            <Route path='/profile/edit' element={<EditProfile/>}/>
           </Routes>
 				<Footer />
       </Router>
