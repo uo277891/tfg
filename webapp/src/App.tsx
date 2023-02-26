@@ -14,17 +14,17 @@ const App = () => {
   return(
     <div className="App">
       <Router>
-				<NavBar />
-          <Routes>
-            <Route path='/' element={<Home/>}/>
-            <Route path='/login' element={<InicioSesion/>}/>
-            <Route path='/register' element={<Register/>}/>
-            <Route path='/aboutSocialfs' element={<AboutSocialFS/>}/>
-            <Route path='/follow' element={<Home/>}/>
-            <Route path='/profile' element={<Profile/>}/>
-            <Route path='/profile/edit' element={<EditProfile/>}/>
-          </Routes>
-				<Footer />
+          <NavBar />
+            <Routes>
+              <Route path='/' element={<Home/>}/>
+              <Route path='/login' element={<InicioSesion/>}/>
+              <Route path='/register' element={<Register/>}/>
+              <Route path='/aboutSocialfs' element={<AboutSocialFS/>}/>
+              <Route path='/follow' element={<Home/>}/>
+              <Route path='/profile' element={<Profile/>}/>
+              <Route path='/profile/edit' element={<EditProfile/>}/>
+            </Routes>
+          <Footer />
       </Router>
 		</div>
   );

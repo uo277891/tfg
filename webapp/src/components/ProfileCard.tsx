@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import { Dayjs } from 'dayjs';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
 
 const llamadaBase = "http://localhost:5000/usuario/"
 
@@ -23,11 +24,13 @@ function CardProfile () {
 
   const [date, setDate] = React.useState<Dayjs | null>();
 
+  const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
+
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
   };
-    fetch(llamadaBase + "getusuario/prueba3", requestOptions)
+    fetch(llamadaBase + "getusuario/" + usuarioAutenticado, requestOptions)
       .then( async (response) => 
       {
         if(response.ok){

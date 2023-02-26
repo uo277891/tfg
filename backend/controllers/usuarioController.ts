@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 const usuarioSquema = require('../models/usuarioModel');
 const {encriptar, comparaContraseñas} = require("../helpers/encryptContraseña");
+const jwt = require("jsonwebtoken")
 
 const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -12,9 +13,12 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
     }
     else{
       const contraseñasIguales = await comparaContraseñas(contraseña, usuarioAsociado.contrasena)
-      console.log(contraseñasIguales)
+      console.log("Misma constraseña: " + contraseñasIguales)
       if(contraseñasIguales) {
-        return res.status(200).json("Todo correcto");
+        var token = await jwt.sign({ usuario: usuarioAsociado }, "secreto", {
+          expiresIn: 86400,
+        });
+        return res.status(200).json(token);
       }
       else{
         return res.status(400).json("Credenciales incorrectas");

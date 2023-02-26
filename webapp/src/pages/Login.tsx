@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from "react";
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -7,9 +7,12 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Collapse from '@mui/material/Collapse';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
 
 const llamadaBase = "http://localhost:5000/usuario/"
 const Login = () => {
+
+    const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
     const[userName, setUserName] = React.useState("");
 
@@ -43,6 +46,7 @@ const Login = () => {
                 setLoginError(false);
                 setLogin(true);
                 setLoginErrorCompleted("Inicio de sesión correcto");
+                setUsuarioAutenticado(userName)
               }
               else{
                 setLoginError(true);
