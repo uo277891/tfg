@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
+import Logout from './pages/Logout';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
               <Route path='/follow' element={<Home/>}/>
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/profile/edit' element={<EditProfile/>}/>
+              <Route path='/logout' element={<Logout/>}/>
             </Routes>
           <Footer />
       </Router>

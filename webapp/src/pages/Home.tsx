@@ -6,7 +6,7 @@ import logo from '../images/logo.png';
 const Home = () => {
 
   return (
-    <div id="home">
+    <div className="estiloBase">
       <main>
         <h1>Red social de FreeStyle</h1>
         <p>¡Bienvenido a <strong>SocialFS</strong>, la red social enfocada al mundo del freestyle!</p>

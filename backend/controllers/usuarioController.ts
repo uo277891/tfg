@@ -13,7 +13,6 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
     }
     else{
       const contraseñasIguales = await comparaContraseñas(contraseña, usuarioAsociado.contrasena)
-      console.log("Misma constraseña: " + contraseñasIguales)
       if(contraseñasIguales) {
         var token = await jwt.sign({ usuario: usuarioAsociado }, "secreto", {
           expiresIn: 86400,
@@ -33,13 +32,15 @@ const insertarUsuario = async (req: Request, res: Response): Promise<Response> =
   try {
     const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify} = req.body;
 
+    const enlace_foto = ""
+
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
     if(usuarioAsociado !== null){
       return res.status(400).json("Ya hay usuario con ese nombre");
     }
     else{
       const contrasena = await encriptar(contraseña)
-      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify})
+      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify, enlace_foto})
       usuarioAInsertar.save();
       return res.status(200).send("Usuario creado");
     }

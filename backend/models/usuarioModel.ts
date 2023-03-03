@@ -19,6 +19,9 @@ const usuarioSchema = new Schema({
         require: true
     },nombre_spotify:{
         type: String
+    },
+    enlace_foto:{
+        type: String
     }
 })
 
