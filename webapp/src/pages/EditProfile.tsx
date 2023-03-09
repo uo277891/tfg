@@ -128,7 +128,7 @@ const EditProfile = () => {
     }
 
   return (
-    <div id="regiter" className="forms">
+    <div id="editProfile" className="forms">
       <main>
         <Box
             component="form"
@@ -147,7 +147,7 @@ const EditProfile = () => {
               id="country"
               select
               label="País de nacimiento"
-              defaultValue="España"
+              defaultValue= {country}
               helperText="Selecciona tu país"
               onChange={(country) => setCountry(country.target.value)}
             >
