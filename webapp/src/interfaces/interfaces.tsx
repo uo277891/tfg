@@ -6,3 +6,8 @@ export type Usuario ={
     pais: string,
     nombre_spotify: string
 }
+
+export type EstadoUsuario ={
+    usuario: Usuario,
+    sesionIniciada: boolean
+}

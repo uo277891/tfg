@@ -12,10 +12,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Link from "@mui/material/Link";
 import PersonIcon from '@mui/icons-material/Person';
 import iconlogo from "../images/iconLogoBlanco.png";
+import { useLocalStorage } from "../localStorage/useLocalStorage";
 
 const nombrePagina = ['Sobre SocialFS','Siguiendo'];
 const linkPagina = ['aboutSocialfs', 'follow']
-const settings = ['Perfil', 'Cerrar Sesion'];
+const settings = ['Perfil'];
+const linkSettings = ['profile']
 
 var hashmap = new Map();
 
@@ -23,15 +25,23 @@ function agregarPaginas(){
   for(let i = 0; i < nombrePagina.length; i++){
     hashmap.set(nombrePagina[i], linkPagina[i]);
   }
+
+  for(let i = 0; i < settings.length; i++){
+    hashmap.set(settings[i], linkSettings[i]);
+  }
 }
 agregarPaginas();
 
 function linkAsociado (pagina:string){
-  console.log(hashmap.get(pagina))
   return hashmap.get(pagina)
 }
 
 function ResponsiveAppBar() {
+
+  const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
+
+  const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -48,6 +58,13 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleCerrarSesion = () => {
+    setAnchorElUser(null);
+    setUsuarioAutenticado("");
+    setUsuarioEstaAcutenticado(false);
+    console.log("ENTRO")
   };
 
   return (
@@ -108,11 +125,26 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {usuarioEstaAutenticado && settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Link
+                    id={setting}
+                    href={"/" + linkAsociado(setting)}
+                    sx={{ my: 2, color: "#000", display: "block", pr: 4, pl: 4 }}
+                  > {setting}
+                </Link>
                 </MenuItem>
               ))}
+              {usuarioEstaAutenticado && 
+                <MenuItem key="cerrarSesion" onClick={handleCerrarSesion}>
+                  <Link
+                    id="cerrarSesion"
+                    href={"/logout"}
+                    sx={{ my: 2, color: "#000", display: "block", pr: 4, pl: 4 }}
+                  > Cerrar Sesión
+                  </Link>
+                </MenuItem>
+              }
             </Menu>
           </Box>
         </Toolbar>

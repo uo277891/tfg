@@ -76,6 +76,7 @@ const Register = () => {
     const regsitro = () => {
         console.log("Entro regitro")
         if(userName === "" || password === "" || passwordConf === "" || country === ""){
+            console.log(country)
             setRegisterError(true);
             setRegister(false);
             seterror("Algún campo está vacío");
@@ -138,7 +139,6 @@ const Register = () => {
               id="country"
               select
               label="País de nacimiento"
-              defaultValue="España"
               helperText="Selecciona tu país"
               onChange={(country) => setCountry(country.target.value)}
             >

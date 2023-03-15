@@ -22,6 +22,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
 import TakeFile from '../components/TakeFile';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
 
 const llamadaBase = "http://localhost:5000/usuario/"
 
@@ -52,7 +53,9 @@ const EditProfile = () => {
         setDate(newDate);
     };
 
-    const userNameInicio = "Hugo"
+    const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
+
+    var userNameInicio = usuarioAutenticado
 
     const[userName, setUserName] = React.useState("");
 
@@ -82,6 +85,7 @@ const EditProfile = () => {
             {
               if(response.ok){
                 var user = await response.json()
+                console.log("Nombre de inicio: " + userNameInicio)
                 setUserName(user.user.nombre)
                 setNomSpoty(user.user.nombre_spotify)
                 setCountry(user.user.pais)
@@ -110,6 +114,8 @@ const EditProfile = () => {
               if(response.ok){
                 setRegisterError(false);
                 setRegister(true);
+                setUsuarioAutenticado(userName)
+                userNameInicio = userName
                 setRegisterCompleted("Perfil actualizado");
               }
               else{
@@ -122,7 +128,7 @@ const EditProfile = () => {
     }
 
   return (
-    <div id="regiter" className="forms">
+    <div id="editProfile" className="forms">
       <main>
         <Box
             component="form"
@@ -141,7 +147,7 @@ const EditProfile = () => {
               id="country"
               select
               label="País de nacimiento"
-              defaultValue="España"
+              defaultValue= {country}
               helperText="Selecciona tu país"
               onChange={(country) => setCountry(country.target.value)}
             >
@@ -190,7 +196,7 @@ const EditProfile = () => {
             <br/>
             <Button className="boton" variant="contained" onClick={actualizarPerfil}>Actualizar perfil</Button>
         </Box>
-        <p>¿No quieres actualizar tu perfil?, vuelve atrás pulsando <Link href="/login" >aquí</Link></p>
+        <p>¿No quieres actualizar tu perfil?, vuelve atrás pulsando <Link href="/profile" >aquí</Link></p>
       </main>
       <Box sx={{ width: '100%' }}>
       <Collapse in={registerError}>

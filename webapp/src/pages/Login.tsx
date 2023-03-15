@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from "react";
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -7,9 +7,15 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Collapse from '@mui/material/Collapse';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
+import { useNavigate } from "react-router-dom";
 
 const llamadaBase = "http://localhost:5000/usuario/"
 const Login = () => {
+
+    const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
+
+    const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
     const[userName, setUserName] = React.useState("");
 
@@ -23,10 +29,14 @@ const Login = () => {
 
     const [loginCompleted, setLoginErrorCompleted] = React.useState("");
 
+    const redirigir = useNavigate();
+
     const iniciarSesion = () => {
         if(userName === "" || password === ""){
             setLoginError(true);
             setLogin(false);
+            setUsuarioAutenticado("")
+            setUsuarioEstaAcutenticado(false)
             seterror("Algún campo está vacío");
         }
         else{
@@ -43,6 +53,9 @@ const Login = () => {
                 setLoginError(false);
                 setLogin(true);
                 setLoginErrorCompleted("Inicio de sesión correcto");
+                setUsuarioAutenticado(userName)
+                setUsuarioEstaAcutenticado(true)
+                redirigir("/profile")
               }
               else{
                 setLoginError(true);
@@ -50,6 +63,8 @@ const Login = () => {
                 seterror("Las credenciales no son correctas");
                 setUserName("");
                 setPassword("");
+                setUsuarioAutenticado("")
+                setUsuarioEstaAcutenticado(false)
               }
             })
         }
