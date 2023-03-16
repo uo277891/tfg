@@ -26,7 +26,7 @@ const App = () => {
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/profile/edit' element={<EditProfile/>}/>
               <Route path='/logout' element={<Logout/>}/>
-              <Route path='/profile/extern' element={<ExternProfile/>}/>
+              <Route path='/profile/:id' element={<ExternProfile/>}/>
             </Routes>
           <Footer />
       </Router>

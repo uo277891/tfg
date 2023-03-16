@@ -4,10 +4,29 @@ export type Usuario ={
     fecha_nac: Date,
     localidad: string,
     pais: string,
-    nombre_spotify: string
+    nombre_spotify: string,
+    foto: Object,
+    descripcion: string
 }
 
-export type EstadoUsuario ={
-    usuario: Usuario,
-    sesionIniciada: boolean
+export type Publicacion ={
+    id_usuario: string,
+    texto: string,
+    enlace_foto: Object,
+    fecha: Date,
+    enlace_audio: Object,
+    likes: Array<string>
+}
+
+export type Comentario ={
+    id_publicacion: string,
+    id_usu_coment: string,
+    fecha: Date,
+    texto: String
+}
+
+export type Seguidor ={
+    id_usuario: string,
+    id_seguidor: string,
+    fecha: Date
 }

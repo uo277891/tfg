@@ -14,21 +14,22 @@ const llamadaBase = "http://localhost:5000/usuario/"
 function PublicationCard (props: any) {
     return (
         <Card sx={{ maxWidth: 400 }} id="profileCard">
+            {props.publication.enlace_imagen === "" &&
             <CardMedia
                 sx={{maxHeight: 250}} 
                 component="img"
                 alt="foto de perfil"
-                image={logo}
-            />
+                image={props.publication.enlace_imagen}
+            />}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                Descripción de la publicación realizada por el artista o promotor.
+                {props.publication.texto}
                 </Typography>
                 <Typography gutterBottom variant="h6" component="div">
-                Fecha: 15/03/2023
+                {props.publication.fecha}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                <FavoriteIcon sx={{color: red[500]}}></FavoriteIcon> 20
+                <FavoriteIcon sx={{color: red[500]}}></FavoriteIcon> {props.publication.likes.length}
                 </Typography>
             </CardContent>
             <CardActions>
