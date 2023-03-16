@@ -1,5 +1,4 @@
-const mongooseBD = require('mongoose')
-const {Schema}  = mongooseBD
+import {model, Schema}  from 'mongoose'
 
 const usuarioSchema = new Schema({
     nombre:{
@@ -19,12 +18,15 @@ const usuarioSchema = new Schema({
         require: true
     },nombre_spotify:{
         type: String
-    },
-    enlace_foto:{
+    },enlace_foto:{
+        type: String
+    },descripcion:{
+        type: String
+    },tipo:{
         type: String
     }
 })
 
-const usuariosModel = mongooseBD.model('usuarios', usuarioSchema)
+const usuariosModel = model('usuarios', usuarioSchema)
 
 module.exports = usuariosModel

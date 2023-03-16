@@ -1,0 +1,19 @@
+#externProfile{
+    padding-left: 1em;
+}
+
+#publicaciones{
+    padding: 3em;
+}
+
+h1{
+    text-align: center;
+}
+
+h2{
+    font-size: 2em;
+}
+
+#externProfile p{
+    font-size: 1.5em;
+}
