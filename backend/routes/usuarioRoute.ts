@@ -6,7 +6,7 @@ const {inicioSesion, insertarUsuario, getUsuario, updateUsuario} = require("../c
 api.post(
     "/usuario/login",
     inicioSesion
-  );
+);
 
 api.post(
   "/usuario/register",
