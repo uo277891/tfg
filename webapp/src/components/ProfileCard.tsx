@@ -28,6 +28,8 @@ function CardProfile () {
 
   const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
+  const [idUser, setidUser] = useLocalStorage('idUser', '')
+
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
@@ -42,6 +44,8 @@ function CardProfile () {
           setCountry(user.user.pais)
           setLocation(user.user.localidad)
           setDate(user.user.fecha_nac)
+          setidUser(user.user._id)
+          console.log(idUser)
         }
         else{
           return <h1>ERROR</h1>

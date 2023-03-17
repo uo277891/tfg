@@ -1,11 +1,16 @@
 import express, {Router} from 'express';
 const api:Router = express.Router()
 
-const {getPublicaciones} = require("../controllers/publicacionController")
+const {getPublicaciones, insertarPublicacion} = require("../controllers/publicacionController")
 
 api.get(
   "/publicaciones/:idUsu",
   getPublicaciones
+);
+
+api.post(
+  "/publicaciones/new",
+  insertarPublicacion
 );
 
 module.exports = api;
