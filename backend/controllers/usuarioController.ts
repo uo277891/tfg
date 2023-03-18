@@ -3,6 +3,18 @@ import { Request, Response } from 'express';
 const usuarioSquema = require('../models/usuarioModel');
 const {encriptar, comparaContraseñas} = require("../helpers/encryptContraseña");
 const jwt = require("jsonwebtoken")
+const multer = require('multer')
+
+const guardarImagenPerfil = multer.diskStorage({
+  carpeta: function(req: any, file: any, cb: (arg0: null, arg1: string) => void){
+    cb(null, 'webapp/public/perfiles')
+  },
+  filename: function(req: any, file: any, cb: (arg0: null, arg1: any) => void){
+    cb(null, file.fieldname)
+  }
+})
+
+const subidaArchivo = multer({guardarImagenPerfil})
 
 const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -52,8 +64,8 @@ const insertarUsuario = async (req: Request, res: Response): Promise<Response> =
 
 const getUsuario = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const nombre = req.params.nombre;
-      const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
+      const id_user = req.params.id_user;
+      const usuarioAsociado = await usuarioSquema.find({_id: id_user});
       if(usuarioAsociado === null){
         return res.status(400).json("No hay usuario con ese nombre");
       }
@@ -65,13 +77,27 @@ const getUsuario = async (req: Request, res: Response): Promise<Response> => {
     }
 }
 
+const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const nombre = req.params.name;
+    const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
+    if(usuarioAsociado === null){
+      return res.status(400).json("No hay usuario con ese nombre");
+    }
+    else{
+      return res.status(200).json({ user: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const updateUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombreAnterior = req.params.nombreAnterior;
     const datosNuevos = req.body;
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombreAnterior});
     const usuarioYaEscogido = await usuarioSquema.findOne({nombre: datosNuevos.nombre});
-    console.log(datosNuevos)
     if(usuarioYaEscogido !== null && nombreAnterior !== datosNuevos.nombre){
       return res.status(400).json("Nombre ya escogido");
     }
@@ -85,4 +111,14 @@ const updateUsuario = async (req: Request, res: Response): Promise<Response> => 
   }
 }
 
-module.exports = {inicioSesion, insertarUsuario, getUsuario, updateUsuario}
+const subirImagenPerfil = async (req: Request, res: Response): Promise<Response> => {
+  try{
+    console.log(req.body)
+    await guardarImagenPerfil(req.body.archivo)
+    return res.status(200).send("Todo bien");
+  } catch (error){
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, subirImagenPerfil}

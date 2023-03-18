@@ -128,7 +128,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {usuarioEstaAutenticado && settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem onClick={handleCloseUserMenu}>
                   <Link
                     id={setting}
                     href={"/" + linkAsociado(setting)}
@@ -137,7 +137,17 @@ function ResponsiveAppBar() {
                 </Link>
                 </MenuItem>
               ))}
-              {usuarioEstaAutenticado && 
+              {usuarioEstaAutenticado &&
+                <MenuItem key="publicProfile" onClick={handleCloseUserMenu}>
+                  <Link
+                    id="publicProfile"
+                    href={"/profile/" + idUser}
+                    sx={{ my: 2, color: "#000", display: "block", pr: 4, pl: 4 }}
+                  > Perfil público
+                  </Link>
+                </MenuItem>
+              }
+              {usuarioEstaAutenticado &&
                 <MenuItem key="cerrarSesion" onClick={handleCerrarSesion}>
                   <Link
                     id="cerrarSesion"

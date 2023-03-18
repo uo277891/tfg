@@ -37,7 +37,6 @@ const ExternProfile = () => {
 
     useEffect(() => {
         datosIniciales();
-
     }, [])
 
     if(usuarioEstaAutenticado && !cargando){
