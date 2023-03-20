@@ -22,9 +22,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import TakeFile from '../components/TakeFile';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
-import Avatar from '@mui/material/Avatar';
+import { getSignature } from '../accesoApi/api';
 
 const llamadaBase = "http://localhost:5000/usuario/"
 
@@ -110,13 +109,13 @@ const EditProfile = () => {
         else{
             setRegisterError(true);
             setRegister(false);
-            seterror("La foto de perfil debe tener la extensión png o jpeg.");
+            seterror("La foto de perfil debe tener la extensión png o jpg.");
             setArchivo(undefined);
         }
     }
   };
 
-    const actualizarPerfil = () => {
+  async function actualizarPerfil (){
         if(userName === "" || country === ""){
             setRegisterError(true);
             setRegister(false);
@@ -133,11 +132,8 @@ const EditProfile = () => {
             {
               response.json()
               if(response.ok){
-                setRegisterError(false);
-                setRegister(true);
                 setUsuarioAutenticado(userName);
                 userNameInicio = userName;
-                setRegisterCompleted("Perfil actualizado");
               }
               else{
                 setRegisterError(true);
@@ -146,31 +142,34 @@ const EditProfile = () => {
               }
             })
 
-            let data = new FormData();
-            let header = new Headers();
             if(archivo !== undefined){
-              data.append("file", "archivo");
-              header.append('content-type', archivo.type);
+              let data = new FormData();
+              await getSignature(idUser)
+              const cloudinaryURI = "https://api.cloudinary.com/v1_1/ddtcz5fqr/"
+              data.append("file", archivo);
+              data.append("api_key", "117284356463575");
+              data.append('upload_preset', 'pt7pvrus');
+              data.append("folder", "perfiles");
+              data.append("public_id", idUser);
+              const params = {
+                method: 'POST',
+                body: data
+              };
+              await fetch(cloudinaryURI + "upload", params)
+                .then((response) => 
+                {
+                  response.json()
+                  if(response.ok){
+                    setRegister(true);
+                    setRegisterCompleted("Perfil actualizado");
+                  }
+                  else{
+                    setRegisterError(true);
+                    setRegister(false);
+                    seterror("Foto no actualizada");
+                  }
+                })
             }
-            const params = {
-              method: 'POST',
-              headers: {'Content-Type': 'multipart/form-data'},
-              body: data
-          };
-            fetch(llamadaBase + "photo/", params)
-              .then((response) => 
-              {
-                response.json()
-                if(response.ok){
-                  setRegister(true);
-                  setRegisterCompleted("Foto actualizada");
-                }
-                else{
-                  setRegisterError(true);
-                  setRegister(false);
-                  seterror("Foto no actualizada");
-                }
-              })
         }
     }
   return (

@@ -1,4 +1,4 @@
-import { Publicacion, Seguidor, Usuario } from "../interfaces/interfaces";
+import { Publicacion, Seguidor, Usuario, Signature } from "../interfaces/interfaces";
 
 const llamadaBasica = 'http://localhost:5000';
 
@@ -24,4 +24,10 @@ export async function getUsuarioByName(name: any): Promise<Usuario> {
     let res = await fetch(llamadaBasica + '/usuario/getusuario/name/' + name);
     let usuario = await res.json()
     return usuario.user
+}
+
+export async function getSignature(idUser: any): Promise<Signature> {
+    let res = await fetch(llamadaBasica + '/cloudinary/signature/' + idUser);
+    let respuesta = await res.json()
+    return respuesta
 }

@@ -7,7 +7,7 @@ const DB_URI_OLD = "mongodb://hugo:unSBtvm4aiJK1WJb@ac-v3ngssk-shard-00-00.bsnmd
 module.exports = () =>{
     const connect = () =>{
         mongoose.connect(
-            DB_URI_OLD,
+            DB_URI,
             (error: Error) =>{
                 if(error){
                     console.log("Error :( " + error)
