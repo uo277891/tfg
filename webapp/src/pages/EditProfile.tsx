@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ChangeEvent, useState } from 'react';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -21,8 +22,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import TakeFile from '../components/TakeFile';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
+import { getSignature } from '../accesoApi/api';
 
 const llamadaBase = "http://localhost:5000/usuario/"
 
@@ -55,11 +56,15 @@ const EditProfile = () => {
 
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
+    const [idUser, setIdUser] = useLocalStorage('idUser', '')
+
     var userNameInicio = usuarioAutenticado
 
     const[userName, setUserName] = React.useState("");
 
     const[country, setCountry] = React.useState("");
+
+    const[countryInicio, setCountryInicio] = React.useState("");
 
     const[location, setLocation] = React.useState("");
 
@@ -80,12 +85,11 @@ const EditProfile = () => {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         };
-          fetch(llamadaBase + "getusuario/" + userNameInicio, requestOptions)
+          fetch(llamadaBase + "getusuario/name/" + userNameInicio, requestOptions)
             .then( async (response) => 
             {
               if(response.ok){
                 var user = await response.json()
-                console.log("Nombre de inicio: " + userNameInicio)
                 setUserName(user.user.nombre)
                 setNomSpoty(user.user.nombre_spotify)
                 setCountry(user.user.pais)
@@ -95,7 +99,23 @@ const EditProfile = () => {
             })
     }
 
-    const actualizarPerfil = () => {
+  const [archivo, setArchivo] = useState<File>();
+
+  const actualizaArchivo = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+        if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png"){
+            setArchivo(e.target.files[0]);
+        }
+        else{
+            setRegisterError(true);
+            setRegister(false);
+            seterror("La foto de perfil debe tener la extensión png o jpg.");
+            setArchivo(undefined);
+        }
+    }
+  };
+
+  async function actualizarPerfil (){
         if(userName === "" || country === ""){
             setRegisterError(true);
             setRegister(false);
@@ -105,18 +125,15 @@ const EditProfile = () => {
           const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty })
+            body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty, enlace_foto: "sinFoto" })
         };
           fetch(llamadaBase + "profile/edit/" + userNameInicio, requestOptions)
             .then((response) => 
             {
               response.json()
               if(response.ok){
-                setRegisterError(false);
-                setRegister(true);
-                setUsuarioAutenticado(userName)
-                userNameInicio = userName
-                setRegisterCompleted("Perfil actualizado");
+                setUsuarioAutenticado(userName);
+                userNameInicio = userName;
               }
               else{
                 setRegisterError(true);
@@ -124,9 +141,37 @@ const EditProfile = () => {
                 seterror("El nombre escogido ya está en uso");
               }
             })
+
+            if(archivo !== undefined){
+              let data = new FormData();
+              await getSignature(idUser)
+              const cloudinaryURI = "https://api.cloudinary.com/v1_1/ddtcz5fqr/"
+              data.append("file", archivo);
+              data.append("api_key", "117284356463575");
+              data.append('upload_preset', 'pt7pvrus');
+              data.append("folder", "perfiles");
+              data.append("public_id", idUser);
+              const params = {
+                method: 'POST',
+                body: data
+              };
+              await fetch(cloudinaryURI + "upload", params)
+                .then((response) => 
+                {
+                  response.json()
+                  if(response.ok){
+                    setRegister(true);
+                    setRegisterCompleted("Perfil actualizado");
+                  }
+                  else{
+                    setRegisterError(true);
+                    setRegister(false);
+                    seterror("Foto no actualizada");
+                  }
+                })
+            }
         }
     }
-
   return (
     <div id="editProfile" className="forms">
       <main>
@@ -146,8 +191,8 @@ const EditProfile = () => {
             <TextField
               id="country"
               select
-              label="País de nacimiento"
-              defaultValue= {country}
+              defaultValue={country}
+              label="País de nacimiento *"
               helperText="Selecciona tu país"
               onChange={(country) => setCountry(country.target.value)}
             >
@@ -192,7 +237,7 @@ const EditProfile = () => {
                 />
             </LocalizationProvider>
             <br/>
-            <TakeFile></TakeFile>
+            Sube tu foto de perfil: <input type="file" onChange={actualizaArchivo} />
             <br/>
             <Button className="boton" variant="contained" onClick={actualizarPerfil}>Actualizar perfil</Button>
         </Box>

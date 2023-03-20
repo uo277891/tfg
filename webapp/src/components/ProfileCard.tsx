@@ -28,13 +28,13 @@ function CardProfile () {
 
   const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
-  const [idUser, setidUser] = useLocalStorage('idUser', '')
+  const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
   };
-    fetch(llamadaBase + "getusuario/" + usuarioAutenticado, requestOptions)
+    fetch(llamadaBase + "getusuario/name/" + usuarioAutenticado, requestOptions)
       .then( async (response) => 
       {
         if(response.ok){
@@ -44,7 +44,8 @@ function CardProfile () {
           setCountry(user.user.pais)
           setLocation(user.user.localidad)
           setDate(user.user.fecha_nac)
-          setidUser(user.user._id)
+          setIdUser(user.user._id)
+          setEnlaceFoto(user.user.enlace_foto)
           console.log(idUser)
         }
         else{

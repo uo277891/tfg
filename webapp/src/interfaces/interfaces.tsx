@@ -30,3 +30,8 @@ export type Seguidor ={
     id_seguidor: string,
     fecha: Date
 }
+
+export type Signature ={
+    signature: string,
+    timestamp: string
+}
