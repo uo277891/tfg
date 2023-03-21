@@ -1,7 +1,7 @@
 import express, {Router} from 'express';
 const api:Router = express.Router()
 
-const {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, subirImagenPerfil} = require("../controllers/usuarioController")
+const {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName} = require("../controllers/usuarioController")
 
 api.post(
     "/usuario/login",
@@ -23,14 +23,14 @@ api.get(
   getUsuarioByName
 );
 
+api.get(
+  "/usuario/find/:name",
+  getUsuariosByName
+);
+
 api.put(
   "/usuario/profile/edit/:nombreAnterior",
   updateUsuario
-);
-
-api.post(
-  "/usuario/photo",
-  subirImagenPerfil
 );
 
 module.exports = api;

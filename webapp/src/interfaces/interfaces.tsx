@@ -1,4 +1,5 @@
 export type Usuario ={
+    _id: string,
     nombre: string,
     contrasena: string,
     fecha_nac: Date,

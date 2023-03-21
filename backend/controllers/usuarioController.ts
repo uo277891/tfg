@@ -3,18 +3,6 @@ import { Request, Response } from 'express';
 const usuarioSquema = require('../models/usuarioModel');
 const {encriptar, comparaContraseñas} = require("../helpers/encryptContraseña");
 const jwt = require("jsonwebtoken")
-const multer = require('multer')
-
-const guardarImagenPerfil = multer.diskStorage({
-  carpeta: function(req: any, file: any, cb: (arg0: null, arg1: string) => void){
-    cb(null, 'webapp/public/perfiles')
-  },
-  filename: function(req: any, file: any, cb: (arg0: null, arg1: any) => void){
-    cb(null, file.fieldname)
-  }
-})
-
-const subidaArchivo = multer({guardarImagenPerfil})
 
 const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -42,9 +30,7 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
 
 const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify} = req.body;
-
-    const enlace_foto = ""
+    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto} = req.body;
 
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
     if(usuarioAsociado !== null){
@@ -92,6 +78,21 @@ const getUsuarioByName = async (req: Request, res: Response): Promise<Response> 
   }
 }
 
+const getUsuariosByName = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const nombre = req.params.name;
+    const usuarioAsociado = await usuarioSquema.find({nombre: { $regex: '.*' + nombre + '.*' }});
+    if(usuarioAsociado === null){
+      return res.status(400).json("No hay usuarios con ese nombre");
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const updateUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombreAnterior = req.params.nombreAnterior;
@@ -111,14 +112,4 @@ const updateUsuario = async (req: Request, res: Response): Promise<Response> => 
   }
 }
 
-const subirImagenPerfil = async (req: Request, res: Response): Promise<Response> => {
-  try{
-    console.log(req.body)
-    await guardarImagenPerfil(req.body.archivo)
-    return res.status(200).send("Todo bien");
-  } catch (error){
-    return res.status(500).send(error);
-  }
-}
-
-module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, subirImagenPerfil}
+module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName}
