@@ -74,7 +74,6 @@ const Register = () => {
     const [registerCompleted, setRegisterCompleted] = React.useState("");
 
     const regsitro = () => {
-        console.log("Entro regitro")
         if(userName === "" || password === "" || passwordConf === "" || country === ""){
             console.log(country)
             setRegisterError(true);
@@ -95,7 +94,7 @@ const Register = () => {
           const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: userName, contraseña: password, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty })
+            body: JSON.stringify({ nombre: userName.toLowerCase(), contraseña: password, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty })
         };
           fetch(llamadaBase + "register", requestOptions)
             .then((response) => 

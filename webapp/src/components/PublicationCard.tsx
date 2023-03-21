@@ -9,8 +9,6 @@ import Link from '@mui/material/Link';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { red } from '@mui/material/colors';
 
-const llamadaBase = "http://localhost:5000/usuario/"
-
 function PublicationCard (props: any) {
     return (
         <Card sx={{ maxWidth: 400 }} id="profileCard">

@@ -17,8 +17,6 @@ import { Publicacion, Seguidor } from "../interfaces/interfaces";
 
 const ExternProfile = () => {
 
-    const llamadaBasica = 'http://localhost:5000';
-
     const {id} = useParams();
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
