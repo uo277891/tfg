@@ -94,7 +94,7 @@ const Register = () => {
           const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: userName.toLowerCase(), contraseña: password, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty })
+            body: JSON.stringify({ nombre: userName.toLowerCase(), contraseña: password, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty, enlace_foto: "default_user_image_a8y5kc" })
         };
           fetch(llamadaBase + "register", requestOptions)
             .then((response) => 

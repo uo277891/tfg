@@ -5,7 +5,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import Grid from "@mui/material/Grid";
 import { getUsuariosByName } from "../accesoApi/api";
 import { Usuario } from "../interfaces/interfaces";
-import UserCard from "../components/UserCard"
+import UserCard from "../components/UserCard";
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
 
 const FindUsers = () => {
 
@@ -43,7 +45,16 @@ const FindUsers = () => {
                         </IconButton>
                     </Grid>
                 </Grid>
-                <UserCard usuarios = {usuarios}></UserCard>
+                <Grid item xs={12} md={6}>
+                    <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+                        Usuarios encontrados:
+                    </Typography>
+                    <List >
+                        {usuarios.map((usuario: Usuario) =>
+                            <UserCard usuario = {usuario}></UserCard>
+                        )}
+                    </List>
+                </Grid>
             </main>
         </div>
         );

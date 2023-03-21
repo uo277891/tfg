@@ -121,12 +121,23 @@ const EditProfile = () => {
             setRegister(false);
             seterror("El nombre y el país no pueden estar vacíos");
         }
-        else{
-          const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty, enlace_foto: "sinFoto" })
-        };
+        else {
+          var requestOptions;
+          if(archivo != undefined) {
+            const enlace_foto = idUser
+            requestOptions = {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty, enlace_foto: enlace_foto })
+            };
+          }
+          else {
+            requestOptions = {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty})
+            };
+          }
           fetch(llamadaBase + "profile/edit/" + userNameInicio, requestOptions)
             .then((response) => 
             {

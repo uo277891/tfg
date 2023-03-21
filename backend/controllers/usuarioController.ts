@@ -30,9 +30,7 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
 
 const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify} = req.body;
-
-    const enlace_foto = ""
+    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto} = req.body;
 
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
     if(usuarioAsociado !== null){
