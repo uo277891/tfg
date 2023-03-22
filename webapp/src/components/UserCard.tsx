@@ -2,21 +2,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
-import FolderIcon from '@mui/icons-material/Folder';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 
-async function getFoto() {
-    
-}
-
 function UserCard (props: any) {
 
-    const cloudinaryURI = "https://res.cloudinary.com/ddtcz5fqr/image/upload/v1679309731/perfiles/" + props.usuario.enlace_foto
-    const params = {
-    method: 'GET'
-    };
-    
     return (
             <ListItem
             secondaryAction={
@@ -26,7 +16,7 @@ function UserCard (props: any) {
             }
             >
             <ListItemAvatar>
-                <Avatar src= {"https://res.cloudinary.com/ddtcz5fqr/image/upload/v1679309731/perfiles/" + props.usuario.enlace_foto}>
+                <Avatar src= {props.usuario.enlace_foto}>
                 </Avatar>
             </ListItemAvatar>
             <ListItemText

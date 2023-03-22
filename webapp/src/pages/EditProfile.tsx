@@ -124,7 +124,7 @@ const EditProfile = () => {
         else {
           var requestOptions;
           if(archivo != undefined) {
-            const enlace_foto = idUser
+            const enlace_foto = "https://res.cloudinary.com/ddtcz5fqr/image/upload/v1679309731/perfiles/" + idUser
             requestOptions = {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },

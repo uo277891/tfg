@@ -6,14 +6,14 @@ export type Usuario ={
     localidad: string,
     pais: string,
     nombre_spotify: string,
-    foto: Object,
+    enlace_foto: string,
     descripcion: string
 }
 
 export type Publicacion ={
     id_usuario: string,
     texto: string,
-    enlace_foto: Object,
+    enlace_foto: string,
     fecha: Date,
     enlace_audio: Object,
     likes: Array<string>
