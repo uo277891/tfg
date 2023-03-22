@@ -1,0 +1,81 @@
+@import url("./styles/navBar.css");
+@import url("./styles/forms.css");
+@import url("./styles/externProfile.css");
+@import url("./styles/findUsers.css");
+
+* {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.estiloBase{
+  	display: flex;
+	flex-direction: row;
+	gap: 1em;
+	align-items: center;
+  	color: black;
+}
+
+.estiloBase main {
+	max-width: 50%;
+	padding: 1.5em;
+	margin: 1.5em;
+	font-size: 2em;
+}
+
+.estiloBase main p {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	font-size: 1em;
+}
+
+.estiloBase .boton{
+  background-color: rgb(133, 39, 39);
+}
+
+.estiloBase aside {
+	margin-top: 3em;
+}
+
+#aboutFS{
+	text-align: center;
+	align-items: center;
+	padding: 0.3em;
+	color: black;
+  }
+
+#aboutFS main h1{
+	font-size: 4em;
+}
+  
+#aboutFS main h2 {
+	margin-left: 0.7em;
+	text-align: left;
+	align-items: left;
+	font-size: 3em;
+}
+
+#aboutFS main p {
+	margin-left: 1em;
+	text-align: left;
+	align-items: left;
+	font-size: 1em;
+}
+  
+#aboutFS .boton{
+	background-color: rgb(77, 133, 39);
+  }
+
+#profile{
+	align-items: center;
+	padding: 0.3em;
+	color: black;
+  }
+
+#profile main h1{
+	text-align: center;
+	font-size: 3em;
+}
+
+footer{
+  text-align: center;
+}
