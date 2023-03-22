@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
 import { useLocalStorage } from "../localStorage/useLocalStorage";
-import logo from '../images/default_user_image.png';
 import Avatar from '@mui/material/Avatar';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,9 +10,9 @@ import TableRow from '@mui/material/TableRow';
 import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 import PublicationCard from "../components/PublicationCard";
-import { getPublicaciones, getSeguidores } from "../accesoApi/api";
+import { getPublicaciones, getSeguidores, getUsuario, isSeguidor, dejarDeSeguir, seguir } from "../accesoApi/api";
 import { useParams } from 'react-router-dom';
-import { Publicacion, Seguidor } from "../interfaces/interfaces";
+import { Publicacion, Seguidor, Usuario } from "../interfaces/interfaces";
 
 const ExternProfile = () => {
 
@@ -21,15 +20,26 @@ const ExternProfile = () => {
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
+    const [idUser, setIdUser] = useLocalStorage('idUser', '')
+
     const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
 
     const [cargando, setCargando] = useState<Boolean>(true);
 
     const [seguidores, setSeguidores] = useState<Seguidor[]>([]);
 
+    const [usuario, setUsuario] = useState<Usuario>();
+
+    const [leSigue, setLeSigue] = useState<boolean>();
+
     const datosIniciales = useCallback(async () => {
+        setCargando(true)
         setSeguidores(await getSeguidores(id))
         setPublicaciones(await getPublicaciones(id))
+        const user = await getUsuario(id)
+        if(user != undefined)
+            setUsuario(user[0])
+        setLeSigue(await isSeguidor(id, idUser))
         setCargando(false)
     }, []);
 
@@ -37,7 +47,17 @@ const ExternProfile = () => {
         datosIniciales();
     }, [])
 
-    if(usuarioEstaAutenticado && !cargando){
+    async function handleDejarDeSeguir() {
+        await dejarDeSeguir(id, idUser)
+        await datosIniciales();
+    }
+
+    async function handleSeguir() {
+        await seguir(id, idUser);
+        await datosIniciales();
+    }
+
+    if(usuarioEstaAutenticado && !cargando && usuario !== undefined){
         return (
         <div id="externProfile">
             <main>
@@ -56,19 +76,21 @@ const ExternProfile = () => {
                             <TableCell align="center">
                             <Avatar
                                 alt="Foto de perfil"
-                                src={logo}
+                                src={usuario.enlace_foto}
                                 sx={{ width: 50, height: 60 }}
                             />
                             </TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{publicaciones.length}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{seguidores.length}</TableCell>
-                            <TableCell sx={{fontSize: 40}} align="center"><Button size="large" variant="contained">Seguir</Button></TableCell>
+                            {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
+                            {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">Perfil propio</TableCell>}
+                            {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
                             </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <h2>Nombre de usuario</h2>
-                <p>Descripción</p>
+                <h2>{usuario.nombre}</h2>
+                <p>{usuario.descripcion}</p>
                 <h1>Publicaciones:</h1>
                 <section id="publicaciones">
                     <Grid
@@ -86,11 +108,20 @@ const ExternProfile = () => {
             </main>
         </div>
         );
-    }else{
+    }else if(!usuarioEstaAutenticado){
         return(
         <div id="externProfile">
             <main>
             <h1>Inicia sesión para poder ver perfiles ajenos.</h1>
+            </main>
+        </div>
+        )
+    }
+    else{
+        return(
+        <div id="externProfile">
+            <main>
+            <h1>Usuario no encontrado.</h1>
             </main>
         </div>
         )
