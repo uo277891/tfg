@@ -116,73 +116,75 @@ const EditProfile = () => {
   };
 
   async function actualizarPerfil (){
-        if(userName === "" || country === ""){
+    var url_foto = ""
+    if(archivo !== undefined){
+      let data = new FormData();
+      await getSignature(idUser)
+      const cloudinaryURI = "https://api.cloudinary.com/v1_1/ddtcz5fqr/"
+      data.append("file", archivo);
+      data.append("api_key", "117284356463575");
+      data.append('upload_preset', 'pt7pvrus');
+      data.append("folder", "perfiles");
+      data.append("public_id", idUser);
+      const params = {
+        method: 'POST',
+        body: data
+      };
+      await fetch(cloudinaryURI + "upload", params)
+        .then(async (response) => 
+        {
+          if(response.ok){
+            const url = await response.json()
+            url_foto = url.secure_url
+            console.log(url)
+            setRegister(true);
+            setRegisterCompleted("Perfil actualizado");
+          }
+          else{
             setRegisterError(true);
             setRegister(false);
-            seterror("El nombre y el país no pueden estar vacíos");
-        }
-        else {
-          var requestOptions;
-          if(archivo != undefined) {
-            const enlace_foto = "https://res.cloudinary.com/ddtcz5fqr/image/upload/v1679309731/perfiles/" + idUser
-            requestOptions = {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty, enlace_foto: enlace_foto })
-            };
+            seterror("Foto no actualizada");
           }
-          else {
-            requestOptions = {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty})
-            };
-          }
-          fetch(llamadaBase + "profile/edit/" + userNameInicio, requestOptions)
-            .then((response) => 
-            {
-              response.json()
-              if(response.ok){
-                setUsuarioAutenticado(userName);
-                userNameInicio = userName;
-              }
-              else{
-                setRegisterError(true);
-                setRegister(false);
-                seterror("El nombre escogido ya está en uso");
-              }
-            })
-
-            if(archivo !== undefined){
-              let data = new FormData();
-              await getSignature(idUser)
-              const cloudinaryURI = "https://api.cloudinary.com/v1_1/ddtcz5fqr/"
-              data.append("file", archivo);
-              data.append("api_key", "117284356463575");
-              data.append('upload_preset', 'pt7pvrus');
-              data.append("folder", "perfiles");
-              data.append("public_id", idUser);
-              const params = {
-                method: 'POST',
-                body: data
-              };
-              await fetch(cloudinaryURI + "upload", params)
-                .then((response) => 
-                {
-                  response.json()
-                  if(response.ok){
-                    setRegister(true);
-                    setRegisterCompleted("Perfil actualizado");
-                  }
-                  else{
-                    setRegisterError(true);
-                    setRegister(false);
-                    seterror("Foto no actualizada");
-                  }
-                })
-            }
-        }
+        })
     }
+
+    if(userName === "" || country === ""){
+        setRegisterError(true);
+        setRegister(false);
+        seterror("El nombre y el país no pueden estar vacíos");
+    }
+    else {
+      var requestOptions;
+      if(archivo != undefined) {
+        requestOptions = {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty, enlace_foto: url_foto })
+        };
+      }
+      else {
+        requestOptions = {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre: userName, pais: country, localidad: location, fecha_nac: date, nombre_spotify: nomSpoty})
+        };
+      }
+      fetch(llamadaBase + "profile/edit/" + userNameInicio, requestOptions)
+        .then((response) => 
+        {
+          response.json()
+          if(response.ok){
+            setUsuarioAutenticado(userName);
+            userNameInicio = userName;
+          }
+          else{
+            setRegisterError(true);
+            setRegister(false);
+            seterror("El nombre escogido ya está en uso");
+          }
+        })
+    }
+  }
   return (
     <div id="editProfile" className="forms">
       <main>
