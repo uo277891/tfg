@@ -42,7 +42,7 @@ function ResponsiveAppBar() {
 
   const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
-  const [idUser, setidUser] = useLocalStorage('idUser', '')
+  const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -66,7 +66,7 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
     setUsuarioAutenticado("");
     setUsuarioEstaAcutenticado(false);
-    setidUser("")
+    setIdUser("")
   };
 
   return (

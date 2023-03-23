@@ -16,6 +16,8 @@ const Login = () => {
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
+    
+    const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
     const[userName, setUserName] = React.useState("");
 
@@ -31,12 +33,13 @@ const Login = () => {
 
     const redirigir = useNavigate();
 
-    const iniciarSesion = () => {
+    async function iniciarSesion() {
         if(userName === "" || password === ""){
             setLoginError(true);
             setLogin(false);
             setUsuarioAutenticado("")
             setUsuarioEstaAcutenticado(false)
+            setIdUser("")
             seterror("Algún campo está vacío");
         }
         else{
@@ -46,15 +49,17 @@ const Login = () => {
             body: JSON.stringify({ nombre: userName, contraseña: password })
         };
           fetch(llamadaBase + "login", requestOptions)
-            .then((response) => 
+            .then(async (response) => 
             {
-              response.json()
               if(response.ok){
+                const user = await response.json()
                 setLoginError(false);
                 setLogin(true);
                 setLoginErrorCompleted("Inicio de sesión correcto");
                 setUsuarioAutenticado(userName)
                 setUsuarioEstaAcutenticado(true)
+                setIdUser(user.usuario._id)
+                console.log(idUser)
                 redirigir("/profile")
               }
               else{
@@ -65,6 +70,7 @@ const Login = () => {
                 setPassword("");
                 setUsuarioAutenticado("")
                 setUsuarioEstaAcutenticado(false)
+                setIdUser("")
               }
             })
         }
@@ -88,7 +94,7 @@ const Login = () => {
             </div>
             <Button className="boton" variant="contained" onClick={iniciarSesion}>Iniciar Sesión</Button>
         </Box>
-        <p>Si no tienes cuenta, ¡crea una ahora pulsando <Link href="/elegirRegistro" >aquí</Link>!</p>
+        <p>Si no tienes cuenta, ¡crea una ahora pulsando <Link href="/register" >aquí</Link>!</p>
       </main>
       <Box sx={{ width: '100%' }}>
       <Collapse in={loginError}>

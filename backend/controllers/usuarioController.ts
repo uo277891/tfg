@@ -17,7 +17,7 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
         var token = await jwt.sign({ usuario: usuarioAsociado }, "secreto", {
           expiresIn: 86400,
         });
-        return res.status(200).json(token);
+        return res.status(200).json({usuario: usuarioAsociado});
       }
       else{
         return res.status(400).json("Credenciales incorrectas");
