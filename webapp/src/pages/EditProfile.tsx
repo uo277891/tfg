@@ -64,8 +64,6 @@ const EditProfile = () => {
 
     const[country, setCountry] = React.useState("");
 
-    const[countryInicio, setCountryInicio] = React.useState("");
-
     const[location, setLocation] = React.useState("");
 
     const[nomSpoty, setNomSpoty] = React.useState("");

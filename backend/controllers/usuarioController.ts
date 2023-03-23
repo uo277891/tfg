@@ -14,9 +14,6 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
     else{
       const contraseñasIguales = await comparaContraseñas(contraseña, usuarioAsociado.contrasena)
       if(contraseñasIguales) {
-        var token = await jwt.sign({ usuario: usuarioAsociado }, "secreto", {
-          expiresIn: 86400,
-        });
         return res.status(200).json({usuario: usuarioAsociado});
       }
       else{

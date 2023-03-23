@@ -27,7 +27,6 @@ const insertarPublicacion = async (req: Request, res: Response): Promise<Respons
     const likes: String[] = []
     const publicacionAInsertar = new publicacionModel({texto, id_usuario, enlace_audio, enlace_foto, fecha, likes})
     publicacionAInsertar.save();
-    console.log("FUNCIONOOOOO")
     return res.status(200).json();
   } catch (error) {
     return res.status(500).send(error);
