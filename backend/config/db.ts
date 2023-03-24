@@ -5,7 +5,6 @@ const DB_URI = process.env.URI_MONGO
 
 const DB_URI_OLD = process.env.URI_MONGO_ANTIGUA
 
-console.log(DB_URI)
 module.exports = () =>{
     const connect = () =>{
         mongoose.connect(

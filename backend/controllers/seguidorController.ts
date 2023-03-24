@@ -62,4 +62,18 @@ const dejarDeSeguir = async (req: Request, res: Response): Promise<Response> => 
   }
 }
 
-module.exports = {getSeguidores, isSeguidor, dejarDeSeguir, seguir}
+const getFollowingUsers = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_usuario = req.params.idUser;
+    const users = await seguidorModel.find({id_seguidor: id_usuario});
+    var listaIds: String[] = []
+    users.map((user: any) => {
+      listaIds.push(user.id_usuario)
+    })
+    return res.status(200).json({ followUsers: listaIds });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers}

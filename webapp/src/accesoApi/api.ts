@@ -20,6 +20,12 @@ export async function getUsuario(id_usuario: any): Promise<Usuario[]> {
     return usuario.user
 }
 
+export async function getUsuarios(id_usuario: any): Promise<Usuario[]> {
+    let res = await fetch(llamadaBasica + '/usuario/getusuarios/' + id_usuario);
+    let usuario = await res.json()
+    return usuario.users
+}
+
 export async function getUsuarioByName(name: any): Promise<Usuario[]> {
     let res = await fetch(llamadaBasica + '/usuario/getusuario/name/' + name);
     let usuario = await res.json()
@@ -64,4 +70,11 @@ export async function seguir(idUser: any, idSeg: any): Promise<boolean> {
     let res = await fetch(llamadaBasica + '/seguidores/follow/', requestOptions);
     let seguidor = await res.json()
     return seguidor
+}
+
+export async function getFollowingUsers(idUser: any): Promise<String[]> {
+    let res = await fetch(llamadaBasica + '/seguidores/getSeguidores/' + idUser);
+    const respuesta = await res.json()
+    const idFollowUsers = respuesta.followUsers;
+    return idFollowUsers;
 }

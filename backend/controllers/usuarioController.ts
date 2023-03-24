@@ -60,6 +60,21 @@ const getUsuario = async (req: Request, res: Response): Promise<Response> => {
     }
 }
 
+const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_user = req.params.id_user.split(',');
+    const usuarios = await usuarioSquema.find({_id: {$in: id_user}});
+    if(usuarios === null){
+      return res.status(400).json({users: []});
+    }
+    else{
+      return res.status(200).json({ users: usuarios });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
@@ -109,4 +124,4 @@ const updateUsuario = async (req: Request, res: Response): Promise<Response> => 
   }
 }
 
-module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName}
+module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, getUsuarios}
