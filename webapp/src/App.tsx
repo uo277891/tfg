@@ -11,6 +11,7 @@ import Logout from './pages/Logout';
 import ExternProfile from './pages/ExternProfile';
 import NewPublication from './pages/NewPublication';
 import FindUsers from './pages/FindUsers';
+import FollowingUsers from './pages/FollowingUsers';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
               <Route path='/profile/:id' element={<ExternProfile/>}/>
               <Route path='/publication/new' element={<NewPublication/>}/>
               <Route path='/find' element={<FindUsers/>}/>
+              <Route path='/following' element={<FollowingUsers/>}/>
             </Routes>
           <Footer />
       </Router>

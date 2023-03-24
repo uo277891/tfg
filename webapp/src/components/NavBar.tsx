@@ -84,6 +84,7 @@ function ResponsiveAppBar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
+              key = "openMenu"
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -107,7 +108,7 @@ function ResponsiveAppBar() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton key = "person" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <PersonIcon id="iconPerson" fontSize="large"></PersonIcon>
               </IconButton>
             </Tooltip>
