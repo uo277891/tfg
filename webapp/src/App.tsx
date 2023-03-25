@@ -12,6 +12,7 @@ import ExternProfile from './pages/ExternProfile';
 import NewPublication from './pages/NewPublication';
 import FindUsers from './pages/FindUsers';
 import FollowingUsers from './pages/FollowingUsers';
+import Publication from './pages/Publication';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 const App = () => {
@@ -25,14 +26,14 @@ const App = () => {
               <Route path='/login' element={<InicioSesion/>}/>
               <Route path='/register' element={<Register/>}/>
               <Route path='/aboutSocialfs' element={<AboutSocialFS/>}/>
-              <Route path='/follow' element={<Home/>}/>
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/profile/edit' element={<EditProfile/>}/>
               <Route path='/logout' element={<Logout/>}/>
               <Route path='/profile/:id' element={<ExternProfile/>}/>
               <Route path='/publication/new' element={<NewPublication/>}/>
               <Route path='/find' element={<FindUsers/>}/>
-              <Route path='/following' element={<FollowingUsers/>}/>
+              <Route path='/follow' element={<FollowingUsers/>}/>
+              <Route path='/publication/:id' element={<Publication/>}/>
             </Routes>
           <Footer />
       </Router>

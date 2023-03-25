@@ -17,6 +17,16 @@ const getPublicaciones = async (req: Request, res: Response): Promise<Response> 
     }
 }
 
+const getPublicacion = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_publicacion = req.params.idPub;
+    const publicacion = await publicacionModel.findOne({_id: id_publicacion});
+    return res.status(200).json({ publicacion: publicacion });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const insertarPublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {texto, id_usuario} = req.body;
@@ -33,4 +43,22 @@ const insertarPublicacion = async (req: Request, res: Response): Promise<Respons
   }
 }
 
-module.exports = {getPublicaciones, insertarPublicacion}
+const actualizarLikes = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_pub = req.body.id_publication;
+    const publicacionAsociada = await publicacionModel.findOne({_id: id_pub});
+    publicacionAsociada.likes = req.body.likes;
+    if(publicacionAsociada === null){
+      return res.status(400).json("No se ha encontrado la publicacion");
+    }
+    else{
+      await publicacionModel.findByIdAndUpdate(id_pub, publicacionAsociada)
+      return res.status(200).json("Likes actualizados");
+    }
+
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes}
