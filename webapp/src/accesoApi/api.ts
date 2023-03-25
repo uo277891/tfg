@@ -78,3 +78,20 @@ export async function getFollowingUsers(idUser: any): Promise<String[]> {
     const idFollowUsers = respuesta.followUsers;
     return idFollowUsers;
 }
+
+export async function getPublicacion(id_publication: any): Promise<Publicacion> {
+    let res = await fetch(llamadaBasica + '/publicaciones/getpublicacion/' + id_publication);
+    let publicaciones = await res.json()
+    return publicaciones.publicacion
+}
+
+export async function actualizarLikes(id_pub: any, likes: any): Promise<Publicacion> {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({id_publication: id_pub, likes: likes})
+      };
+    let res = await fetch(llamadaBasica + '/publicaciones/updatelikes', requestOptions);
+    let publicaciones = await res.json()
+    return publicaciones.publicacion
+}

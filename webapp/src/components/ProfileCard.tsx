@@ -8,8 +8,6 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
 function CardProfile (props: any) {
-
-  console.log(props.usuario.enlace_foto)
   return (
         <Card sx={{ margin: "auto", maxWidth: 400, minHeight:200 }} id="profileCard">
           <CardMedia 

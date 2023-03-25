@@ -11,11 +11,12 @@ export type Usuario ={
 }
 
 export type Publicacion ={
+    _id: string,
     id_usuario: string,
     texto: string,
     enlace_foto: string,
     fecha: Date,
-    enlace_audio: Object,
+    enlace_audio: string,
     likes: Array<string>
 }
 

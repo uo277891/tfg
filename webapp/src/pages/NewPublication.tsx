@@ -75,6 +75,8 @@ const NewPublication = () => {
                     <Textarea color="neutral" style={{ width: 665, fontSize:'1.4em' }} minRows={10} placeholder="Introduce el texto de la publicación (máximo 200 caracteres)" 
                         id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
                     <br></br>
+                    {text.length} / 200
+                    <br></br>
                     <Button className="boton" variant="contained" onClick={crearPublicacion}>Crear publicación</Button>
                 </Box>
             </main>
