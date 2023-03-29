@@ -59,7 +59,7 @@ const Login = () => {
                 setUsuarioAutenticado(userName)
                 setUsuarioEstaAcutenticado(true)
                 setIdUser(user.usuario._id)
-                redirigir("/profile")
+                redirigir("/profile/" + user.usuario._id)
               }
               else{
                 setLoginError(true);

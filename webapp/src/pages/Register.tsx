@@ -73,6 +73,8 @@ const Register = () => {
         setDate(newDate);
     };
 
+    const redirigir = useNavigate();
+
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
@@ -177,6 +179,7 @@ const Register = () => {
             setUsuarioAutenticado(userName)
             setUsuarioEstaAcutenticado(true)
             setIdUser(user._id)
+            redirigir("/profile/" + user._id)
             setRegisterCompleted("Registro completado");
           }
           else{

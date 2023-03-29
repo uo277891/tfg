@@ -21,6 +21,8 @@ export async function getUsuario(id_usuario: any): Promise<Usuario[]> {
 }
 
 export async function getUsuarios(id_usuario: any): Promise<Usuario[]> {
+    if(id_usuario.length === 0)
+        return []
     let res = await fetch(llamadaBasica + '/usuario/getusuarios/' + id_usuario);
     let usuario = await res.json()
     return usuario.users
