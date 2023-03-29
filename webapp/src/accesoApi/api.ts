@@ -119,3 +119,14 @@ export async function actualizaFoto(nombre: any, enlace_foto: any): Promise<Bool
     let usuario = await res.json()
     return usuario.actualizado
 }
+
+export async function añadirComentario(idPub: string, idUsu: string, texto: string): Promise<boolean> {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_publicacion: idPub, id_usu_coment: idUsu, texto: texto })
+    };
+    let res = await fetch(llamadaBasica + '/comentarios/new/', requestOptions);
+    let seguidor = await res.json()
+    return seguidor;
+}
