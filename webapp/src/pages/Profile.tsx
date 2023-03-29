@@ -1,7 +1,7 @@
 import CardProfile from '../components/ProfileCard';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useState, useCallback, useEffect } from "react";
-import { getPublicaciones, getSeguidores, getUsuario, isSeguidor, dejarDeSeguir, seguir } from "../accesoApi/api";
+import { getUsuario } from "../accesoApi/api";
 import { Usuario } from "../interfaces/interfaces";
 
 const Profile = () => {

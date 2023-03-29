@@ -65,6 +65,7 @@ const dejarDeSeguir = async (req: Request, res: Response): Promise<Response> => 
 const getFollowingUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.params.idUser;
+    console.log(id_usuario)
     const users = await seguidorModel.find({id_seguidor: id_usuario});
     var listaIds: String[] = []
     users.map((user: any) => {

@@ -3,19 +3,25 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from "@mui/material/Link";
-import PersonIcon from '@mui/icons-material/Person';
 import iconlogo from "../images/iconLogoBlanco.png";
 import { useLocalStorage } from "../localStorage/useLocalStorage";
+import { useState, useCallback, useEffect } from "react";
+import { getUsuario } from "../accesoApi/api";
+import { Usuario } from "../interfaces/interfaces";
+import Avatar from '@mui/material/Avatar';
 
-const nombrePagina = ['Sobre SocialFS','Siguiendo'];
-const linkPagina = ['aboutSocialfs', 'follow']
+const nombrePagina = ['Sobre SocialFS'];
+const linkPagina = ['aboutSocialfs']
+
+const paginasInicioSesion = ['Siguiendo', 'Buscar usuarios','Crear publicación'];
+const linkPaginaInicioSesion = ['follow', 'find', 'publication/new']
+
 const settings = ['Perfil'];
 const linkSettings = ['profile']
 
@@ -24,6 +30,10 @@ var hashmap = new Map();
 function agregarPaginas(){
   for(let i = 0; i < nombrePagina.length; i++){
     hashmap.set(nombrePagina[i], linkPagina[i]);
+  }
+
+  for(let i = 0; i < paginasInicioSesion.length; i++){
+    hashmap.set(paginasInicioSesion[i], linkPaginaInicioSesion[i]);
   }
 
   for(let i = 0; i < settings.length; i++){
@@ -47,15 +57,25 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
+  const [usuario, setUsuario] = useState<Usuario>();
+
+  const datosIniciales = useCallback(async () => {
+    if(usuarioEstaAutenticado){
+      const user = await getUsuario(idUser)
+      if(user != undefined)
+          setUsuario(user[0])
+    }
+  }, []);
+
+  useEffect(() => {
+    datosIniciales();
+  }, [])
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -96,6 +116,14 @@ function ResponsiveAppBar() {
             </IconButton>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {usuarioEstaAutenticado && paginasInicioSesion.map((nombre) => (
+              <Link
+                id={nombre}
+                href={"/" + linkAsociado(nombre)}
+                sx={{ my: 2, color: "#fff", display: "block", pr: 4, pl: 4 }}
+              > {nombre}
+              </Link>
+          ))}
           {nombrePagina.map((nombre) => (
               <Link
                 id={nombre}
@@ -106,10 +134,10 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+          {usuario !== undefined && <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Gestionar cuenta">
               <IconButton key = "person" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <PersonIcon id="iconPerson" fontSize="large"></PersonIcon>
+                  <Avatar src= {usuario.enlace_foto}></Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -128,7 +156,7 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {usuarioEstaAutenticado && settings.map((setting) => (
+              {settings.map((setting) => (
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Link
                     id={setting}
@@ -138,28 +166,24 @@ function ResponsiveAppBar() {
                 </Link>
                 </MenuItem>
               ))}
-              {usuarioEstaAutenticado &&
-                <MenuItem key="publicProfile" onClick={handleCloseUserMenu}>
-                  <Link
-                    id="publicProfile"
-                    href={"/profile/" + idUser}
-                    sx={{ my: 2, color: "#000", display: "block", pr: 4, pl: 4 }}
-                  > Perfil público
-                  </Link>
-                </MenuItem>
-              }
-              {usuarioEstaAutenticado &&
-                <MenuItem key="cerrarSesion" onClick={handleCerrarSesion}>
-                  <Link
-                    id="cerrarSesion"
-                    href={"/logout"}
-                    sx={{ my: 2, color: "#000", display: "block", pr: 4, pl: 4 }}
-                  > Cerrar Sesión
-                  </Link>
-                </MenuItem>
-              }
+              <MenuItem key="publicProfile" onClick={handleCloseUserMenu}>
+                <Link
+                  id="publicProfile"
+                  href={"/profile/" + idUser}
+                  sx={{ my: 2, color: "#000", display: "block", pr: 4, pl: 4 }}
+                > Perfil público
+                </Link>
+              </MenuItem>
+              <MenuItem key="cerrarSesion" onClick={handleCerrarSesion}>
+                <Link
+                  id="cerrarSesion"
+                  href={"/logout"}
+                  sx={{ my: 2, color: "#000", display: "block", pr: 4, pl: 4 }}
+                > Cerrar Sesión
+                </Link>
+              </MenuItem>
             </Menu>
-          </Box>
+          </Box>}
         </Toolbar>
       </Container>
     </AppBar>
