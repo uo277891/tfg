@@ -95,3 +95,25 @@ export async function actualizarLikes(id_pub: any, likes: any): Promise<Publicac
     let publicaciones = await res.json()
     return publicaciones.publicacion
 }
+
+export async function registro(nombre: string, contraseña: string, pais: string, localidad: string, fecha_nac: any, nombre_spotify: string, enlace_foto: string, descripcion: string, tipo: string): Promise<any> {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: nombre, contraseña: contraseña, pais: pais, localidad: localidad, fecha_nac: fecha_nac, nombre_spotify: nombre_spotify, enlace_foto: enlace_foto, descripcion: descripcion, tipo: tipo })
+    };
+    let res = await fetch(llamadaBasica + '/usuario/register/', requestOptions);
+    let usuario = await res.json()
+    return usuario
+}
+
+export async function actualizaFoto(nombre: any, enlace_foto: any): Promise<Boolean> {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enlace_foto: enlace_foto})
+    };
+    let res = await fetch(llamadaBasica + '/usuario/edit/' + nombre, requestOptions);
+    let usuario = await res.json()
+    return usuario.actualizado
+}
