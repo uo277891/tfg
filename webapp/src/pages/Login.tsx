@@ -59,7 +59,6 @@ const Login = () => {
                 setUsuarioAutenticado(userName)
                 setUsuarioEstaAcutenticado(true)
                 setIdUser(user.usuario._id)
-                console.log(idUser)
                 redirigir("/profile")
               }
               else{
