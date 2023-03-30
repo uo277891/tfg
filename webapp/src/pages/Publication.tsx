@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect } from "react";
 import { useLocalStorage } from "../localStorage/useLocalStorage";
-import { actualizarLikes, getPublicacion, getUsuario } from "../accesoApi/api";
+import { actualizarLikes, añadirComentario, getComentarios, getPublicacion, getUsuario } from "../accesoApi/api";
 import { useParams } from 'react-router-dom';
-import { Publicacion, Usuario } from "../interfaces/interfaces";
+import { Comentario, Publicacion, Usuario } from "../interfaces/interfaces";
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -20,7 +20,6 @@ import AddCommentIcon from '@mui/icons-material/AddComment';
 import Tooltip from '@mui/material/Tooltip';
 import CommentCard from "../components/CommentCard";
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Textarea from '@mui/base/TextareaAutosize';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -41,6 +40,8 @@ const Publication = () => {
     const [publicacion, setPublicacion] = useState<Publicacion>();
 
     const [usuarioPublicacion, setUsuarioPublicacion] = useState<Usuario>();
+
+    const [comentarios, setComentarios] = useState<Comentario[]>([]);
 
     const [cargando, setCargando] = useState<Boolean>(true);
 
@@ -87,6 +88,7 @@ const Publication = () => {
             if(user !== undefined)
                 setUsuarioPublicacion(user[0])
             setColorCorazon(pub.likes.indexOf(idUser) === -1 ? "grey" : "red");
+            setComentarios(await getComentarios(pub._id))
         }
         setCargando(false)
     }, []);
@@ -111,6 +113,15 @@ const Publication = () => {
             await actualizarLikes(publicacion._id, likesActualizados)
         }
     }
+
+    async function enviarComentario(){
+      if(publicacion !== undefined && usuarioEstaAutenticado && text.length > 0){
+          await añadirComentario(publicacion._id, idUser, text)
+          setOpen(false);
+          setText("");
+          await datosIniciales();
+      }
+  }
 
     if(usuarioEstaAutenticado && !cargando && publicacion !== undefined && usuarioPublicacion !== undefined){
         var multimedia = ""
@@ -166,7 +177,7 @@ const Publication = () => {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancelar</Button>
-                  <Button onClick={handleClose}>Publicar</Button>
+                  {text.length > 0 && text.length < 200 && <Button onClick={enviarComentario}>Publicar</Button>}
                 </DialogActions>
               </Dialog>
                 <ExpandMore
@@ -183,8 +194,9 @@ const Publication = () => {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <CardContent>
                 Comentarios:
-                <CommentCard></CommentCard>
-                <CommentCard></CommentCard>
+                {comentarios.map((comentario: Comentario) => 
+                  <CommentCard comentario = {comentario}></CommentCard>
+                )}
               </CardContent>
             </Collapse>
             </Card>

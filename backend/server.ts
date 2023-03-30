@@ -14,6 +14,7 @@ const usuarioRoute = require('./routes/usuarioRoute')
 const publicacionRoute = require('./routes/publicationRoute')
 const seguidorRoute = require('./routes/seguidorRoute')
 const cloudinaryRoute = require('./routes/cloudinaryRoutes')
+const comentarioRoute = require('./routes/comentarioRoutes')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -22,6 +23,7 @@ app.use(usuarioRoute)
 app.use(publicacionRoute)
 app.use(seguidorRoute)
 app.use(cloudinaryRoute)
+app.use(comentarioRoute)
 //app.use(cookieSesion({name: "sesion-inicio", secret: process.env.SECRET, httpOnly: true}))
 
 app.listen(port, () => {

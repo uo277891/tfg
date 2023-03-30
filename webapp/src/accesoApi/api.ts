@@ -1,4 +1,4 @@
-import { Publicacion, Seguidor, Usuario, Signature } from "../interfaces/interfaces";
+import { Publicacion, Seguidor, Usuario, Signature, Comentario } from "../interfaces/interfaces";
 
 const llamadaBasica = 'http://localhost:5000';
 
@@ -118,4 +118,21 @@ export async function actualizaFoto(nombre: any, enlace_foto: any): Promise<Bool
     let res = await fetch(llamadaBasica + '/usuario/edit/' + nombre, requestOptions);
     let usuario = await res.json()
     return usuario.actualizado
+}
+
+export async function añadirComentario(idPub: string, idUsu: string, texto: string): Promise<boolean> {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_publicacion: idPub, id_usu_coment: idUsu, texto: texto })
+    };
+    let res = await fetch(llamadaBasica + '/comentarios/new/', requestOptions);
+    let comentario = await res.json()
+    return comentario.insertado;
+}
+
+export async function getComentarios(id_publication: any): Promise<Comentario[]> {
+    let res = await fetch(llamadaBasica + '/comentarios/getcomentarios/' + id_publication);
+    let comentarios = await res.json()
+    return comentarios.comentarios
 }
