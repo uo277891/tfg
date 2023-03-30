@@ -14,6 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { eliminarPublicacion } from '../accesoApi/api';
 
 function PublicationCard (props: any) {
 
@@ -30,7 +31,8 @@ function PublicationCard (props: any) {
     };
 
     async function handleEliminar() {
-        console.log("eliminar")
+        await eliminarPublicacion(props.publication._id, idUser)
+        setOpen(false);
     }
 
     return (
