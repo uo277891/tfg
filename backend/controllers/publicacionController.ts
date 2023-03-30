@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 const publicacionModel = require('../models/publicacionModel');
 
+const comentarioModel = require('../models/comentariosModel');
+
 const getPublicaciones = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id_usuario = req.params.idUsu;
@@ -61,4 +63,24 @@ const actualizarLikes = async (req: Request, res: Response): Promise<Response> =
   }
 }
 
-module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes}
+const eliminarPublicacion = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_usu = req.body.idUser;
+    const id_pub = req.body.idPub;
+    const publicacionAsociada = await publicacionModel.findOne({_id: id_pub});
+    if(id_usu !== publicacionAsociada.id_usuario)
+      return res.status(400).json();
+    const seBorra = await publicacionModel.deleteOne({_id: id_pub, id_usuario: id_usu});
+    await comentarioModel.deleteMany({id_publicacion: id_pub});
+    if(seBorra.deletedCount === 1){
+      return res.status(200).json({ borrado: true });
+    }
+    else{
+      return res.status(200).json({ borrado: false });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion}

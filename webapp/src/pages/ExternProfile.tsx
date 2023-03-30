@@ -100,7 +100,7 @@ const ExternProfile = () => {
                     >
                         {publicaciones.map((publicacion: Publicacion) => 
                             <Grid item xs={4}>
-                                <PublicationCard publication={publicacion}></PublicationCard>
+                                <PublicationCard publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
                             </Grid>
                         )}
                     </Grid>
