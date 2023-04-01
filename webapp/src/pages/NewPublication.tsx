@@ -48,7 +48,7 @@ const NewPublication = () => {
                 setPublicationError(false);
                 setPublicationCreated(true);
                 setPublicationText("Publicación creada correctamente.")
-                redirigir("/profile")
+                redirigir("/profile/" + idUser)
               }
               else{
                 setPublicationError(true);
