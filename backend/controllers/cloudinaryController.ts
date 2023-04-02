@@ -19,5 +19,15 @@ const getSignature = async (req: Request, res: Response): Promise<Response> => {
       return res.status(500).send(error);
     }
   }
+
+const borrarPublicacion = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const idPub = req.params.idPub
+      await cloudinary.v2.uploader.destroy('publicaciones/' + idPub);
+      return res.status(200).json("Todo ok");
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
   
-  module.exports = {getSignature}
+  module.exports = {getSignature, borrarPublicacion}

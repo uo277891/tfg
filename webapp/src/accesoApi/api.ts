@@ -40,6 +40,12 @@ export async function getSignature(idUser: any): Promise<Signature> {
     return respuesta
 }
 
+export async function borrarPublicacion(idPub: any): Promise<Signature> {
+    let res = await fetch(llamadaBasica + '/cloudinary/publicacion/delete/' + idPub);
+    let respuesta = await res.json()
+    return respuesta
+}
+
 export async function getUsuariosByName(name: any): Promise<Usuario[]> {
     let res = await fetch(llamadaBasica + '/usuario/find/' + name);
     let usuario = await res.json()
