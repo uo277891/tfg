@@ -124,11 +124,6 @@ const Publication = () => {
   }
 
     if(usuarioEstaAutenticado && !cargando && publicacion !== undefined && usuarioPublicacion !== undefined){
-        var multimedia = ""
-        if(publicacion.enlace_foto !== "")
-            multimedia = publicacion.enlace_foto
-        else if(publicacion.enlace_audio !== "")
-            multimedia = publicacion.enlace_audio
         return (
           <div id="profile">
             <Card sx={{ margin: "auto", maxWidth: 600, minHeight:200 }}>
@@ -140,11 +135,10 @@ const Publication = () => {
               title={usuarioPublicacion.nombre}
               subheader={publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')}
             />
-            {multimedia !== "" && <CardMedia
-                sx = {{margin: "auto", maxWidth: 500}}
-              component="img"
-              image={publicacion.enlace_foto}
-              alt="Imagen publicacion"
+            {publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe"  &&
+            <CardMedia
+                component= {publicacion.tipo_multimedia}
+                image={publicacion.enlace_multimedia}
             />}
             <CardContent>
               <Typography variant="body1" fontSize={22}>

@@ -14,7 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { eliminarPublicacion } from '../accesoApi/api';
+import { borrarPublicacion, eliminarPublicacion } from '../accesoApi/api';
 
 function PublicationCard (props: any) {
 
@@ -31,18 +31,19 @@ function PublicationCard (props: any) {
     };
 
     async function handleEliminar() {
+        await borrarPublicacion(props.publication._id)
         await eliminarPublicacion(props.publication._id, idUser)
         setOpen(false);
     }
 
+    console.log(props)
+
     return (
         <Card sx={{ maxWidth: 400 }} className='card'>
-            {props.publication.enlace_imagen === "" &&
+            {props.publication.enlace_multimedia !== "" &&
             <CardMedia
-                sx={{maxHeight: 250}} 
-                component="img"
-                alt="foto de perfil"
-                image={props.publication.enlace_imagen}
+                component= {props.publication.tipo_multimedia}
+                image={props.publication.enlace_multimedia}
             />}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">

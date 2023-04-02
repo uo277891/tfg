@@ -40,6 +40,12 @@ export async function getSignature(idUser: any): Promise<Signature> {
     return respuesta
 }
 
+export async function borrarPublicacion(idPub: any): Promise<Signature> {
+    let res = await fetch(llamadaBasica + '/cloudinary/publicacion/delete/' + idPub);
+    let respuesta = await res.json()
+    return respuesta
+}
+
 export async function getUsuariosByName(name: any): Promise<Usuario[]> {
     let res = await fetch(llamadaBasica + '/usuario/find/' + name);
     let usuario = await res.json()
@@ -146,4 +152,26 @@ export async function eliminarPublicacion(idPub: any, idUser: any): Promise<bool
     let res = await fetch(llamadaBasica + '/publicacion/delete', requestOptions);
     let borrado = await res.json()
     return borrado
+}
+
+export async function añadirPublicacion(id_usuario: string, texto: string, enlace_multimedia: string, tipo_multimedia: string): Promise<Publicacion> {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_usuario: id_usuario, texto: texto, enlace_multimedia: enlace_multimedia, tipo_multimedia: tipo_multimedia })
+    };
+    let res = await fetch(llamadaBasica + '/publicaciones/new/', requestOptions);
+    let pub = await res.json()
+    return pub.pub;
+}
+
+export async function actualizaPublicacion(id_publicacion: string, enlace_multimedia: string, tipo_multimedia: string): Promise<Boolean> {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enlace_multimedia: enlace_multimedia, tipo_multimedia: tipo_multimedia})
+    };
+    let res = await fetch(llamadaBasica + '/publicacion/update/' + id_publicacion, requestOptions);
+    let pub = await res.json()
+    return pub.actualizado
 }

@@ -7,7 +7,7 @@ const comentarioModel = require('../models/comentariosModel');
 const getPublicaciones = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id_usuario = req.params.idUsu;
-      const publicaciones = await publicacionModel.find({id_usuario: id_usuario});
+      const publicaciones = await publicacionModel.find({id_usuario: id_usuario}).sort({fecha: -1});
       if(publicaciones === null){
         return res.status(200).json({ publicaciones: [] });
       }
@@ -31,15 +31,13 @@ const getPublicacion = async (req: Request, res: Response): Promise<Response> =>
 
 const insertarPublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const {texto, id_usuario} = req.body;
+    const {texto, id_usuario, enlace_multimedia, tipo_multimedia} = req.body;
 
-    const enlace_foto = ""
-    const enlace_audio = ""
     const fecha = Date.now()
     const likes: String[] = []
-    const publicacionAInsertar = new publicacionModel({texto, id_usuario, enlace_audio, enlace_foto, fecha, likes})
+    const publicacionAInsertar = new publicacionModel({texto, id_usuario, enlace_multimedia, tipo_multimedia, fecha, likes})
     publicacionAInsertar.save();
-    return res.status(200).json();
+    return res.status(200).json({pub: publicacionAInsertar});
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -83,4 +81,22 @@ const eliminarPublicacion = async (req: Request, res: Response): Promise<Respons
   }
 }
 
-module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion}
+const updatePublicacion = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_publicacion = req.params.idPub;
+    const datosNuevos = req.body;
+    const publicacionAsociado = await publicacionModel.findOne({_id: id_publicacion});
+    if(publicacionAsociado === null){
+      return res.status(400).json({actualizado: false});
+    }
+    else{
+      await publicacionModel.findByIdAndUpdate(id_publicacion, datosNuevos)
+      return res.status(200).json({actualizado: true});
+    }
+
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion}
