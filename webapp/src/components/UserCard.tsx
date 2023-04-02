@@ -20,7 +20,7 @@ function UserCard (props: any) {
             </ListItemAvatar>
             <ListItemText
                 primary = {props.usuario.nombre}
-                secondary = "Artista"
+                secondary = {props.usuario.tipo}
             />
             </ListItem>
         );

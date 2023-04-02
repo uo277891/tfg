@@ -16,7 +16,8 @@ export type Publicacion ={
     texto: string,
     enlace_foto: string,
     fecha: Date,
-    enlace_audio: string,
+    enlace_multimedia: string,
+    tipo_multimedia: string,
     likes: Array<string>
 }
 

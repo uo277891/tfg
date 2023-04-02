@@ -35,14 +35,14 @@ function PublicationCard (props: any) {
         setOpen(false);
     }
 
+    console.log(props)
+
     return (
         <Card sx={{ maxWidth: 400 }} className='card'>
-            {props.publication.enlace_imagen === "" &&
+            {props.publication.enlace_multimedia !== "" &&
             <CardMedia
-                sx={{maxHeight: 250}} 
-                component="img"
-                alt="foto de perfil"
-                image={props.publication.enlace_imagen}
+                component= {props.publication.tipo_multimedia}
+                image={props.publication.enlace_multimedia}
             />}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
