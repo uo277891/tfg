@@ -107,8 +107,6 @@ const Register = () => {
 
     const [error, seterror] = React.useState("");
 
-    const [registerCompleted, setRegisterCompleted] = React.useState("");
-
     const actualizaArchivo = (e: ChangeEvent<HTMLInputElement>) => {
       if(e !== undefined)
           if (e.target.files) {
@@ -159,7 +157,7 @@ const Register = () => {
     }
 
     async function registrarse() {
-      const numError = cumpleRegistro(userName, password, passwordConf, country)
+      const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion)
       if(numError > -1){
         setRegisterError(true);
         setRegister(false);
@@ -180,7 +178,6 @@ const Register = () => {
             setUsuarioEstaAcutenticado(true)
             setIdUser(user._id)
             redirigir("/profile/" + user._id)
-            setRegisterCompleted("Registro completado");
           }
           else{
             setRegisterError(true);
@@ -316,29 +313,6 @@ const Register = () => {
               sx={{ mb: 2 }}
             >
               {error}
-            </Alert>
-          </Collapse>
-          </Box>
-
-          <Box sx={{ width: '100%' }}>
-          <Collapse in={register}>
-            <Alert
-                severity="success"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setRegister(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              sx={{ mb: 2 }}
-            >
-              {registerCompleted}
             </Alert>
           </Collapse>
           </Box>

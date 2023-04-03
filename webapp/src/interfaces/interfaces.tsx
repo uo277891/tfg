@@ -1,8 +1,10 @@
+import { Dayjs } from "dayjs"
+
 export type Usuario ={
     _id: string,
     nombre: string,
     contrasena: string,
-    fecha_nac: Date,
+    fecha_nac: Dayjs,
     localidad: string,
     pais: string,
     nombre_spotify: string,

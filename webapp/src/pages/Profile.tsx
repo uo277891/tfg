@@ -12,9 +12,7 @@ const Profile = () => {
   const [usuario, setUsuario] = useState<Usuario>();
 
   const datosIniciales = useCallback(async () => {
-    console.log(idUser)
     const user = await getUsuario(idUser)
-    console.log(user)
     if(user != undefined)
         setUsuario(user[0])
   }, []);
