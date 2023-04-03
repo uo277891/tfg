@@ -3,7 +3,7 @@ import Home from "./pages/Home"
 import InicioSesion from "./pages/Login"
 import Register from "./pages/Register"
 import AboutSocialFS from './pages/AboutSocialFS';
-import NavBar from "./components/NavBar";
+import NavBarLeft from "./components/NavBarLeft";
 import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
@@ -14,13 +14,18 @@ import FindUsers from './pages/FindUsers';
 import FollowingUsers from './pages/FollowingUsers';
 import Publication from './pages/Publication';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import Grid from "@mui/material/Grid";
 
 const App = () => {
 
   return(
     <div className="App">
       <Router>
-          <NavBar />
+        <Grid container>
+          <Grid item xs={2}>
+            <NavBarLeft />
+          </Grid>
+          <Grid item xs={10}>
             <Routes>
               <Route path='/' element={<Home/>}/>
               <Route path='/login' element={<InicioSesion/>}/>
@@ -35,7 +40,9 @@ const App = () => {
               <Route path='/follow' element={<FollowingUsers/>}/>
               <Route path='/publication/:id' element={<Publication/>}/>
             </Routes>
-          <Footer />
+            <Footer />
+          </Grid>
+        </Grid>
       </Router>
 		</div>
   );
