@@ -113,11 +113,11 @@ const updateUsuario = async (req: Request, res: Response): Promise<Response> => 
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombreAnterior});
     const usuarioYaEscogido = await usuarioSquema.findOne({nombre: datosNuevos.nombre});
     if(usuarioYaEscogido !== null && nombreAnterior !== datosNuevos.nombre){
-      return res.status(400).json("Nombre ya escogido");
+      return res.status(400).json({actualizado: false});
     }
     else{
       await usuarioSquema.findByIdAndUpdate(usuarioAsociado._id, datosNuevos)
-      return res.status(200).json("Actualización correcta del perfil");
+      return res.status(200).json({actualizado: true});
     }
 
   } catch (error) {

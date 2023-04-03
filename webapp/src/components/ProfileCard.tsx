@@ -20,7 +20,7 @@ function CardProfile (props: any) {
               {props.usuario.nombre}
               </Typography>
               <Typography gutterBottom variant="h6" component="div">
-              Fecha de nacimiento: {props.usuario.fecha_nac}
+              Fecha de nacimiento: {props.usuario.fecha_nac.replace(/T/, ' ').replace(/\..+/, '').split(' ')[0]}
               </Typography>
               <Typography variant="body1" color="text.secondary">
               Nacionalidad: {props.usuario.pais}
