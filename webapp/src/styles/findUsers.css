@@ -1,6 +1,10 @@
 
-#findUsers main {
+#findUsers {
   max-width: 100%;
   margin: 1em;
   font-size: 2em;
+}
+
+#findUsers .estiloBase{
+  margin-top: 0.5em;
 }

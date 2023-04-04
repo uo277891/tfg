@@ -14,7 +14,7 @@ function FiltrosUsuario(props: any) {
 
     const[country, setCountry] = React.useState("");
 
-    const [filtroEdad, setFiltroEdad] = React.useState<number[]>([0, 150]);
+    const [filtroEdad, setFiltroEdad] = React.useState<number[]>([16, 150]);
 
     const handleChangeEdad = (event: Event, newValue: number | number[]) => {
         props.setFiltroEdad(newValue as number[]);
@@ -67,7 +67,7 @@ function FiltrosUsuario(props: any) {
     return(
         <Slider
           value={[filtroEdad[0], filtroEdad[1]]}
-          min={0}
+          min={16}
           max={150}
           onChange={handleChangeEdad}
           valueLabelDisplay="auto"

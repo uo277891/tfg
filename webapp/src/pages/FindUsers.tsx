@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Grid from "@mui/material/Grid";
-import { getUsuariosByName } from "../accesoApi/api";
+import { getUsuarioByCountry, getUsuarioByFecha, getUsuarioByTipoUsuario, getUsuariosByName } from "../accesoApi/api";
 import { Usuario } from "../interfaces/interfaces";
 import UserCard from "../components/UserCard";
 import Typography from '@mui/material/Typography';
@@ -17,7 +17,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
-import Prueba from '../components/FiltrosUsuario';
+import Filtro from '../components/FiltrosUsuario';
+import  Dayjs  from "dayjs";
 
 type Anchor = 'left';
 
@@ -31,7 +32,7 @@ const FindUsers = () => {
 
     const [filtroTipo, setFiltroTipo] = useState("");
 
-    const [filtroEdad, setFiltroEdad] = React.useState<number[]>([0, 150]);
+    const [filtroEdad, setFiltroEdad] = React.useState<number[]>([16, 150]);
 
     const [cargando, setCargando] = useState<Boolean>(false);
 
@@ -50,9 +51,26 @@ const FindUsers = () => {
     }
 
     async function handleFiltro (index: number) {
-        console.log(filtroTipo)
-        console.log(filtroEdad)
-        console.log(filtroPais)
+        if(index === 0 && filtroTipo !== ""){
+            setCargando(true)
+            const users = await getUsuarioByTipoUsuario(filtroTipo)
+            setUsuarios(users)
+            setCargando(false)
+        }
+        else if(index === 1 && filtroPais !== ""){
+            setCargando(true)
+            const users = await getUsuarioByCountry(filtroPais)
+            setUsuarios(users)
+            setCargando(false)
+        }
+        else if(index === 2){
+            setCargando(true)
+            const añoActual = Dayjs()
+            const users = await getUsuarioByFecha(añoActual.year() - filtroEdad[0], añoActual.year() - filtroEdad[1])
+            setUsuarios(users)
+            setCargando(false)
+        }
+            
     }
     
       const toggleDrawer =
@@ -71,7 +89,7 @@ const FindUsers = () => {
             {['Tipo artista', 'País', 'Rango edad'].map((text, index) => (
                 <Box padding={'1em'}>
                     <Typography variant='h5' >{text}<br/>
-                        <Prueba setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Prueba>
+                        <Filtro setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Filtro>
                         <ListItem key={text} disablePadding>
                             <Button fullWidth sx={{color: common.black}} startIcon={<Icono icono={text}></Icono>} onClick={() => handleFiltro(index)}>
                                 <ListItemText primary="Aplicar filtro" />
@@ -102,12 +120,12 @@ const FindUsers = () => {
                         </IconButton>
                     </Grid>
                 </Grid>
-                <div>
+                <div className='estiloBase'>
                     <React.Fragment key={'left'}>
-                    <Button onClick={toggleDrawer('left', true)}>Filtros</Button>
-                    <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
-                        {list()}
-                    </Drawer>
+                        <Button className="boton" variant="contained" onClick={toggleDrawer('left', true)}>Filtros</Button>
+                        <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
+                            {list()}
+                        </Drawer>
                     </React.Fragment>
                 </div>
                 <Grid item xs={12} md={6}>
