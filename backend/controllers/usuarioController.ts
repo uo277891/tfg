@@ -14,10 +14,7 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
     else{
       const contraseñasIguales = await comparaContraseñas(contraseña, usuarioAsociado.contrasena)
       if(contraseñasIguales) {
-        var token = await jwt.sign({ usuario: usuarioAsociado }, "secreto", {
-          expiresIn: 86400,
-        });
-        return res.status(200).json(token);
+        return res.status(200).json({usuario: usuarioAsociado});
       }
       else{
         return res.status(400).json("Credenciales incorrectas");
@@ -30,20 +27,21 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
 
 const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto} = req.body;
+    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo} = req.body;
 
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
     if(usuarioAsociado !== null){
-      return res.status(400).json("Ya hay usuario con ese nombre");
+      return res.status(400).json({creado: false});
     }
     else{
       const contrasena = await encriptar(contraseña)
-      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify, enlace_foto})
-      usuarioAInsertar.save();
-      return res.status(200).send("Usuario creado");
+      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo})
+      await usuarioAInsertar.save();
+      const user = await usuarioSquema.findOne({nombre: nombre});
+      return res.status(200).json({creado: true, usuario: user});
     }
   } catch (error) {
-    console.log("ERROR INSERTAR USUARIO")
+    console.log("FALLO INSERTAR USUARIO")
     return res.status(500).send(error);
   }
 }
@@ -61,6 +59,21 @@ const getUsuario = async (req: Request, res: Response): Promise<Response> => {
     } catch (error) {
       return res.status(500).send(error);
     }
+}
+
+const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_user = req.params.id_user.split(',');
+    const usuarios = await usuarioSquema.find({_id: {$in: id_user}});
+    if(usuarios === null){
+      return res.status(400).json({users: []});
+    }
+    else{
+      return res.status(200).json({ users: usuarios });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 }
 
 const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
@@ -100,11 +113,11 @@ const updateUsuario = async (req: Request, res: Response): Promise<Response> => 
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombreAnterior});
     const usuarioYaEscogido = await usuarioSquema.findOne({nombre: datosNuevos.nombre});
     if(usuarioYaEscogido !== null && nombreAnterior !== datosNuevos.nombre){
-      return res.status(400).json("Nombre ya escogido");
+      return res.status(400).json({actualizado: false});
     }
     else{
       await usuarioSquema.findByIdAndUpdate(usuarioAsociado._id, datosNuevos)
-      return res.status(200).json("Actualización correcta del perfil");
+      return res.status(200).json({actualizado: true});
     }
 
   } catch (error) {
@@ -112,4 +125,22 @@ const updateUsuario = async (req: Request, res: Response): Promise<Response> => 
   }
 }
 
-module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName}
+const updateFoto = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const nombre = req.params.nombre;
+    const datosNuevos = req.body;
+    const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
+    if(usuarioAsociado === null){
+      return res.status(200).json({actualizado: false});
+    }
+    else{
+      await usuarioSquema.findByIdAndUpdate(usuarioAsociado._id, datosNuevos)
+      return res.status(200).json({actualizado: true});
+    }
+
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, getUsuarios, updateFoto}

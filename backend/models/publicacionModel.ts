@@ -7,9 +7,9 @@ const publicacionSchema = new Schema({
     },texto:{
         type: String,
         require: true
-    },enlace_foto:{
+    },enlace_multimedia:{
         type: String,
-    },enlace_audio:{
+    },tipo_multimedia:{
         type: String
     },fecha:{
         type: Date,

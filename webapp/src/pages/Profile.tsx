@@ -1,16 +1,32 @@
 import CardProfile from '../components/ProfileCard';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
+import { useState, useCallback, useEffect } from "react";
+import { getUsuario } from "../accesoApi/api";
+import { Usuario } from "../interfaces/interfaces";
 
 const Profile = () => {
 
   const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
+  const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
-  if(usuarioEstaAutenticado){
+  const [usuario, setUsuario] = useState<Usuario>();
+
+  const datosIniciales = useCallback(async () => {
+    const user = await getUsuario(idUser)
+    if(user != undefined)
+        setUsuario(user[0])
+  }, []);
+
+  useEffect(() => {
+    datosIniciales();
+  }, [])
+
+  if(usuarioEstaAutenticado && usuario !== undefined){
     return (
       <div id="profile">
         <main>
           <h1>Perfil</h1>
-          <CardProfile/>
+          <CardProfile usuario = {usuario}></CardProfile>
         </main>
       </div>
     );

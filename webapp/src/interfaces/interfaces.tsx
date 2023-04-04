@@ -1,8 +1,10 @@
+import { Dayjs } from "dayjs"
+
 export type Usuario ={
     _id: string,
     nombre: string,
     contrasena: string,
-    fecha_nac: Date,
+    fecha_nac: Dayjs,
     localidad: string,
     pais: string,
     nombre_spotify: string,
@@ -11,11 +13,13 @@ export type Usuario ={
 }
 
 export type Publicacion ={
+    _id: string,
     id_usuario: string,
     texto: string,
     enlace_foto: string,
     fecha: Date,
-    enlace_audio: Object,
+    enlace_multimedia: string,
+    tipo_multimedia: string,
     likes: Array<string>
 }
 

@@ -7,8 +7,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 const DateRegister = () => {
 
-
-
   const [value, setValue] = React.useState<Dayjs | null>(
   );
 

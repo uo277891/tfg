@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { ChangeEvent, useContext } from "react";
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -8,6 +8,7 @@ import Textarea from '@mui/base/TextareaAutosize';
 import Collapse from '@mui/material/Collapse';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useNavigate } from "react-router-dom";
+import { actualizaPublicacion, añadirPublicacion, getSignature } from "../accesoApi/api";
 
 const llamadaBase = "http://localhost:5000/"
 const NewPublication = () => {
@@ -22,41 +23,71 @@ const NewPublication = () => {
 
     const [publicationCreated, setPublicationCreated] = React.useState(false);
 
-    const [publicationText, setPublicationText] = React.useState("");
+    const [archivo, setArchivo] = React.useState<File>();
 
     const [idUser, setidUser] = useLocalStorage('idUser', '')
 
     const redirigir = useNavigate();
 
-    const crearPublicacion = () => {
-        if(text === ""){
+    const actualizaArchivo = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png" || e.target.files[0].type === "audio/mpeg"){
+                setArchivo(e.target.files[0]);
+            }
+            else{
+                console.log(e.target.files[0].type)
+                setPublicationError(true);
+                setPublicationCreated(false);
+                setError("La multimedia debe tener extensión png, jpg o mp3");
+                setArchivo(undefined);
+            }
+        }
+      };
+
+    async function crearPublicacion(){
+        if(text === "") {
             setPublicationError(true);
             setPublicationCreated(false);
             setError("Se debe escribir algo en el texto para crear la publicación.");
         }
-        else{
-          const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ texto: text, id_usuario: idUser })
-        };
-          fetch(llamadaBase + "publicaciones/new", requestOptions)
-            .then((response) => 
-            {
-              response.json()
-              if(response.ok){
-                setPublicationError(false);
-                setPublicationCreated(true);
-                setPublicationText("Publicación creada correctamente.")
-                redirigir("/profile")
-              }
-              else{
-                setPublicationError(true);
-                setPublicationCreated(false);
-                setError("Ha ocurrido un error al crear la publicación. Inténtelo más tarde");
-              }
-            })
-        }
+        else {
+            const pub = await añadirPublicacion(idUser, text, "", "")
+            if(archivo !== undefined){
+                let data = new FormData();
+                await getSignature(idUser)
+                const cloudinaryURI = "https://api.cloudinary.com/v1_1/ddtcz5fqr/"
+                data.append("file", archivo);
+                data.append("api_key", "117284356463575");
+                data.append('upload_preset', 'dskez5bf');
+                data.append("public_id", pub._id);
+                const params = {
+                    method: 'POST',
+                    body: data
+                };
+                await fetch(cloudinaryURI + "upload", params)
+                .then(async (response) => 
+                {
+                    if(response.ok){
+                        const url = await response.json()
+                        const url_multimedia = url.secure_url
+                        var tipo_multimedia = ""
+                        if(archivo.type === "audio/mpeg")
+                            tipo_multimedia = "iframe"
+                        else
+                            tipo_multimedia = "img"
+                        console.log(pub)
+                        const fotoAct = await actualizaPublicacion(pub._id, url_multimedia, tipo_multimedia)
+                        if(fotoAct)
+                            redirigir('/profile/' + idUser)
+                        else{
+                            setPublicationError(true);
+                            setPublicationCreated(false);
+                            setError("La publicación se ha creado, pero la multimedia no ha podido ser añadida.");
+                        }
+                    }
+                })
+            }
+          }
     }
 
     if(usuarioEstaAutenticado){
@@ -75,6 +106,12 @@ const NewPublication = () => {
                     <Textarea color="neutral" style={{ width: 665, fontSize:'1.4em' }} minRows={10} placeholder="Introduce el texto de la publicación (máximo 200 caracteres)" 
                         id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
                     <br></br>
+                    {text.length} / 200
+                    <br/>
+                    <br/>
+                        ¡Añade una foto o un audio a tu publicación! <input type="file" onChange={actualizaArchivo} />
+                    <br/>
+                    <br/>
                     <Button className="boton" variant="contained" onClick={crearPublicacion}>Crear publicación</Button>
                 </Box>
             </main>
@@ -101,28 +138,6 @@ const NewPublication = () => {
             </Collapse>
             </Box>
 
-            <Box sx={{ width: '100%' }}>
-            <Collapse in={publicationCreated}>
-                <Alert
-                    severity="success"
-                action={
-                    <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                        setPublicationCreated(false);
-                    }}
-                    >
-                    <CloseIcon fontSize="inherit" />
-                    </IconButton>
-                }
-                sx={{ mb: 2 }}
-                >
-                {publicationCreated}
-                </Alert>
-            </Collapse>
-            </Box>
             </div>
         );
     }

@@ -13,6 +13,7 @@ import PublicationCard from "../components/PublicationCard";
 import { getPublicaciones, getSeguidores, getUsuario, isSeguidor, dejarDeSeguir, seguir } from "../accesoApi/api";
 import { useParams } from 'react-router-dom';
 import { Publicacion, Seguidor, Usuario } from "../interfaces/interfaces";
+import Link from '@mui/material/Link';
 
 const ExternProfile = () => {
 
@@ -83,7 +84,11 @@ const ExternProfile = () => {
                             <TableCell sx={{fontSize: 40}} align="center">{publicaciones.length}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{seguidores.length}</TableCell>
                             {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
-                            {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">Perfil propio</TableCell>}
+                            {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">
+                                <Link href="/profile" underline="none">
+                                    <Button className="boton" variant="contained">Editar perfil</Button>
+                                </Link>
+                            </TableCell>}
                             {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
                             </TableRow>
                         </TableBody>
@@ -100,7 +105,7 @@ const ExternProfile = () => {
                     >
                         {publicaciones.map((publicacion: Publicacion) => 
                             <Grid item xs={4}>
-                                <PublicationCard publication={publicacion}></PublicationCard>
+                                <PublicationCard publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
                             </Grid>
                         )}
                     </Grid>

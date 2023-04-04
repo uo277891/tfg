@@ -16,12 +16,11 @@ function UserCard (props: any) {
             }
             >
             <ListItemAvatar>
-                <Avatar src= {props.usuario.enlace_foto}>
-                </Avatar>
+                <Avatar src= {props.usuario.enlace_foto}></Avatar>
             </ListItemAvatar>
             <ListItemText
                 primary = {props.usuario.nombre}
-                secondary = "Artista"
+                secondary = {props.usuario.tipo}
             />
             </ListItem>
         );

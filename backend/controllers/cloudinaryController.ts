@@ -5,9 +5,9 @@ var cloudinary = require('cloudinary');
 require("dotenv").config();
 
  cloudinary.config({
-   cloud_name: "ddtcz5fqr",
-   api_key: "117284356463575",
-   api_secret: "q8q-FjrQbBGYELmHAm_Fc0iGWhg"
+   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+   api_key: process.env.CLOUDINARY_API_KEY,
+   api_secret: process.env.CLOUDINARY_API_SECRET
  });
 
 const getSignature = async (req: Request, res: Response): Promise<Response> => {
@@ -19,5 +19,15 @@ const getSignature = async (req: Request, res: Response): Promise<Response> => {
       return res.status(500).send(error);
     }
   }
+
+const borrarPublicacion = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const idPub = req.params.idPub
+      await cloudinary.v2.uploader.destroy('publicaciones/' + idPub);
+      return res.status(200).json("Todo ok");
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
   
-  module.exports = {getSignature}
+  module.exports = {getSignature, borrarPublicacion}
