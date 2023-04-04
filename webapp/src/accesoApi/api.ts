@@ -34,6 +34,24 @@ export async function getUsuarioByName(name: any): Promise<Usuario[]> {
     return usuario.user
 }
 
+export async function getUsuarioByCountry(country: any): Promise<Usuario[]> {
+    let res = await fetch(llamadaBasica + '/usuario/getusuario/country/' + country);
+    let usuario = await res.json()
+    return usuario.users
+}
+
+export async function getUsuarioByTipoUsuario(tipo: any): Promise<Usuario[]> {
+    let res = await fetch(llamadaBasica + '/usuario/getusuario/tipo/' + tipo);
+    let usuario = await res.json()
+    return usuario.users
+}
+
+export async function getUsuarioByFecha(fechaInicio: any, fechaFin: any): Promise<Usuario[]> {
+    let res = await fetch(llamadaBasica + '/usuario/getusuario/fecha/' + fechaInicio + "/" + fechaFin);
+    let usuario = await res.json()
+    return usuario.users
+}
+
 export async function getSignature(idUser: any): Promise<Signature> {
     let res = await fetch(llamadaBasica + '/cloudinary/signature/' + idUser);
     let respuesta = await res.json()

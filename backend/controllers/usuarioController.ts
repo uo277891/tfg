@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 const usuarioSquema = require('../models/usuarioModel');
 const {encriptar, comparaContraseñas} = require("../helpers/encryptContraseña");
-const jwt = require("jsonwebtoken")
 
 const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -96,7 +95,53 @@ const getUsuariosByName = async (req: Request, res: Response): Promise<Response>
     const nombre = req.params.name;
     const usuarioAsociado = await usuarioSquema.find({nombre: { $regex: '.*' + nombre + '.*' }});
     if(usuarioAsociado === null){
-      return res.status(400).json("No hay usuarios con ese nombre");
+      return res.status(400).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const getUsuariosByCountry = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const pais = req.params.country;
+    const usuarioAsociado = await usuarioSquema.find({pais: pais });
+    if(usuarioAsociado === null){
+      return res.status(200).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const getUsuariosByTipoUsuario = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const tipo = req.params.tipoUsu;
+    const usuarioAsociado = await usuarioSquema.find({tipo: tipo });
+    if(usuarioAsociado === null){
+      return res.status(200).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const getUsuariosByFecha = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
+    const fechaFin = new Date(parseInt(req.params.fechaFin), 0);
+    const usuarioAsociado = await usuarioSquema.find({fecha_nac: {"$gte" : fechaFin, "$lte" : fechaInicio}});
+    if(usuarioAsociado === null){
+      return res.status(200).json({ users: [] });
     }
     else{
       return res.status(200).json({ users: usuarioAsociado });
@@ -143,4 +188,5 @@ const updateFoto = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, getUsuarios, updateFoto}
+module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, 
+  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByFecha}
