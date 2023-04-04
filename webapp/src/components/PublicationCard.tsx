@@ -36,8 +36,6 @@ function PublicationCard (props: any) {
         setOpen(false);
     }
 
-    console.log(props)
-
     return (
         <Card sx={{ maxWidth: 400 }} className='card'>
             {props.publication.enlace_multimedia !== "" &&
