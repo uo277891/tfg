@@ -15,6 +15,7 @@ import FollowingUsers from './pages/FollowingUsers';
 import Publication from './pages/Publication';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Grid from "@mui/material/Grid";
+import Estadisticas from './pages/Estadisticas';
 
 const App = () => {
 
@@ -39,6 +40,7 @@ const App = () => {
               <Route path='/find' element={<FindUsers/>}/>
               <Route path='/follow' element={<FollowingUsers/>}/>
               <Route path='/publication/:id' element={<Publication/>}/>
+              <Route path='/stats/' element={<Estadisticas/>}/>
             </Routes>
             <Footer />
           </Grid>

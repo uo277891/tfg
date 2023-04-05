@@ -129,6 +129,14 @@ export default function NestedList() {
                     <ListItemText primary="Perfil" />
                     </ListItemButton>
                 </Link>
+                <Link id="stats" href={"/stats/"} underline='none' color="inherit"> 
+                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                        <Icono icono="Estadísticas"></Icono>
+                    </ListItemIcon>
+                    <ListItemText primary="Estadísticas" />
+                    </ListItemButton>
+                </Link>
                 <Link id="cerrarSesion" href={"/logout"} onClick={handleCerrarSesion} underline='none' color="inherit"> 
                     <ListItemButton sx={{ pl: 4 }} onClick={handleCerrarSesion}>
                     <ListItemIcon onClick={handleCerrarSesion}>
