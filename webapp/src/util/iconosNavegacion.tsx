@@ -7,6 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 import PublicIcon from '@mui/icons-material/Public';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import { common } from '@mui/material/colors';
 
 function Icono(props: any) {
@@ -28,6 +29,8 @@ function Icono(props: any) {
         return (<PublicIcon></PublicIcon>)
     else if(props.icono === "Rango edad")
         return (<CalendarMonthIcon></CalendarMonthIcon>)
+    else if(props.icono === "Estadísticas")
+        return (<AutoGraphIcon sx={{color: common.white}}></AutoGraphIcon>)
     
     return <p></p>
 }

@@ -52,6 +52,12 @@ export async function getUsuarioByFecha(fechaInicio: any, fechaFin: any): Promis
     return usuario.users
 }
 
+export async function getUsuarioByIdInDate(idUser: any, fechaInicio: any, fechaFin: any): Promise<Usuario[]> {
+    let res = await fetch(llamadaBasica + '/usuario/getusuario/id/fecha/' + idUser + "/" + fechaInicio + "/" + fechaFin);
+    let usuario = await res.json()
+    return usuario.users
+}
+
 export async function getSignature(idUser: any): Promise<Signature> {
     let res = await fetch(llamadaBasica + '/cloudinary/signature/' + idUser);
     let respuesta = await res.json()
@@ -100,6 +106,13 @@ export async function seguir(idUser: any, idSeg: any): Promise<boolean> {
 
 export async function getFollowingUsers(idUser: any): Promise<String[]> {
     let res = await fetch(llamadaBasica + '/seguidores/getSeguidores/' + idUser);
+    const respuesta = await res.json()
+    const idFollowUsers = respuesta.followUsers;
+    return idFollowUsers;
+}
+
+export async function getFollowsByUser(idUser: any): Promise<String[]> {
+    let res = await fetch(llamadaBasica + '/seguidores/getseguidos/' + idUser);
     const respuesta = await res.json()
     const idFollowUsers = respuesta.followUsers;
     return idFollowUsers;
