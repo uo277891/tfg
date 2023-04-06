@@ -19,10 +19,20 @@ import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
 import Filtro from '../components/FiltrosUsuario';
 import  Dayjs  from "dayjs";
+import Stack from '@mui/material/Stack';
+import Pagination from '@mui/material/Pagination';
 
 type Anchor = 'left';
 
 const FindUsers = () => {
+
+    const [page, setPage] = React.useState(1);
+
+    const numElementos = 10
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
@@ -133,10 +143,15 @@ const FindUsers = () => {
                         Usuarios encontrados:
                     </Typography>
                     <List >
-                        {usuarios.map((usuario: Usuario) =>
+                        {usuarios.slice((page - 1) * numElementos, numElementos * page).map((usuario: Usuario) =>
                             <UserCard usuario = {usuario}></UserCard>
                         )}
                     </List>
+                </Grid>
+                <Grid container alignItems="center" justifyContent="center">
+                    <Stack spacing={2}>
+                        <Pagination color="secondary" count={Math.round(usuarios.length / numElementos) + 1} page={page} onChange={handleChange} />
+                    </Stack>
                 </Grid>
             </main>
         </div>
