@@ -75,6 +75,26 @@ const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
+const getUsuariosByIdInDate = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_user = req.params.idUser.split(',');
+    const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
+    const fechaFin = new Date(parseInt(req.params.fechaFin), 0);
+    console.log(fechaInicio)
+    console.log(fechaFin)
+    console.log(id_user)
+    const usuarios = await usuarioSquema.find({$and:[{_id: {$in: id_user}, fecha_nac: {"$gte" : fechaFin, "$lte" : fechaInicio}}]});
+    if(usuarios === null){
+      return res.status(400).json({users: []});
+    }
+    else{
+      return res.status(200).json({ users: usuarios });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
@@ -189,4 +209,4 @@ const updateFoto = async (req: Request, res: Response): Promise<Response> => {
 }
 
 module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, 
-  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByFecha}
+  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByFecha, getUsuariosByIdInDate}
