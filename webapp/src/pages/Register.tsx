@@ -23,6 +23,11 @@ import { ChangeEvent } from 'react';
 import RegisterCard from '../components/RegisterCard';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useNavigate } from "react-router-dom";
+import { Accordion, AccordionDetails, AccordionSummary, Grid, InputAdornment } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 const paises = listaPaises()
 
@@ -63,6 +68,8 @@ const Register = () => {
 
   const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
 
+  const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -98,6 +105,10 @@ const Register = () => {
     const [date, setDate] = React.useState<Dayjs | null>();
 
     const[tipoUsu, setTipoUsu] = React.useState("Artista");
+
+    const[generoFav, setGeneroFav] = React.useState("FreeStyle");
+
+    const[redesSociales, setRedesSociales] = React.useState<string[]>([]);
 
     const[descripcion, setDescripcion] = React.useState("");
 
@@ -249,21 +260,42 @@ const Register = () => {
                 noValidate
                 autoComplete="off"
                 >
-                <TextField
-                  id="country"
-                  select
-                  value={tipoUsu}
-                  label="Tipo de perfil"
-                  onChange={(tipo) => setTipoUsu(tipo.target.value)}
-                >
-                  {tipoUsuario.map((pais) => (
-                    <MenuItem key={pais} value={pais}>
-                      {pais}
+                <TextField id="tipoUsuario" select value={tipoUsu} label="Tipo de perfil" onChange={(tipo) => setTipoUsu(tipo.target.value)}>
+                  {tipoUsuario.map((tipo) => (
+                    <MenuItem key={tipo} value={tipo}>
+                      {tipo}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField id="generoFav" select value={generoFav} label="Género favorito" onChange={(genero) => setGeneroFav(genero.target.value)}>
+                  {generos.map((genero) => (
+                    <MenuItem key={genero} value={genero}>
+                      {genero}
                     </MenuItem>
                   ))}
                 </TextField>
                 <br/>
                 {tipoUsu !== "Estándar" && <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
+                <br/>
+                <Grid container alignItems="center" justifyContent="center">
+                  <Accordion sx={{width: '50%'}}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography>¡Añade tus redes sociales!</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
+                      id="Instrgram" label="Instragram" variant="outlined" onChange={(ins) => redesSociales[0] = "heyy"} value={redesSociales[0]}/>
+                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
+                      id="Twitter" label="Twitter" variant="outlined" onChange={(tw) => redesSociales[1] = tw + ""} value={redesSociales[1]}/>
+                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
+                      id="YouTube" label="YouTube" variant="outlined" onChange={(yt) => redesSociales[2] = yt + ""} value={redesSociales[2]}/>
+                    </AccordionDetails>
+                  </Accordion>
+                </Grid>
                 <br/>
                 <Textarea color="neutral" style={{ width: 600, fontSize:'1em' }} minRows={10} placeholder="Introduce una pequeña descripción sobre ti (máximo 200 caracteres)" 
                         id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
