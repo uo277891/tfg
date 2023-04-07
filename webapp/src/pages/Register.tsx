@@ -13,7 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import { getSignature, registro, actualizaFoto } from '../accesoApi/api';
+import { getSignature, registro, actualizaFoto, uploadMultimedia } from '../accesoApi/api';
 import {cumpleRegistro, errorUsuario} from '../util/condicionesRegistro'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -128,30 +128,18 @@ const Register = () => {
           setArchivo(undefined);
     };
 
-    async function actualizarFoto() {
+    async function actualizarFoto(userName: string, userId: string) {
       if(archivo !== undefined){
-        let data = new FormData();
-        await getSignature(idUser)
-        const cloudinaryURI = "https://api.cloudinary.com/v1_1/ddtcz5fqr/"
-        data.append("file", archivo);
-        data.append("api_key", "117284356463575");
-        data.append('upload_preset', 'pt7pvrus');
-        data.append("folder", "perfiles");
-        data.append("public_id", idUser);
-        const params = {
-          method: 'POST',
-          body: data
-        };
-        await fetch(cloudinaryURI + "upload", params)
-          .then(async (response) => 
-          {
-            if(response.ok){
-              const url = await response.json()
-              const url_foto = url.secure_url
-              const fotoAct = await actualizaFoto(usuarioAutenticado, url_foto)
-              return fotoAct;
-            }
-          })
+        console.log(userId)
+        const respuesta = await uploadMultimedia(userId, archivo, true, false)
+        if(respuesta !== ""){
+          const url_foto = respuesta
+          console.log(url_foto)
+          const fotoAct = await actualizaFoto(userName, url_foto)
+          return fotoAct
+        }else{
+          return false;
+        }
       }
       return true;
     }
@@ -164,17 +152,18 @@ const Register = () => {
         seterror(errorUsuario(numError));
       }
       else{
-        const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, "https://res.cloudinary.com/ddtcz5fqr/image/upload/v1679309731/perfiles/default_user_image_a8y5kc", descripcion, tipoUsu)
+        const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + "", descripcion, tipoUsu)
         if(usuarioRegistrado.creado){
           const user = await usuarioRegistrado.usuario
-          setUsuarioAutenticado(userName)
+          console.log(user)
+          setUsuarioAutenticado(userName.toLowerCase())
           setUsuarioEstaAcutenticado(true)
           setIdUser(user._id)
-          const foto = await actualizarFoto()
+          const foto = await actualizarFoto(userName.toLowerCase(), user._id)
           if(foto){
             setRegisterError(false);
             setRegister(true);
-            setUsuarioAutenticado(userName)
+            setUsuarioAutenticado(userName.toLowerCase())
             setUsuarioEstaAcutenticado(true)
             setIdUser(user._id)
             redirigir("/profile/" + user._id)

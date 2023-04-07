@@ -14,7 +14,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import { actualizaUsuario, pruebaArchivo } from '../accesoApi/api';
+import { actualizaUsuario, uploadMultimedia } from '../accesoApi/api';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { getUsuario } from "../accesoApi/api";
 import { useNavigate } from "react-router-dom";
@@ -88,17 +88,13 @@ const EditProfile = () => {
   async function actualizarPerfil (){
     var url_foto = ""
     if(archivo !== undefined){
-      let prueba = new FormData();
-      prueba.append("myFile", archivo);
-      const respuesta = await pruebaArchivo(idUser, archivo)
-      console.log(respuesta)
+      const respuesta = await uploadMultimedia(idUser, archivo, true, true)
       if(respuesta !== ""){
         url_foto = respuesta
       }else{
         setRegisterError(true);
         seterror("Foto no actualizada");
       }
-      
     }
 
     const numError = cumpleRegistro(userName, "contraseñaQuePasa", "contraseñaQuePasa", country, location, date, descripcion)

@@ -231,15 +231,16 @@ export async function actualizaUsuario(nombre_anterior: string, nombre: string, 
     return user.actualizado
 }
 
-export async function pruebaArchivo(idUser: string, archivo: File): Promise<string>{
+export async function uploadMultimedia(idUser: string, archivo: File, perfiles:boolean, eliminarFoto: boolean): Promise<string>{
     let data = new FormData();
     var url_foto = ""
-    await getSignature(idUser)
+    if(eliminarFoto)
+        await getSignature(idUser)
     const cloudinaryURI = process.env.REACT_APP_CLOUDINARY_URL
     const api_key = process.env.REACT_APP_CLOUDINARY_API_KEY
-    const upload_preset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET_PERFILES
-    console.log(api_key)
-    console.log(upload_preset)
+    var upload_preset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET_PERFILES
+    if(!perfiles)
+        upload_preset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET_PUBLICACIONES
     if(api_key !== undefined && upload_preset !== undefined){
         data.append("file", archivo);
         data.append("api_key", api_key);
@@ -259,7 +260,8 @@ export async function pruebaArchivo(idUser: string, archivo: File): Promise<stri
                 return url_foto;
             }
             else{
-                url_foto = process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + ""
+                if(perfiles)
+                    url_foto = process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + ""
             }
             })
     }
