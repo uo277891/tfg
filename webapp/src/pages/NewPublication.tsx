@@ -8,7 +8,7 @@ import Textarea from '@mui/base/TextareaAutosize';
 import Collapse from '@mui/material/Collapse';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-import { actualizaPublicacion, añadirPublicacion, getSignature } from "../accesoApi/api";
+import { actualizaPublicacion, añadirPublicacion, getSignature, uploadMultimedia } from "../accesoApi/api";
 
 const llamadaBase = "http://localhost:5000/"
 const NewPublication = () => {
@@ -20,8 +20,6 @@ const NewPublication = () => {
     const[error, setError] = React.useState("");
 
     const [publicationError, setPublicationError] = React.useState(false);
-
-    const [publicationCreated, setPublicationCreated] = React.useState(false);
 
     const [archivo, setArchivo] = React.useState<File>();
 
@@ -37,7 +35,6 @@ const NewPublication = () => {
             else{
                 console.log(e.target.files[0].type)
                 setPublicationError(true);
-                setPublicationCreated(false);
                 setError("La multimedia debe tener extensión png, jpg o mp3");
                 setArchivo(undefined);
             }
@@ -47,45 +44,37 @@ const NewPublication = () => {
     async function crearPublicacion(){
         if(text === "") {
             setPublicationError(true);
-            setPublicationCreated(false);
             setError("Se debe escribir algo en el texto para crear la publicación.");
         }
         else {
             const pub = await añadirPublicacion(idUser, text, "", "")
             if(archivo !== undefined){
-                let data = new FormData();
-                await getSignature(idUser)
-                const cloudinaryURI = "https://api.cloudinary.com/v1_1/ddtcz5fqr/"
-                data.append("file", archivo);
-                data.append("api_key", "117284356463575");
-                data.append('upload_preset', 'dskez5bf');
-                data.append("public_id", pub._id);
-                const params = {
-                    method: 'POST',
-                    body: data
-                };
-                await fetch(cloudinaryURI + "upload", params)
-                .then(async (response) => 
-                {
-                    if(response.ok){
-                        const url = await response.json()
-                        const url_multimedia = url.secure_url
-                        var tipo_multimedia = ""
-                        if(archivo.type === "audio/mpeg")
-                            tipo_multimedia = "iframe"
-                        else
-                            tipo_multimedia = "img"
-                        console.log(pub)
-                        const fotoAct = await actualizaPublicacion(pub._id, url_multimedia, tipo_multimedia)
-                        if(fotoAct)
+                const respuesta = await uploadMultimedia(pub._id, archivo, false, false)
+                if(respuesta !== ""){
+                    const url_multimedia = respuesta
+                    var tipo_multimedia = ""
+                    if(archivo.type === "audio/mpeg")
+                        tipo_multimedia = "iframe"
+                    else
+                        tipo_multimedia = "img"
+                    console.log(pub)
+                    const fotoAct = await actualizaPublicacion(pub._id, url_multimedia, tipo_multimedia)
+                    if(fotoAct)
                             redirigir('/profile/' + idUser)
                         else{
                             setPublicationError(true);
-                            setPublicationCreated(false);
                             setError("La publicación se ha creado, pero la multimedia no ha podido ser añadida.");
                         }
-                    }
-                })
+                }else{
+                    setPublicationError(true);
+                    setError("La publicación se ha creado, pero la multimedia no ha podido ser añadida.");
+                }
+            }
+            else if(pub !== undefined)
+                redirigir('/profile/' + idUser)
+            else{
+                setPublicationError(true);
+                setError("Ha ocurrido un error, la publicación no ha podido ser creada.");
             }
           }
     }

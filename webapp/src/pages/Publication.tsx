@@ -135,7 +135,7 @@ const Publication = () => {
               title={usuarioPublicacion.nombre}
               subheader={publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')}
             />
-            {publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe"  &&
+            {(publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe")  &&
             <CardMedia
                 component= {publicacion.tipo_multimedia}
                 image={publicacion.enlace_multimedia}
