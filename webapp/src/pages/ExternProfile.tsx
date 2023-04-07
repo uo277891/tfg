@@ -14,6 +14,9 @@ import { getPublicaciones, getSeguidores, getUsuario, isSeguidor, dejarDeSeguir,
 import { useParams } from 'react-router-dom';
 import { Publicacion, Seguidor, Usuario } from "../interfaces/interfaces";
 import Link from '@mui/material/Link';
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
+import React from "react";
 
 const ExternProfile = () => {
 
@@ -32,6 +35,14 @@ const ExternProfile = () => {
     const [usuario, setUsuario] = useState<Usuario>();
 
     const [leSigue, setLeSigue] = useState<boolean>();
+
+    const [page, setPage] = React.useState(1);
+
+    const numElementos = 9
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
 
     const datosIniciales = useCallback(async () => {
         setCargando(true)
@@ -103,13 +114,18 @@ const ExternProfile = () => {
                         spacing={{ xs: 2, md: 3 }}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     >
-                        {publicaciones.map((publicacion: Publicacion) => 
+                        {publicaciones.slice((page - 1) * numElementos, numElementos * page).map((publicacion: Publicacion) => 
                             <Grid item xs={4}>
                                 <PublicationCard publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
                             </Grid>
                         )}
                     </Grid>
                 </section>
+                <Grid container alignItems="center" justifyContent="center">
+                    <Stack spacing={2}>
+                        <Pagination color="secondary" count={Math.round(publicaciones.length / numElementos) + 1} page={page} onChange={handleChange} />
+                    </Stack>
+                </Grid>
             </main>
         </div>
         );
