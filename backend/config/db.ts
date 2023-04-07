@@ -8,7 +8,7 @@ const DB_URI_OLD = process.env.URI_MONGO_ANTIGUA
 module.exports = () =>{
     const connect = () =>{
         mongoose.connect(
-            DB_URI,
+            DB_URI_OLD,
             (error: Error) =>{
                 if(error){
                     console.log("Error :( " + error)

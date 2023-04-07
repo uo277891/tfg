@@ -2,6 +2,7 @@ import { Publicacion, Seguidor, Usuario, Signature, Comentario } from "../interf
 
 const llamadaBasica = 'http://localhost:5000';
 
+
 export async function getPublicaciones(id_usuario: any): Promise<Publicacion[]> {
     let res = await fetch(llamadaBasica + '/publicaciones/' + id_usuario);
     let publicaciones = await res.json()
@@ -228,4 +229,41 @@ export async function actualizaUsuario(nombre_anterior: string, nombre: string, 
     let res = await fetch(llamadaBasica + "/usuario/profile/edit/" + nombre_anterior, requestOptions);
     let user = await res.json()
     return user.actualizado
+}
+
+export async function uploadMultimedia(idUser: string, archivo: File, perfiles:boolean, eliminarFoto: boolean): Promise<string>{
+    let data = new FormData();
+    var url_foto = ""
+    if(eliminarFoto)
+        await getSignature(idUser)
+    const cloudinaryURI = process.env.REACT_APP_CLOUDINARY_URL
+    const api_key = process.env.REACT_APP_CLOUDINARY_API_KEY
+    var upload_preset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET_PERFILES
+    if(!perfiles)
+        upload_preset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET_PUBLICACIONES
+    if(api_key !== undefined && upload_preset !== undefined){
+        data.append("file", archivo);
+        data.append("api_key", api_key);
+        data.append('upload_preset', upload_preset);
+        data.append("public_id", idUser);
+        const params = {
+            method: 'POST',
+            body: data
+        };
+        await fetch(cloudinaryURI + "upload", params)
+            .then(async (response) => 
+            {
+            if(response.ok){
+                console.log("Correcto")
+                const url = await response.json()
+                url_foto = url.secure_url
+                return url_foto;
+            }
+            else{
+                if(perfiles)
+                    url_foto = process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + ""
+            }
+            })
+    }
+    return url_foto
 }

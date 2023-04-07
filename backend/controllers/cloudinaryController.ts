@@ -29,5 +29,5 @@ const borrarPublicacion = async (req: Request, res: Response): Promise<Response>
       return res.status(500).send(error);
     }
   }
-  
-  module.exports = {getSignature, borrarPublicacion}
+
+module.exports = {getSignature, borrarPublicacion}

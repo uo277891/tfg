@@ -97,7 +97,7 @@ const FindUsers = () => {
         <Box sx={{ width: 250 }}>
           <List>
             {['Tipo artista', 'País', 'Rango edad'].map((text, index) => (
-                <Box padding={'1em'}>
+                <Box key = "text" padding={'1em'}>
                     <Typography variant='h5' >{text}<br/>
                         <Filtro setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Filtro>
                         <ListItem key={text} disablePadding>
@@ -125,8 +125,8 @@ const FindUsers = () => {
                         }}/>
                     </Grid>
                     <Grid item xs={1}>
-                        <IconButton>
-                            <SearchIcon onClick = {HandleBuscaUsuarios} id="questionIcon" fontSize="large"></SearchIcon>
+                        <IconButton onClick = {HandleBuscaUsuarios}>
+                            <SearchIcon  id="questionIcon" fontSize="large"></SearchIcon>
                         </IconButton>
                     </Grid>
                 </Grid>
