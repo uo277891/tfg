@@ -14,15 +14,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import { actualizaUsuario, getSignature } from '../accesoApi/api';
+import { actualizaUsuario, pruebaArchivo } from '../accesoApi/api';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { getUsuario } from "../accesoApi/api";
 import { useNavigate } from "react-router-dom";
 import { cumpleRegistro, errorUsuario } from '../util/condicionesRegistro';
 import Textarea from '@mui/base/TextareaAutosize';
 import { Typography } from '@mui/material';
-
-const llamadaBase = "http://localhost:5000/usuario/"
 
 const paises = listaPaises()
 
@@ -77,7 +75,7 @@ const EditProfile = () => {
   const actualizaArchivo = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
         if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png"){
-            setArchivo(e.target.files[0]);
+          setArchivo(e.target.files[0]);
         }
         else{
             setRegisterError(true);
@@ -90,30 +88,17 @@ const EditProfile = () => {
   async function actualizarPerfil (){
     var url_foto = ""
     if(archivo !== undefined){
-      let data = new FormData();
-      await getSignature(idUser)
-      const cloudinaryURI = "https://api.cloudinary.com/v1_1/ddtcz5fqr/"
-      data.append("file", archivo);
-      data.append("api_key", "117284356463575");
-      data.append('upload_preset', 'pt7pvrus');
-      data.append("folder", "perfiles");
-      data.append("public_id", idUser);
-      const params = {
-        method: 'POST',
-        body: data
-      };
-      await fetch(cloudinaryURI + "upload", params)
-        .then(async (response) => 
-        {
-          if(response.ok){
-            const url = await response.json()
-            url_foto = url.secure_url
-          }
-          else{
-            setRegisterError(true);
-            seterror("Foto no actualizada");
-          }
-        })
+      let prueba = new FormData();
+      prueba.append("myFile", archivo);
+      const respuesta = await pruebaArchivo(idUser, archivo)
+      console.log(respuesta)
+      if(respuesta !== ""){
+        url_foto = respuesta
+      }else{
+        setRegisterError(true);
+        seterror("Foto no actualizada");
+      }
+      
     }
 
     const numError = cumpleRegistro(userName, "contraseñaQuePasa", "contraseñaQuePasa", country, location, date, descripcion)
