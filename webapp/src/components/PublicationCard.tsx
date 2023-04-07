@@ -39,10 +39,7 @@ function PublicationCard (props: any) {
     return (
         <Card sx={{ maxWidth: 400 }} className='card'>
             {props.publication.enlace_multimedia !== "" &&
-            <CardMedia
-                component= {props.publication.tipo_multimedia}
-                image={props.publication.enlace_multimedia}
-            />}
+            <CardMedia component= {props.publication.tipo_multimedia} image={props.publication.enlace_multimedia}/>}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                 {props.publication.texto}
