@@ -28,6 +28,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
 import Filtro from '../components/FiltrosPublicaciones';
+import SimboloCarga from "../components/SimboloCarga";
 
 type Anchor = 'left';
 
@@ -137,7 +138,9 @@ const ExternProfile = () => {
         </Box>
       );
 
-    if(usuarioEstaAutenticado && !cargando && usuario !== undefined){
+    if(cargando)
+        return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+    else if(usuarioEstaAutenticado && !cargando && usuario !== undefined){
         return (
         <div id="externProfile">
             <main>

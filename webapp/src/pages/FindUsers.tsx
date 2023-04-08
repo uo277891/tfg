@@ -21,6 +21,7 @@ import Filtro from '../components/FiltrosUsuario';
 import  Dayjs  from "dayjs";
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
+import SimboloCarga from '../components/SimboloCarga';
 
 type Anchor = 'left';
 
@@ -119,7 +120,10 @@ const FindUsers = () => {
         </Box>
       );
 
-    if(!cargando){
+    if(cargando)
+      return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+
+    else{
         return (
         <div id="findUsers">
             <main>
@@ -162,9 +166,6 @@ const FindUsers = () => {
             </main>
         </div>
         );
-    }
-    else{
-        return <h1>Cargando...</h1>
     }
 }
 

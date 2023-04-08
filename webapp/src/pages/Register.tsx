@@ -28,6 +28,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import SimboloCarga from '../components/SimboloCarga';
 
 const paises = listaPaises()
 
@@ -85,8 +86,10 @@ const Register = () => {
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
+
+    const [cargando, setCargando] = React.useState(false);
     
-    const [idUser, setIdUser] = useLocalStorage('idUser', '')
+    const [idUser, setIdUser] = useLocalStorage('idUser', '');
 
     const[userName, setUserName] = React.useState("");
 
@@ -159,10 +162,12 @@ const Register = () => {
     }
 
     async function registrarse() {
+      setCargando(true)
       const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion)
       if(numError > -1){
         setRegisterError(true);
         seterror(errorUsuario(numError));
+        setCargando(false)
       }
       else{
         const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, 
@@ -178,11 +183,13 @@ const Register = () => {
             setUsuarioAutenticado(userName.toLowerCase())
             setUsuarioEstaAcutenticado(true)
             setIdUser(user._id)
+            setCargando(false)
             redirigir("/profile/" + user._id)
           }
           else{
             setRegisterError(true);
             seterror("Usuario creado, la foto no ha podido ser insertada");
+            setCargando(false)
           }
         }else{
           setRegisterError(true);
@@ -190,156 +197,160 @@ const Register = () => {
           setUsuarioEstaAcutenticado(false)
           setIdUser("")
           seterror("El nombre ya está en uso");
+          setCargando(false)
         }
       }
     }
 
-  return (
-    
-    <div id="regiter" className="forms">
-      <main>
-      <h1>Registro</h1>
-      <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Información personal" {...a11yProps(0)} />
-          <Tab label="Sobre ti" {...a11yProps(1)} />
-          <Tab label="Resultado final" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-          <Box
-                component="form"
-                sx={{
-                    '& .MuiTextField-root': { m: 3, width: '40ch' },
-                }}
-                noValidate
-                autoComplete="off"
-                >
-                <TextField required id="userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
-                <br/>
-                <TextField
-                  id="country"
-                  select
-                  value={country}
-                  label="País de nacimiento"
-                  helperText="Selecciona tu país"
-                  onChange={(country) => setCountry(country.target.value)}
-                >
-                  {paises.map((pais) => (
-                    <MenuItem key={pais} value={pais}>
-                      {pais}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
-                <br/>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopDatePicker
-                    label="Fecha de nacimiento"
-                    inputFormat="DD/MM/YYYY"
-                    value={date}
-                    onChange={handleDate}
-                    renderInput={(params) => <TextField {...params} />}
-                    />
-                </LocalizationProvider>
-                <br/>
-                <TextField required id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
-                <TextField required id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
-                <br/>
-                <Button className="boton" variant="contained" onClick={() => setValue(1)}>Siguiente</Button>
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-          <Box
-                component="form"
-                sx={{
-                    '& .MuiTextField-root': { m: 3, width: '40ch' },
-                }}
-                noValidate
-                autoComplete="off"
-                >
-                <TextField id="tipoUsuario" select value={tipoUsu} label="Tipo de perfil" onChange={(tipo) => setTipoUsu(tipo.target.value)}>
-                  {tipoUsuario.map((tipo) => (
-                    <MenuItem key={tipo} value={tipo}>
-                      {tipo}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField id="generoFav" select value={generoFav} label="Género favorito" onChange={(genero) => setGeneroFav(genero.target.value)}>
-                  {generos.map((genero) => (
-                    <MenuItem key={genero} value={genero}>
-                      {genero}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <br/>
-                {tipoUsu !== "Estándar" && <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
-                <br/>
-                <Grid container alignItems="center" justifyContent="center">
-                  <Accordion sx={{width: '50%'}}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography>¡Añade enlaces a tus redes sociales!</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                      id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
-                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
-                      id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
-                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
-                      id="YouTube" label="YouTube" variant="outlined" value={redesSociales[2]} onChange={(yt) => handleRedesSociales(2, yt.target.value)}/>
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-                <br/>
-                <Textarea color="neutral" style={{ width: 600, fontSize:'1em' }} minRows={10} placeholder="Introduce una pequeña descripción sobre ti (máximo 200 caracteres)" 
-                        id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
-                <br/>
-                {descripcion.length} / 200
-                <br/>
-                <Button className="boton" variant="contained" onClick={() => setValue(2)}>Siguiente</Button>
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <RegisterCard 
-            nombre={userName} pais={country} localidad={location} tipoUsu={tipoUsu} descripcion={descripcion} spotyName={nomSpoty}>
-            </RegisterCard>
-            <br/>
-                Añade una foto de perfil (opcional): <input type="file" onChange={actualizaArchivo} />
-            <br/>
-            <Button className="boton" variant="contained" onClick={registrarse}>Registrarse</Button>
-          </TabPanel>
-          <p>¿Ya tienes cuenta?, ¡inicia sesión pulsando <Link href="/login" >aquí</Link>!</p>
-          <Box sx={{ width: '100%' }}>
-          <Collapse in={registerError}>
-            <Alert
-                severity="error"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setRegisterError(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              sx={{ mb: 2 }}
-            >
-              {error}
-            </Alert>
-          </Collapse>
-          </Box>
+  if(cargando)
+    return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+  else
+    return (
+      
+      <div id="regiter" className="forms">
+        <main>
+        <h1>Registro</h1>
+        <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="Información personal" {...a11yProps(0)} />
+            <Tab label="Sobre ti" {...a11yProps(1)} />
+            <Tab label="Resultado final" {...a11yProps(2)} />
+          </Tabs>
         </Box>
-      </main>
-    </div>
-  );
+        <TabPanel value={value} index={0}>
+            <Box
+                  component="form"
+                  sx={{
+                      '& .MuiTextField-root': { m: 3, width: '40ch' },
+                  }}
+                  noValidate
+                  autoComplete="off"
+                  >
+                  <TextField required id="userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
+                  <br/>
+                  <TextField
+                    id="country"
+                    select
+                    value={country}
+                    label="País de nacimiento"
+                    helperText="Selecciona tu país"
+                    onChange={(country) => setCountry(country.target.value)}
+                  >
+                    {paises.map((pais) => (
+                      <MenuItem key={pais} value={pais}>
+                        {pais}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
+                  <br/>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DesktopDatePicker
+                      label="Fecha de nacimiento"
+                      inputFormat="DD/MM/YYYY"
+                      value={date}
+                      onChange={handleDate}
+                      renderInput={(params) => <TextField {...params} />}
+                      />
+                  </LocalizationProvider>
+                  <br/>
+                  <TextField required id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
+                  <TextField required id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
+                  <br/>
+                  <Button className="boton" variant="contained" onClick={() => setValue(1)}>Siguiente</Button>
+              </Box>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+            <Box
+                  component="form"
+                  sx={{
+                      '& .MuiTextField-root': { m: 3, width: '40ch' },
+                  }}
+                  noValidate
+                  autoComplete="off"
+                  >
+                  <TextField id="tipoUsuario" select value={tipoUsu} label="Tipo de perfil" onChange={(tipo) => setTipoUsu(tipo.target.value)}>
+                    {tipoUsuario.map((tipo) => (
+                      <MenuItem key={tipo} value={tipo}>
+                        {tipo}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField id="generoFav" select value={generoFav} label="Género favorito" onChange={(genero) => setGeneroFav(genero.target.value)}>
+                    {generos.map((genero) => (
+                      <MenuItem key={genero} value={genero}>
+                        {genero}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <br/>
+                  {tipoUsu !== "Estándar" && <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
+                  <br/>
+                  <Grid container alignItems="center" justifyContent="center">
+                    <Accordion sx={{width: '50%'}}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography>¡Añade enlaces a tus redes sociales!</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
+                        id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
+                        id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
+                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
+                        id="YouTube" label="YouTube" variant="outlined" value={redesSociales[2]} onChange={(yt) => handleRedesSociales(2, yt.target.value)}/>
+                      </AccordionDetails>
+                    </Accordion>
+                  </Grid>
+                  <br/>
+                  <Textarea color="neutral" style={{ width: 600, fontSize:'1em' }} minRows={10} placeholder="Introduce una pequeña descripción sobre ti (máximo 200 caracteres)" 
+                          id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
+                  <br/>
+                  {descripcion.length} / 200
+                  <br/>
+                  <Button className="boton" variant="contained" onClick={() => setValue(2)}>Siguiente</Button>
+              </Box>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              <RegisterCard 
+              nombre={userName} pais={country} localidad={location} tipoUsu={tipoUsu} descripcion={descripcion} spotyName={nomSpoty}>
+              </RegisterCard>
+              <br/>
+                  Añade una foto de perfil (opcional): <input type="file" onChange={actualizaArchivo} />
+              <br/>
+              <Button className="boton" variant="contained" onClick={registrarse}>Registrarse</Button>
+            </TabPanel>
+            <p>¿Ya tienes cuenta?, ¡inicia sesión pulsando <Link href="/login" >aquí</Link>!</p>
+            <Box sx={{ width: '100%' }}>
+            <Collapse in={registerError}>
+              <Alert
+                  severity="error"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setRegisterError(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                sx={{ mb: 2 }}
+              >
+                {error}
+              </Alert>
+            </Collapse>
+            </Box>
+          </Box>
+        </main>
+      </div>
+    );
 }
 
 export default Register;
