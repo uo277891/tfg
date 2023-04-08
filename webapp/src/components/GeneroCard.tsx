@@ -11,7 +11,6 @@ function getPercentage(genero: string, generos: string[]){
 
 function GeneroCard (props: any) {
     listadoGeneros = listadoGeneros.filter(gen => gen !== props.genero);
-    console.log(listadoGeneros)
     return (
         <Box>
             <Typography component='div'>Tu género favorito es

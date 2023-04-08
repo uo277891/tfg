@@ -3,8 +3,14 @@ import { Publicacion, Seguidor, Usuario, Signature, Comentario } from "../interf
 const llamadaBasica = 'http://localhost:5000';
 
 
-export async function getPublicaciones(id_usuario: any): Promise<Publicacion[]> {
-    let res = await fetch(llamadaBasica + '/publicaciones/' + id_usuario);
+export async function getPublicaciones(id_usuario: any, order: string): Promise<Publicacion[]> {
+    let res = await fetch(llamadaBasica + '/publicaciones/getpublicacion/' + id_usuario + "/" + order);
+    let publicaciones = await res.json()
+    return publicaciones.publicaciones
+}
+
+export async function getPublicacionesByTipo(id_usuario: any, tipo: string, fecha: string): Promise<Publicacion[]> {
+    let res = await fetch(llamadaBasica + '/publicaciones/getpublicacion/tipo/' + id_usuario + "/" + tipo + "/" + fecha);
     let publicaciones = await res.json()
     return publicaciones.publicaciones
 }
