@@ -155,6 +155,21 @@ const getUsuariosByTipoUsuario = async (req: Request, res: Response): Promise<Re
   }
 }
 
+const getUsuariosByGenero = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const genero = req.params.genero;
+    const usuarioAsociado = await usuarioSquema.find({genero: genero });
+    if(usuarioAsociado === null){
+      return res.status(200).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const getUsuariosByFecha = async (req: Request, res: Response): Promise<Response> => {
   try {
     const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
@@ -209,4 +224,4 @@ const updateFoto = async (req: Request, res: Response): Promise<Response> => {
 }
 
 module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, 
-  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByFecha, getUsuariosByIdInDate}
+  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByFecha, getUsuariosByIdInDate, getUsuariosByGenero}

@@ -47,6 +47,12 @@ export async function getUsuarioByTipoUsuario(tipo: any): Promise<Usuario[]> {
     return usuario.users
 }
 
+export async function getUsuarioByGenero(genero: any): Promise<Usuario[]> {
+    let res = await fetch(llamadaBasica + '/usuario/getusuario/genero/' + genero);
+    let usuario = await res.json()
+    return usuario.users
+}
+
 export async function getUsuarioByFecha(fechaInicio: any, fechaFin: any): Promise<Usuario[]> {
     let res = await fetch(llamadaBasica + '/usuario/getusuario/fecha/' + fechaInicio + "/" + fechaFin);
     let usuario = await res.json()
