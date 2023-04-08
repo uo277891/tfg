@@ -22,6 +22,9 @@ function UserCard (props: any) {
                 primary = {props.usuario.nombre}
                 secondary = {props.usuario.tipo}
             />
+            <ListItemText
+                primary = {props.usuario.genero}
+            />
             </ListItem>
         );
 }

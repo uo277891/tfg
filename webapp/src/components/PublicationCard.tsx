@@ -15,6 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { borrarPublicacion, eliminarPublicacion } from '../accesoApi/api';
+import {parseFecha} from '../util/parseFecha';
 
 function PublicationCard (props: any) {
 
@@ -45,7 +46,7 @@ function PublicationCard (props: any) {
                 {props.publication.texto}
                 </Typography>
                 <Typography gutterBottom variant="h6" component="div">
-                {props.publication.fecha.replace(/T/, ' ').replace(/\..+/, '')}
+                {parseFecha(props.publication.fecha.replace(/T/, ' ').replace(/\..+/, ''))}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
                 <FavoriteIcon sx={{color: red[500]}}></FavoriteIcon> {props.publication.likes.length}

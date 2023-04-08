@@ -9,7 +9,9 @@ export type Usuario ={
     pais: string,
     nombre_spotify: string,
     enlace_foto: string,
-    descripcion: string
+    descripcion: string,
+    genero: string,
+    redes: Array<string>
 }
 
 export type Publicacion ={
@@ -17,7 +19,7 @@ export type Publicacion ={
     id_usuario: string,
     texto: string,
     enlace_foto: string,
-    fecha: Date,
+    fecha: Dayjs,
     enlace_multimedia: string,
     tipo_multimedia: string,
     likes: Array<string>

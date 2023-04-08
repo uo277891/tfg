@@ -46,7 +46,7 @@ const Login = () => {
           const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: userName, contraseña: password })
+            body: JSON.stringify({ nombre: userName.toLowerCase(), contraseña: password })
         };
           fetch(llamadaBase + "login", requestOptions)
             .then(async (response) => 
@@ -56,7 +56,7 @@ const Login = () => {
                 setLoginError(false);
                 setLogin(true);
                 setLoginErrorCompleted("Inicio de sesión correcto");
-                setUsuarioAutenticado(userName)
+                setUsuarioAutenticado(userName.toLowerCase())
                 setUsuarioEstaAcutenticado(true)
                 setIdUser(user.usuario._id)
                 redirigir("/profile/" + user.usuario._id)

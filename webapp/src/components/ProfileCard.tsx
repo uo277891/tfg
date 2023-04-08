@@ -13,6 +13,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { actualizaFoto, getSignature } from '../accesoApi/api';
+import {parseFecha} from '../util/parseFecha';
 
 function CardProfile (props: any) {
 
@@ -46,7 +47,7 @@ function CardProfile (props: any) {
                     {props.usuario.nombre}
                     </Typography>
                     <Typography gutterBottom variant="h6" component="div">
-                    Fecha de nacimiento: {props.usuario.fecha_nac.replace(/T/, ' ').replace(/\..+/, '').split(' ')[0]}
+                    Fecha de nacimiento: {parseFecha(props.usuario.fecha_nac.replace(/T/, ' ').replace(/\..+/, ''))}
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
                     Nacionalidad: {props.usuario.pais}
