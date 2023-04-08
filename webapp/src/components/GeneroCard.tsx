@@ -1,4 +1,4 @@
-import { Box, Typography, getLinearProgressUtilityClass } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 var listadoGeneros: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
 

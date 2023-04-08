@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Grid from "@mui/material/Grid";
-import { getUsuarioByCountry, getUsuarioByFecha, getUsuarioByTipoUsuario, getUsuariosByName } from "../accesoApi/api";
+import { getUsuarioByCountry, getUsuarioByFecha, getUsuarioByGenero, getUsuarioByTipoUsuario, getUsuariosByName } from "../accesoApi/api";
 import { Usuario } from "../interfaces/interfaces";
 import UserCard from "../components/UserCard";
 import Typography from '@mui/material/Typography';
@@ -41,6 +41,8 @@ const FindUsers = () => {
     const [filtroPais, setFiltroPais] = useState("");
 
     const [filtroTipo, setFiltroTipo] = useState("");
+
+    const [filtroGenero, setFiltroGenero] = useState("");
 
     const [filtroEdad, setFiltroEdad] = React.useState<number[]>([16, 150]);
 
@@ -79,6 +81,11 @@ const FindUsers = () => {
             const users = await getUsuarioByFecha(añoActual.year() - filtroEdad[0], añoActual.year() - filtroEdad[1])
             setUsuarios(users)
             setCargando(false)
+        }else if(index === 3 && filtroGenero !== ""){
+            setCargando(true)
+            const users = await getUsuarioByGenero(filtroGenero)
+            setUsuarios(users)
+            setCargando(false)
         }
             
     }
@@ -96,10 +103,10 @@ const FindUsers = () => {
       const list = () => (
         <Box sx={{ width: 250 }}>
           <List>
-            {['Tipo artista', 'País', 'Rango edad'].map((text, index) => (
+            {['Tipo artista', 'País', 'Rango edad', 'Género'].map((text, index) => (
                 <Box key = "text" padding={'1em'}>
                     <Typography variant='h5' >{text}<br/>
-                        <Filtro setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Filtro>
+                        <Filtro setFiltroGenero = {setFiltroGenero} setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Filtro>
                         <ListItem key={text} disablePadding>
                             <Button fullWidth sx={{color: common.black}} startIcon={<Icono icono={text}></Icono>} onClick={() => handleFiltro(index)}>
                                 <ListItemText primary="Aplicar filtro" />
@@ -138,11 +145,11 @@ const FindUsers = () => {
                         </Drawer>
                     </React.Fragment>
                 </div>
-                <Grid item xs={12} md={6}>
+                <Grid>
                     <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
                         Usuarios encontrados:
                     </Typography>
-                    <List >
+                    <List>
                         {usuarios.slice((page - 1) * numElementos, numElementos * page).map((usuario: Usuario) =>
                             <UserCard usuario = {usuario}></UserCard>
                         )}

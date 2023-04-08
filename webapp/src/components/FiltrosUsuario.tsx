@@ -10,9 +10,13 @@ function FiltrosUsuario(props: any) {
 
     const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
 
+    const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+
     const[tipoUsu, setTipoUsu] = React.useState("");
 
     const[country, setCountry] = React.useState("");
+
+    const[genero, setGenero] = React.useState("");
 
     const [filtroEdad, setFiltroEdad] = React.useState<number[]>([16, 150]);
 
@@ -29,7 +33,12 @@ function FiltrosUsuario(props: any) {
     const handleChangePais = (e:any) => {
       props.setFiltroPais(e);
       setCountry(e)
-  };
+    };
+
+    const handleChangeGenero = (e:any) => {
+      props.setFiltroGenero(e);
+      setGenero(e)
+    };
     
     if(props.index === 0){
       return (
@@ -72,6 +81,21 @@ function FiltrosUsuario(props: any) {
           onChange={handleChangeEdad}
           valueLabelDisplay="auto"
         />)
+  }else if(props.index === 3){
+    return(
+      <TextField
+        id="genero"
+        select
+        value={genero}
+        fullWidth
+        onChange={(genero) => handleChangeGenero(genero.target.value)}
+      >
+        {generos.map((gen) => (
+          <MenuItem key={gen} value={gen}>
+            {gen}
+          </MenuItem>
+        ))}
+      </TextField>)
   }
     else{
         return <p></p>
