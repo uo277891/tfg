@@ -12,10 +12,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useCallback, useEffect } from 'react';
-import { getFollowsByUser, getUsuarioByIdInDate } from '../accesoApi/api';
+import { getFollowsByUser, getUsuario, getUsuarioByIdInDate } from '../accesoApi/api';
 import { useLocalStorage } from '../localStorage/useLocalStorage';
 import  Dayjs from 'dayjs';
 import { getUsuarios } from '../accesoApi/api';
+import GeneroCard from '../components/GeneroCard';
+import { Usuario } from '../interfaces/interfaces';
 
 const Estadisticas = () => {
 
@@ -29,6 +31,8 @@ const Estadisticas = () => {
 
   const [porcentajesEdad, setPorcentajesEdad] = React.useState<number[]>([0, 0, 0]);
 
+  const [usuario, setUsuario] = React.useState<Usuario>();
+
   const [edadMedia, setEdadMedia] = React.useState(0);
 
   const [posicionesTexto, setPosicionesTexto] = React.useState<number[]>([]);
@@ -38,6 +42,8 @@ const Estadisticas = () => {
   const [textoPais, setTextoPais] = React.useState<string[]>(["", "", ""]);
 
   const [porcentajesPais, setPorcentajesPais] = React.useState<number[]>([0,0,0]);
+
+  const [generos, setGeneros] = React.useState<string[]>([])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -90,6 +96,9 @@ const Estadisticas = () => {
 
   const datosIniciales = useCallback(async () => {
     setCargando(true)
+    const user = await getUsuario(idUser)
+    if(user[0] !== undefined)
+      setUsuario(user[0])
     const users = await getFollowsByUser(idUser)
     const objUsers = await getUsuarios(users)
     if(users.length > 0){
@@ -99,6 +108,8 @@ const Estadisticas = () => {
       var paises: string[] = []
       objUsers.map((user: any) => {paises.push(user.pais)})
       calculoPaises(paises);
+      objUsers.map((user: any) => {generos.push(user.genero)})
+      console.log(generos)
       const usuariosJovenes = await getUsuarioByIdInDate(users, 2023 - 16, 2023 - 30)
       porcentajesEdad[0] = Number((usuariosJovenes.length / users.length).toFixed(2)) * 100
       const usuariosAdultos = await getUsuarioByIdInDate(users, 2023 - 31, 2023 - 65)
@@ -123,7 +134,7 @@ const Estadisticas = () => {
     datosIniciales();
   }, [])
 
-  if(usuarioAutenticado && !cargando)
+  if(usuarioAutenticado && !cargando && usuario !== undefined)
     return (
       <div className="est">
         <main>
@@ -158,6 +169,14 @@ const Estadisticas = () => {
             <AccordionDetails>
               <StatCard fem="o" tipo="país" est1={textoPais[0]} est2={textoPais[1]} est3={textoPais[2]} 
                 prob1={porcentajesPais[0]} prob2={porcentajesPais[1]} prob3={porcentajesPais[2]}></StatCard>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
+              <Typography variant='h4'>Estadísticas por géneros</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <GeneroCard genero={usuario.genero} generos = {generos}></GeneroCard>
             </AccordionDetails>
           </Accordion>
         </main>
