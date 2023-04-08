@@ -19,7 +19,7 @@ export type Publicacion ={
     id_usuario: string,
     texto: string,
     enlace_foto: string,
-    fecha: Date,
+    fecha: Dayjs,
     enlace_multimedia: string,
     tipo_multimedia: string,
     likes: Array<string>

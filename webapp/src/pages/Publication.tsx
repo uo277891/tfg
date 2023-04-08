@@ -26,6 +26,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import {parseFecha, parseHora} from '../util/parseFecha';
 
 const Publication = () => {
 
@@ -133,7 +134,8 @@ const Publication = () => {
                 src={usuarioPublicacion.enlace_foto}/>
               }
               title={usuarioPublicacion.nombre}
-              subheader={publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')}
+              subheader={parseFecha(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) +
+            ", " + parseHora(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) }
             />
             {(publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe")  &&
             <CardMedia

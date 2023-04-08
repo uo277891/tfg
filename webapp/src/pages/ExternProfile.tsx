@@ -17,6 +17,9 @@ import Link from '@mui/material/Link';
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import React from "react";
+import { IconButton, Typography } from "@mui/material";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import RedesSociales from "../util/linkRedesSociales";
 
 const ExternProfile = () => {
 
@@ -80,6 +83,7 @@ const ExternProfile = () => {
                         <TableCell align="center"></TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Publicaciones</TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Seguidores</TableCell>
+                            <TableCell sx={{fontSize: 20}} align="center">Genero Favorito</TableCell>
                             <TableCell align="center"></TableCell>
                         </TableRow>
                         </TableHead>
@@ -94,6 +98,7 @@ const ExternProfile = () => {
                             </TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{publicaciones.length}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{seguidores.length}</TableCell>
+                            <TableCell sx={{fontSize: 40}} align="center">{usuario.genero}</TableCell>
                             {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
                             {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">
                                 <Link href="/profile" underline="none">
@@ -107,6 +112,8 @@ const ExternProfile = () => {
                 </TableContainer>
                 <h2>{usuario.nombre}</h2>
                 <p>{usuario.descripcion}</p>
+                <Typography variant="h4"><AutoAwesomeIcon id ="redes"></AutoAwesomeIcon>  Otras redes sociales</Typography>
+                <RedesSociales redes = {usuario.redes}></RedesSociales>
                 <h1>Publicaciones:</h1>
                 <section id="publicaciones">
                     <Grid
