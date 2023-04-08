@@ -8,6 +8,7 @@ import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 import PublicIcon from '@mui/icons-material/Public';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { common } from '@mui/material/colors';
 
 function Icono(props: any) {
@@ -31,6 +32,8 @@ function Icono(props: any) {
         return (<CalendarMonthIcon></CalendarMonthIcon>)
     else if(props.icono === "Estadísticas")
         return (<AutoGraphIcon sx={{color: common.white}}></AutoGraphIcon>)
+    else if(props.icono === "Filtro")
+        return (<FilterAltIcon></FilterAltIcon>)
     
     return <p></p>
 }

@@ -6,7 +6,6 @@ const errores: string[] = ["Algún campo está vacío", "Las contraseñas no coi
 
 export function cumpleRegistro(userName:string, password: string, passwordConf: string, country:string, location:string, date: any, descripcion: string){
     const dateNow = Dayjs()
-    console.log(dateNow.diff(date, "days"))
     if(date === undefined)
         return 3;
     else if(userName === "" || password === "" || passwordConf === "" || country === ""){

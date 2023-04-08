@@ -7,7 +7,12 @@ const comentarioModel = require('../models/comentariosModel');
 const getPublicaciones = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id_usuario = req.params.idUsu;
-      const publicaciones = await publicacionModel.find({id_usuario: id_usuario}).sort({fecha: -1});
+      const orden = req.params.order;
+      var publicaciones;
+      if(orden === "fecha")
+        publicaciones = await publicacionModel.find({id_usuario: id_usuario}).sort({fecha: -1});
+      else
+        publicaciones = await publicacionModel.find({id_usuario: id_usuario}).sort({likes: -1});
       if(publicaciones === null){
         return res.status(200).json({ publicaciones: [] });
       }
@@ -17,6 +22,27 @@ const getPublicaciones = async (req: Request, res: Response): Promise<Response> 
     } catch (error) {
       return res.status(500).send(error);
     }
+}
+
+const getPublicacionesByTipo = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_usuario = req.params.idUsu;
+    const tipo = req.params.tipo;
+    const orden = req.params.fecha;
+    var publicaciones;
+    if(orden === "fecha")
+      publicaciones = await publicacionModel.find({id_usuario: id_usuario, tipo_multimedia: tipo}).sort({fecha: -1});
+    else
+      publicaciones = await publicacionModel.find({id_usuario: id_usuario, tipo_multimedia: tipo}).sort({likes: -1});
+    if(publicaciones === null){
+      return res.status(200).json({ publicaciones: [] });
+    }
+    else{
+      return res.status(200).json({ publicaciones: publicaciones });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 }
 
 const getPublicacion = async (req: Request, res: Response): Promise<Response> => {
@@ -99,4 +125,4 @@ const updatePublicacion = async (req: Request, res: Response): Promise<Response>
   }
 }
 
-module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion}
+module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo}

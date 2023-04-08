@@ -33,7 +33,6 @@ const NewPublication = () => {
                 setArchivo(e.target.files[0]);
             }
             else{
-                console.log(e.target.files[0].type)
                 setPublicationError(true);
                 setError("La multimedia debe tener extensión png, jpg o mp3");
                 setArchivo(undefined);
@@ -47,7 +46,7 @@ const NewPublication = () => {
             setError("Se debe escribir algo en el texto para crear la publicación.");
         }
         else {
-            const pub = await añadirPublicacion(idUser, text, "", "")
+            const pub = await añadirPublicacion(idUser, text, "", "txt")
             if(archivo !== undefined){
                 const respuesta = await uploadMultimedia(pub._id, archivo, false, false)
                 if(respuesta !== ""){
@@ -57,7 +56,6 @@ const NewPublication = () => {
                         tipo_multimedia = "iframe"
                     else
                         tipo_multimedia = "img"
-                    console.log(pub)
                     const fotoAct = await actualizaPublicacion(pub._id, url_multimedia, tipo_multimedia)
                     if(fotoAct)
                             redirigir('/profile/' + idUser)

@@ -41,7 +41,7 @@ const FollowingUsers = () => {
         <div id="findUsers">
             <main>
                 <h1>Usuarios a los que sigues:</h1>
-                <Grid item xs={12} md={6}>
+                <Grid>
                     <List >
                         {usuarios.slice((page - 1) * numElementos, numElementos * page).map((usuario: Usuario) =>
                             <UserCard key = {usuario._id} usuario = {usuario}></UserCard>

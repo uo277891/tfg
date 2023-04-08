@@ -87,7 +87,6 @@ const FindUsers = () => {
             setUsuarios(users)
             setCargando(false)
         }
-            
     }
     
       const toggleDrawer =

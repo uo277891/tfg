@@ -1,7 +1,6 @@
 export function parseFecha (fecha: string) {
     var fechaMod = fecha.split(" ", 2)
     var dia = fechaMod[0].split("-", 3)
-    console.log(dia)
     return dia[2] + "/" + dia[1] + "/" + dia[0]
 }
 

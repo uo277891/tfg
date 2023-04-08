@@ -109,7 +109,6 @@ const Estadisticas = () => {
       objUsers.map((user: any) => {paises.push(user.pais)})
       calculoPaises(paises);
       objUsers.map((user: any) => {generos.push(user.genero)})
-      console.log(generos)
       const usuariosJovenes = await getUsuarioByIdInDate(users, 2023 - 16, 2023 - 30)
       porcentajesEdad[0] = Number((usuariosJovenes.length / users.length).toFixed(2)) * 100
       const usuariosAdultos = await getUsuarioByIdInDate(users, 2023 - 31, 2023 - 65)
