@@ -211,21 +211,22 @@ export async function actualizaPublicacion(id_publicacion: string, enlace_multim
 }
 
 export async function actualizaUsuario(nombre_anterior: string, nombre: string, pais: string, localidad: string, fecha_nac: any, nombre_spotify: string,
-    descripcion: string, enlace_foto: string): Promise<Boolean> {
+    descripcion: string, enlace_foto: string, genero:string, redes:string[]): Promise<Boolean> {
         var requestOptions;
         if(enlace_foto !== "") {
             requestOptions = {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ nombre: nombre, pais: pais, localidad: localidad, fecha_nac: fecha_nac, nombre_spotify: nombre_spotify, 
-                descripcion: descripcion, enlace_foto: enlace_foto })
+                descripcion: descripcion, enlace_foto: enlace_foto, genero: genero, redes: redes })
             };
           }
           else {
             requestOptions = {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ nombre: nombre, pais: pais, localidad: localidad, fecha_nac: fecha_nac, nombre_spotify: nombre_spotify, descripcion: descripcion })
+              body: JSON.stringify({ nombre: nombre, pais: pais, localidad: localidad, fecha_nac: fecha_nac, 
+                nombre_spotify: nombre_spotify, descripcion: descripcion, genero: genero, redes: redes })
             };
           }
     let res = await fetch(llamadaBasica + "/usuario/profile/edit/" + nombre_anterior, requestOptions);

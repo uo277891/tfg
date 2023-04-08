@@ -20,7 +20,11 @@ import { getUsuario } from "../accesoApi/api";
 import { useNavigate } from "react-router-dom";
 import { cumpleRegistro, errorUsuario } from '../util/condicionesRegistro';
 import Textarea from '@mui/base/TextareaAutosize';
-import { Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Grid, InputAdornment, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 const paises = listaPaises()
 
@@ -29,6 +33,8 @@ const EditProfile = () => {
     const handleDate = (newDate: Dayjs | null) => {
         setDate(newDate);
     };
+
+    const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
 
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
@@ -50,9 +56,21 @@ const EditProfile = () => {
 
     const[descripcion, setDescripcion] = React.useState("");
 
+    const[generoFav, setGeneroFav] = React.useState("");
+
+    const[redesSociales, setRedesSociales] = React.useState<string[]>(["", "", ""]);
+
     const [error, seterror] = React.useState("");
 
     const redirigir = useNavigate();
+
+    function handleRedesSociales(indice: number, valorAct: string) {
+      const redesAct = redesSociales.map((valor, i) => {
+        if (i === indice) return valorAct;
+        else return valor;
+      });
+      setRedesSociales(redesAct);
+    }
 
     const datosIniciales = useCallback(async () => {
       const user = await getUsuario(idUser)
@@ -63,6 +81,8 @@ const EditProfile = () => {
         setLocation(user[0].localidad)
         setDate(user[0].fecha_nac)
         setDescripcion(user[0].descripcion)
+        setGeneroFav(user[0].genero)
+        setRedesSociales(user[0].redes)
       }
     }, []);
   
@@ -103,7 +123,7 @@ const EditProfile = () => {
         seterror(errorUsuario(numError));
       }
     else {
-      const actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, nomSpoty, descripcion, url_foto)
+      const actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, nomSpoty, descripcion, url_foto, generoFav, redesSociales)
       if(actualizado){
         setUsuarioAutenticado(userName);
         redirigir("/profile/")
@@ -151,13 +171,40 @@ const EditProfile = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DesktopDatePicker
                 label="Fecha de nacimiento"
-                inputFormat="MM/DD/YYYY"
+                inputFormat="DD/MM/YYYY"
                 value={date}
                 onChange={handleDate}
                 renderInput={(params) => <TextField {...params} />}
                 />
             </LocalizationProvider>
             <br/>
+            <TextField id="generoFav" select value={generoFav} label="Género favorito" onChange={(genero) => setGeneroFav(genero.target.value)}>
+                  {generos.map((genero) => (
+                    <MenuItem key={genero} value={genero}>
+                      {genero}
+                    </MenuItem>
+                  ))}
+            </TextField>
+            <br/>
+            <Grid container alignItems="center" justifyContent="center">
+                  <Accordion sx={{width: '50%'}}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography>Actualiza los enlaces a tus redes sociales!</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
+                      id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
+                      id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
+                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
+                      id="YouTube" label="YouTube" variant="outlined" value={redesSociales[2]} onChange={(yt) => handleRedesSociales(2, yt.target.value)}/>
+                    </AccordionDetails>
+                  </Accordion>
+                </Grid>
             <Typography>Descripción</Typography>
             <Textarea color="neutral" style={{ width: 600, fontSize:'1em' }} minRows={10} 
                 id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
