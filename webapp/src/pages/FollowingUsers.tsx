@@ -8,6 +8,7 @@ import { useLocalStorage } from "../localStorage/useLocalStorage";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
+import SimboloCarga from "../components/SimboloCarga";
 
 const FollowingUsers = () => {
 
@@ -36,7 +37,9 @@ const FollowingUsers = () => {
         buscarUsuarios();
     }, [])
 
-    if(!cargando){
+    if(cargando)
+        return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+    else{
         return (
         <div id="findUsers">
             <main>
@@ -56,9 +59,6 @@ const FollowingUsers = () => {
             </main>
         </div>
         );
-    }
-    else{
-        return <h1>Cargando...</h1>
     }
 }
 

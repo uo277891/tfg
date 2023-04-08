@@ -18,6 +18,7 @@ import  Dayjs from 'dayjs';
 import { getUsuarios } from '../accesoApi/api';
 import GeneroCard from '../components/GeneroCard';
 import { Usuario } from '../interfaces/interfaces';
+import SimboloCarga from '../components/SimboloCarga';
 
 const Estadisticas = () => {
 
@@ -133,7 +134,10 @@ const Estadisticas = () => {
     datosIniciales();
   }, [])
 
-  if(usuarioAutenticado && !cargando && usuario !== undefined)
+  if(cargando)
+    return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+
+  else if(usuarioAutenticado && usuario !== undefined)
     return (
       <div className="est">
         <main>

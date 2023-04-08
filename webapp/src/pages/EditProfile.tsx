@@ -25,6 +25,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import SimboloCarga from '../components/SimboloCarga';
 
 const paises = listaPaises()
 
@@ -41,6 +42,8 @@ const EditProfile = () => {
     const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
     var userNameInicio = usuarioAutenticado
+
+    const [cargando, setCargando] = React.useState(false);
 
     const[userName, setUserName] = React.useState("");
 
@@ -106,6 +109,7 @@ const EditProfile = () => {
   };
 
   async function actualizarPerfil (){
+    setCargando(true)
     var url_foto = ""
     if(archivo !== undefined){
       const respuesta = await uploadMultimedia(idUser, archivo, true, true)
@@ -114,6 +118,7 @@ const EditProfile = () => {
       }else{
         setRegisterError(true);
         seterror("Foto no actualizada");
+        setCargando(false)
       }
     }
 
@@ -121,127 +126,133 @@ const EditProfile = () => {
       if(numError > -1){
         setRegisterError(true);
         seterror(errorUsuario(numError));
+        setCargando(false)
       }
     else {
       const actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, nomSpoty, descripcion, url_foto, generoFav, redesSociales)
       if(actualizado){
         setUsuarioAutenticado(userName);
+        setCargando(false)
         redirigir("/profile/")
       }
       else{
         setRegisterError(true);
         seterror("El nombre escogido ya está en uso");
+        setCargando(false)
       }
     }
   }
-  return (
-    <div id="editProfile" className="forms">
-      <main>
-        <Box
-            component="form"
-            sx={{
-                '& .MuiTextField-root': { m: 3, width: '40ch' },
-            }}
-            noValidate
-            autoComplete="off"
-            >
-            <h1>Editar perfil</h1>
-            <Button className="boton" variant="contained" onClick={datosIniciales}>Recargar datos iniciales</Button>
-            <br/>
-            <TextField required id="userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
-            <br/>
-            <TextField
-              id="country"
-              select
-              value={country}
-              label="País de nacimiento *"
-              helperText="Selecciona tu país"
-              onChange={(country) => setCountry(country.target.value)}
-            >
-              {paises.map((pais) => (
-                <MenuItem key={pais} value={pais}>
-                  {pais}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
-            <br/>
-            <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>
-            <br/>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
-                label="Fecha de nacimiento"
-                inputFormat="DD/MM/YYYY"
-                value={date}
-                onChange={handleDate}
-                renderInput={(params) => <TextField {...params} />}
-                />
-            </LocalizationProvider>
-            <br/>
-            <TextField id="generoFav" select value={generoFav} label="Género favorito" onChange={(genero) => setGeneroFav(genero.target.value)}>
-                  {generos.map((genero) => (
-                    <MenuItem key={genero} value={genero}>
-                      {genero}
-                    </MenuItem>
-                  ))}
-            </TextField>
-            <br/>
-            <Grid container alignItems="center" justifyContent="center">
-                  <Accordion sx={{width: '50%'}}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography>Actualiza los enlaces a tus redes sociales!</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                      id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
-                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
-                      id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
-                      <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
-                      id="YouTube" label="YouTube" variant="outlined" value={redesSociales[2]} onChange={(yt) => handleRedesSociales(2, yt.target.value)}/>
-                    </AccordionDetails>
-                  </Accordion>
-                </Grid>
-            <Typography>Descripción</Typography>
-            <Textarea color="neutral" style={{ width: 600, fontSize:'1em' }} minRows={10} 
-                id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
-            <br/>
-              {descripcion.length} / 200
-            <br/>
-            <br/>
-            Sube tu foto de perfil: <input type="file" onChange={actualizaArchivo} />
-            <br/>
-            <Button className="boton" variant="contained" onClick={actualizarPerfil}>Actualizar perfil</Button>
-        </Box>
-        <p>¿No quieres actualizar tu perfil?, vuelve atrás pulsando <Link href="/profile" >aquí</Link></p>
-      </main>
-      <Box sx={{ width: '100%' }}>
-      <Collapse in={registerError}>
-        <Alert
-            severity="error"
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setRegisterError(false);
+  if(cargando)
+    return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+  else
+    return (
+      <div id="editProfile" className="forms">
+        <main>
+          <Box
+              component="form"
+              sx={{
+                  '& .MuiTextField-root': { m: 3, width: '40ch' },
               }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-          sx={{ mb: 2 }}
-        >
-          {error}
-        </Alert>
-      </Collapse>
-      </Box>
-    </div>
-  );
+              noValidate
+              autoComplete="off"
+              >
+              <h1>Editar perfil</h1>
+              <Button className="boton" variant="contained" onClick={datosIniciales}>Recargar datos iniciales</Button>
+              <br/>
+              <TextField required id="userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
+              <br/>
+              <TextField
+                id="country"
+                select
+                value={country}
+                label="País de nacimiento *"
+                helperText="Selecciona tu país"
+                onChange={(country) => setCountry(country.target.value)}
+              >
+                {paises.map((pais) => (
+                  <MenuItem key={pais} value={pais}>
+                    {pais}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
+              <br/>
+              <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>
+              <br/>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                  label="Fecha de nacimiento"
+                  inputFormat="DD/MM/YYYY"
+                  value={date}
+                  onChange={handleDate}
+                  renderInput={(params) => <TextField {...params} />}
+                  />
+              </LocalizationProvider>
+              <br/>
+              <TextField id="generoFav" select value={generoFav} label="Género favorito" onChange={(genero) => setGeneroFav(genero.target.value)}>
+                    {generos.map((genero) => (
+                      <MenuItem key={genero} value={genero}>
+                        {genero}
+                      </MenuItem>
+                    ))}
+              </TextField>
+              <br/>
+              <Grid container alignItems="center" justifyContent="center">
+                    <Accordion sx={{width: '50%'}}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography>Actualiza los enlaces a tus redes sociales!</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
+                        id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
+                        id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
+                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
+                        id="YouTube" label="YouTube" variant="outlined" value={redesSociales[2]} onChange={(yt) => handleRedesSociales(2, yt.target.value)}/>
+                      </AccordionDetails>
+                    </Accordion>
+                  </Grid>
+              <Typography>Descripción</Typography>
+              <Textarea color="neutral" style={{ width: 600, fontSize:'1em' }} minRows={10} 
+                  id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
+              <br/>
+                {descripcion.length} / 200
+              <br/>
+              <br/>
+              Sube tu foto de perfil: <input type="file" onChange={actualizaArchivo} />
+              <br/>
+              <Button className="boton" variant="contained" onClick={actualizarPerfil}>Actualizar perfil</Button>
+          </Box>
+          <p>¿No quieres actualizar tu perfil?, vuelve atrás pulsando <Link href="/profile" >aquí</Link></p>
+        </main>
+        <Box sx={{ width: '100%' }}>
+        <Collapse in={registerError}>
+          <Alert
+              severity="error"
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setRegisterError(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            sx={{ mb: 2 }}
+          >
+            {error}
+          </Alert>
+        </Collapse>
+        </Box>
+      </div>
+    );
 }
 
 export default EditProfile;
