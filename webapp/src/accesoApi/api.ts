@@ -136,11 +136,13 @@ export async function actualizarLikes(id_pub: any, likes: any): Promise<Publicac
     return publicaciones.publicacion
 }
 
-export async function registro(nombre: string, contraseña: string, pais: string, localidad: string, fecha_nac: any, nombre_spotify: string, enlace_foto: string, descripcion: string, tipo: string): Promise<any> {
+export async function registro(nombre: string, contraseña: string, pais: string, localidad: string, fecha_nac: any, nombre_spotify: string, 
+    enlace_foto: string, descripcion: string, tipo: string, genero:string, redes:string[]): Promise<any> {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre: nombre, contraseña: contraseña, pais: pais, localidad: localidad, fecha_nac: fecha_nac, nombre_spotify: nombre_spotify, enlace_foto: enlace_foto, descripcion: descripcion, tipo: tipo })
+        body: JSON.stringify({ nombre: nombre, contraseña: contraseña, pais: pais, localidad: localidad, fecha_nac: fecha_nac,
+             nombre_spotify: nombre_spotify, enlace_foto: enlace_foto, descripcion: descripcion, tipo: tipo, genero: genero, redes: redes })
     };
     let res = await fetch(llamadaBasica + '/usuario/register/', requestOptions);
     let usuario = await res.json()

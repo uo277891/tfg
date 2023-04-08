@@ -13,7 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import { getSignature, registro, actualizaFoto, uploadMultimedia } from '../accesoApi/api';
+import { registro, actualizaFoto, uploadMultimedia } from '../accesoApi/api';
 import {cumpleRegistro, errorUsuario} from '../util/condicionesRegistro'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -108,15 +108,21 @@ const Register = () => {
 
     const[generoFav, setGeneroFav] = React.useState("FreeStyle");
 
-    const[redesSociales, setRedesSociales] = React.useState<string[]>([]);
+    const[redesSociales, setRedesSociales] = React.useState<string[]>(["", "", ""]);
 
     const[descripcion, setDescripcion] = React.useState("");
 
     const [archivo, setArchivo] = React.useState<File>();
 
-    const [register, setRegister] = React.useState(false);
-
     const [error, seterror] = React.useState("");
+
+    function handleRedesSociales(indice: number, valorAct: string) {
+      const redesAct = redesSociales.map((valor, i) => {
+        if (i === indice) return valorAct;
+        else return valor;
+      });
+      setRedesSociales(redesAct);
+    }
 
     const actualizaArchivo = (e: ChangeEvent<HTMLInputElement>) => {
       if(e !== undefined)
@@ -127,7 +133,6 @@ const Register = () => {
                 }
                 else{
                     setRegisterError(true);
-                    setRegister(false);
                     seterror("La foto de perfil debe tener la extensión png o jpg.");
                     setArchivo(undefined);
                 }
@@ -141,11 +146,9 @@ const Register = () => {
 
     async function actualizarFoto(userName: string, userId: string) {
       if(archivo !== undefined){
-        console.log(userId)
         const respuesta = await uploadMultimedia(userId, archivo, true, false)
         if(respuesta !== ""){
           const url_foto = respuesta
-          console.log(url_foto)
           const fotoAct = await actualizaFoto(userName, url_foto)
           return fotoAct
         }else{
@@ -159,21 +162,19 @@ const Register = () => {
       const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion)
       if(numError > -1){
         setRegisterError(true);
-        setRegister(false);
         seterror(errorUsuario(numError));
       }
       else{
-        const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + "", descripcion, tipoUsu)
+        const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, 
+        process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + "", descripcion, tipoUsu, generoFav, redesSociales)
         if(usuarioRegistrado.creado){
           const user = await usuarioRegistrado.usuario
-          console.log(user)
           setUsuarioAutenticado(userName.toLowerCase())
           setUsuarioEstaAcutenticado(true)
           setIdUser(user._id)
           const foto = await actualizarFoto(userName.toLowerCase(), user._id)
           if(foto){
             setRegisterError(false);
-            setRegister(true);
             setUsuarioAutenticado(userName.toLowerCase())
             setUsuarioEstaAcutenticado(true)
             setIdUser(user._id)
@@ -181,12 +182,10 @@ const Register = () => {
           }
           else{
             setRegisterError(true);
-            setRegister(false);
             seterror("Usuario creado, la foto no ha podido ser insertada");
           }
         }else{
           setRegisterError(true);
-          setRegister(false);
           setUsuarioAutenticado("")
           setUsuarioEstaAcutenticado(false)
           setIdUser("")
@@ -238,7 +237,7 @@ const Register = () => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DesktopDatePicker
                     label="Fecha de nacimiento"
-                    inputFormat="MM/DD/YYYY"
+                    inputFormat="DD/MM/YYYY"
                     value={date}
                     onChange={handleDate}
                     renderInput={(params) => <TextField {...params} />}
@@ -284,15 +283,15 @@ const Register = () => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Typography>¡Añade tus redes sociales!</Typography>
+                      <Typography>¡Añade enlaces a tus redes sociales!</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                      id="Instrgram" label="Instragram" variant="outlined" onChange={(ins) => redesSociales[0] = "heyy"} value={redesSociales[0]}/>
+                      id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
                       <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
-                      id="Twitter" label="Twitter" variant="outlined" onChange={(tw) => redesSociales[1] = tw + ""} value={redesSociales[1]}/>
+                      id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
                       <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
-                      id="YouTube" label="YouTube" variant="outlined" onChange={(yt) => redesSociales[2] = yt + ""} value={redesSociales[2]}/>
+                      id="YouTube" label="YouTube" variant="outlined" value={redesSociales[2]} onChange={(yt) => handleRedesSociales(2, yt.target.value)}/>
                     </AccordionDetails>
                   </Accordion>
                 </Grid>

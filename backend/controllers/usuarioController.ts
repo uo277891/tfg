@@ -26,7 +26,7 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
 
 const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo} = req.body;
+    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo, genero, redes} = req.body;
 
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
     if(usuarioAsociado !== null){
@@ -34,7 +34,7 @@ const insertarUsuario = async (req: Request, res: Response): Promise<Response> =
     }
     else{
       const contrasena = await encriptar(contraseña)
-      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo})
+      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo, genero, redes})
       await usuarioAInsertar.save();
       const user = await usuarioSquema.findOne({nombre: nombre});
       return res.status(200).json({creado: true, usuario: user});
