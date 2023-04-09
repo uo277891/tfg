@@ -7,7 +7,6 @@ function SimboloCarga (props: any) {
         <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={props.open}
-            onClick={props.close}
         >
             <CircularProgress color="inherit" />
       </Backdrop>
