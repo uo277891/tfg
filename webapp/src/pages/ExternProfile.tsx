@@ -10,7 +10,9 @@ import TableRow from '@mui/material/TableRow';
 import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 import PublicationCard from "../components/PublicationCard";
-import { getPublicaciones, getSeguidores, getUsuario, isSeguidor, dejarDeSeguir, seguir, getPublicacionesByTipo } from "../accesoApi/api";
+import { getUsuario } from "../accesoApi/apiUsuarios";
+import { getPublicaciones, getPublicacionesByTipo } from "../accesoApi/apiPublicaciones";
+import { getSeguidores, isSeguidor, dejarDeSeguir, seguir } from "../accesoApi/apiSeguidores"
 import { useParams } from 'react-router-dom';
 import { Publicacion, Seguidor, Usuario } from "../interfaces/interfaces";
 import Link from '@mui/material/Link';

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import { getFollowingUsers, getUsuarios } from "../accesoApi/api";
+import { getUsuariosByNameAndId, getUsuarios } from "../accesoApi/apiUsuarios";
 import { Usuario } from "../interfaces/interfaces";
 import UserCard from "../components/UserCard";
 import List from '@mui/material/List';
@@ -12,7 +12,7 @@ import SimboloCarga from "../components/SimboloCarga";
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import { getUsuariosByNameAndId } from "../accesoApi/api";
+import { getFollowingUsers } from "../accesoApi/apiSeguidores";
 
 const FollowingUsers = () => {
 

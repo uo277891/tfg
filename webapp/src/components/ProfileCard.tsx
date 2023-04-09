@@ -12,7 +12,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { actualizaFoto, getSignature } from '../accesoApi/api';
+import { getSignature } from '../accesoApi/apiCloudinary';
+import { actualizaFoto } from '../accesoApi/apiUsuarios';
 import {parseFecha} from '../util/parseFecha';
 
 function CardProfile (props: any) {
