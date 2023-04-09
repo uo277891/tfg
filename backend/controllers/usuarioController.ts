@@ -122,6 +122,22 @@ const getUsuariosByName = async (req: Request, res: Response): Promise<Response>
   }
 }
 
+const getUsuariosByNameAndId = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const nombre = req.params.name;
+    const id_usuario = req.params.idUsu.split(',');
+    const usuarioAsociado = await usuarioSquema.find({_id: {$in: id_usuario}, nombre: { $regex: '.*' + nombre + '.*' }});
+    if(usuarioAsociado === null){
+      return res.status(400).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const getUsuariosByCountry = async (req: Request, res: Response): Promise<Response> => {
   try {
     const pais = req.params.country;
@@ -221,4 +237,5 @@ const updateFoto = async (req: Request, res: Response): Promise<Response> => {
 }
 
 module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, 
-  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByFecha, getUsuariosByIdInDate, getUsuariosByGenero}
+  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByNameAndId,
+  getUsuariosByTipoUsuario, getUsuariosByFecha, getUsuariosByIdInDate, getUsuariosByGenero}

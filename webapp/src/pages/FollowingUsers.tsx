@@ -9,6 +9,10 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import SimboloCarga from "../components/SimboloCarga";
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import { getUsuariosByNameAndId } from "../accesoApi/api";
 
 const FollowingUsers = () => {
 
@@ -26,6 +30,8 @@ const FollowingUsers = () => {
 
     const [cargando, setCargando] = useState<Boolean>(true);
 
+    const [texto, setTexto] = useState("");
+
     const buscarUsuarios = useCallback(async () => {
         setCargando(true)
         const users = await getFollowingUsers(idUser)
@@ -37,6 +43,21 @@ const FollowingUsers = () => {
         buscarUsuarios();
     }, [])
 
+    async function HandleBuscaUsuarios () {
+        if(texto.length === 0){
+            setCargando(true)
+            const users = await getFollowingUsers(idUser)
+            setUsuarios(await getUsuarios(users))
+            setCargando(false)
+        }
+        else{
+            setCargando(true)
+            const users = await getFollowingUsers(idUser)
+            setUsuarios(await getUsuariosByNameAndId(users, texto))
+            setCargando(false)
+        }
+    }
+
     if(cargando)
         return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
     else{
@@ -44,6 +65,19 @@ const FollowingUsers = () => {
         <div id="findUsers">
             <main>
                 <h1>Usuarios a los que sigues:</h1>
+                <Grid container spacing={5}>
+                    <Grid item xs={11}>
+                        <TextField fullWidth label="Buscar usuarios"  value={texto}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setTexto(event.target.value);
+                        }}/>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <IconButton onClick = {HandleBuscaUsuarios}>
+                            <SearchIcon  id="questionIcon" fontSize="large"></SearchIcon>
+                        </IconButton>
+                    </Grid>
+                </Grid>
                 <Grid>
                     <List >
                         {usuarios.slice((page - 1) * numElementos, numElementos * page).map((usuario: Usuario) =>
