@@ -8,7 +8,8 @@ import Textarea from '@mui/base/TextareaAutosize';
 import Collapse from '@mui/material/Collapse';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-import { actualizaPublicacion, añadirPublicacion, getSignature, uploadMultimedia } from "../accesoApi/api";
+import { actualizaPublicacion, añadirPublicacion } from "../accesoApi/apiPublicaciones";
+import {uploadMultimedia} from "../accesoApi/apiCloudinary"
 
 const llamadaBase = "http://localhost:5000/"
 const NewPublication = () => {

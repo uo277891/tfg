@@ -21,8 +21,8 @@ const App = () => {
 
   return(
     <div className="App">
+      <Grid container>
       <Router>
-        <Grid container>
           <Grid item xs={2}>
             <NavBarLeft />
           </Grid>
@@ -44,8 +44,8 @@ const App = () => {
             </Routes>
             <Footer />
           </Grid>
-        </Grid>
       </Router>
+      </Grid>
 		</div>
   );
 }

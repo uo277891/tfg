@@ -14,7 +14,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { borrarPublicacion, eliminarPublicacion } from '../accesoApi/api';
+import { eliminarPublicacion } from '../accesoApi/apiPublicaciones';
+import { borrarPublicacion } from '../accesoApi/apiCloudinary';
 import {parseFecha} from '../util/parseFecha';
 
 function PublicationCard (props: any) {
