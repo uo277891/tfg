@@ -15,6 +15,7 @@ const publicacionRoute = require('./routes/publicationRoute')
 const seguidorRoute = require('./routes/seguidorRoute')
 const cloudinaryRoute = require('./routes/cloudinaryRoutes')
 const comentarioRoute = require('./routes/comentarioRoutes')
+const spotifyRoute = require('./routes/spotifyRouters')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -24,6 +25,7 @@ app.use(publicacionRoute)
 app.use(seguidorRoute)
 app.use(cloudinaryRoute)
 app.use(comentarioRoute)
+app.use(spotifyRoute)
 //app.use(cookieSesion({name: "sesion-inicio", secret: process.env.SECRET, httpOnly: true}))
 
 app.listen(port, () => {
