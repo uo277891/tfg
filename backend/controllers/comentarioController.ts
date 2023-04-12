@@ -5,7 +5,7 @@ const comentarioModel = require('../models/comentariosModel');
 const insertarComentario = async (req: Request, res: Response): Promise<Response> => {
     try {
       const {id_publicacion, id_usu_coment, texto} = req.body;
-      const fecha = Date.now()
+      const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
       const comentarioAInsertar = new comentarioModel({id_publicacion, id_usu_coment, texto, fecha})
       comentarioAInsertar.save();
       return res.status(200).json({insertado: true});

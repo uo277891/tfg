@@ -37,7 +37,7 @@ const seguir = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.body.idUser;
     const id_seguidor = req.body.idSeg;
-    const fecha = Date.now()
+    const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
     const seguidorAInsertar = new seguidorModel({id_usuario, id_seguidor, fecha})
     seguidorAInsertar.save();
     return res.status(200).json({seguidor: true});
