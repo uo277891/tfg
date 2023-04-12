@@ -1,3 +1,4 @@
+import * as React from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
@@ -19,10 +20,21 @@ function UserCard (props: any) {
                 <ListItemAvatar>
                     <Avatar src= {props.usuario.enlace_foto}></Avatar>
                 </ListItemAvatar>
-                <ListItemText primary = {props.usuario.nombre} secondary = {props.usuario.tipo}></ListItemText>
-                <Grid container sx={{ maxWidth: 900}} justifyContent="left">
-                    <Typography sx = {{fontWeight: 'bold'}}>{props.usuario.genero}</Typography>
-                </Grid>
+                <ListItemText primary = {props.usuario.nombre} 
+                    secondary={
+                        <React.Fragment>
+                        <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                        >
+                            {props.usuario.tipo} 
+                        </Typography>
+                        {" - " + props.usuario.genero}
+                        </React.Fragment>
+                        }>
+                </ListItemText>
             </ListItem>
         );
 }

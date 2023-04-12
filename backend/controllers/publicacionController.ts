@@ -58,8 +58,7 @@ const getPublicacion = async (req: Request, res: Response): Promise<Response> =>
 const insertarPublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {texto, id_usuario, enlace_multimedia, tipo_multimedia} = req.body;
-
-    const fecha = Date.now()
+    const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
     const likes: String[] = []
     const publicacionAInsertar = new publicacionModel({texto, id_usuario, enlace_multimedia, tipo_multimedia, fecha, likes})
     publicacionAInsertar.save();
