@@ -5,7 +5,7 @@ const ExplicacionSpotify = () => {
   return (
     <div className="expSpo">
         <main>
-            <h1>Cómo obtener tu ID de Spotify</h1>
+            <h1>Qué datos se sacan de Spotify</h1>
             <p>Una vez nos proporciones tu ID de Spotify, a través de la API se sacarán los siguientes datos:</p>
         </main>
         <section>
