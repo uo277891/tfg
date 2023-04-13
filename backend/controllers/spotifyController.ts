@@ -22,12 +22,12 @@ const getToken = async () => {
 
 const getArtista = async (req: Request, res: Response): Promise<Response> => {
     try {
+        getToken()
         const idArtist = req.params.idArtist
         const artista = await spotify.getArtist(idArtist)
-        return res.status(200).json({artista: artista});
+        return res.status(200).json({artista: artista.body});
     } catch (error) {
-        getToken()
-        return getArtista(req, res);
+        return res.status(500).send(error);
     }
 }
 
@@ -35,8 +35,8 @@ const getAlbumesArtista = async (req: Request, res: Response): Promise<Response>
     try {
         getToken()
         const idArtist = req.params.idArtist
-        const albumes = await spotify.getArtistAlbums(idArtist, { limit: 5, offset: 0 })
-        return res.status(200).json({albumes: albumes});
+        const albumes = await spotify.getArtistAlbums(idArtist, { limit: 6, offset: 0 })
+        return res.status(200).json({albumes: albumes.body.items});
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -48,7 +48,7 @@ const getMejoresCancionesArtista = async (req: Request, res: Response): Promise<
         const idArtist = req.params.idArtist
         const pais = req.params.pais
         const canciones = await spotify.getArtistTopTracks(idArtist, pais)
-        return res.status(200).json({canciones: canciones});
+        return res.status(200).json({canciones: canciones.body.tracks});
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -58,8 +58,8 @@ const getArtistasSimilares = async (req: Request, res: Response): Promise<Respon
     try {
         getToken()
         const idArtist = req.params.idArtist
-        const canciones = await spotify.getArtistRelatedArtists(idArtist)
-        return res.status(200).json({canciones: canciones});
+        const artSimilares = await spotify.getArtistRelatedArtists(idArtist)
+        return res.status(200).json({artSimilares: artSimilares.body.artists});
     } catch (error) {
         return res.status(500).send(error);
     }

@@ -25,12 +25,12 @@ import RedesSociales from "../util/linkRedesSociales";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
 import Filtro from '../components/FiltrosPublicaciones';
 import SimboloCarga from "../components/SimboloCarga";
+import spotifyLogo from "../images/SpotifyLogoMini.png"
 
 type Anchor = 'left';
 
@@ -169,6 +169,11 @@ const ExternProfile = () => {
                             <TableCell sx={{fontSize: 40}} align="center">{publicaciones.length}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{seguidores.length}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{usuario.genero}</TableCell>
+                            {usuario.nombre_spotify !== "" && <TableCell sx={{fontSize: 20}} align="center">
+                                <Link href={"/spotify/data/" + usuario.nombre_spotify} underline="none">
+                                    <Button color="success" className="boton" variant="contained">Estadísticas Spotify</Button>
+                                </Link>
+                            </TableCell>}
                             {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
                             {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">
                                 <Link href="/profile" underline="none">
@@ -193,7 +198,7 @@ const ExternProfile = () => {
                         </Drawer>
                     </React.Fragment>
                 </div>
-                <section id="publicaciones">
+                <section className="publicaciones">
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                         {publicaciones.slice((page - 1) * numElementos, numElementos * page).map((publicacion: Publicacion) => 
                             <Grid item xs={4}>

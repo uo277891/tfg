@@ -5,7 +5,7 @@ const ExplicacionSpotify = () => {
   return (
     <div className="expSpo">
         <main>
-            <h1>Qué datos se sacan de Spotify</h1>
+            <h1>Qué datos se extraen de Spotify</h1>
             <p>Una vez nos proporciones tu ID de Spotify, a través de la API se sacarán los siguientes datos:</p>
         </main>
         <section>
@@ -18,7 +18,7 @@ const ExplicacionSpotify = () => {
                         <li>Número de seguidores.</li>
                         <li>Enlace a tu perfil de Spotify.</li>
                     </ul>
-                <li><strong>Tus 5 álbumes más populares</strong></li>
+                <li><strong>Tus 6 álbumes más populares</strong></li>
                     <ul>
                         <li>Imagen del álbum.</li>
                         <li>Fecha de salida.</li>
@@ -26,7 +26,7 @@ const ExplicacionSpotify = () => {
                         <li>Popularidad en la plataforma.</li>
                         <li>Enlace al álbum.</li>
                     </ul>
-                <li><strong>Tus 5 canciones más populares</strong></li>
+                <li><strong>Tus 6 canciones más populares</strong></li>
                     <ul>
                         <li>Imagen del álbum o canción.</li>
                         <li>Fecha de salida.</li>
