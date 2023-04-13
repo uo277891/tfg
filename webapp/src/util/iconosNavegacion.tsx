@@ -9,6 +9,8 @@ import PublicIcon from '@mui/icons-material/Public';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 import { common } from '@mui/material/colors';
 
 function Icono(props: any) {
@@ -20,6 +22,10 @@ function Icono(props: any) {
         return (<AddCircleIcon sx={{color: common.white}}></AddCircleIcon>)
     else if(props.icono === "Sobre SocialFS")
         return (<HelpOutlineIcon sx={{color: common.white}}></HelpOutlineIcon>)
+    else if(props.icono === "Obtener ID Spotify")
+        return (<MusicNoteIcon sx={{color: common.white}}></MusicNoteIcon>)
+    else if(props.icono === "Datos de Spotify")
+        return (<AssessmentIcon sx={{color: common.white}}></AssessmentIcon>)
     else if(props.icono === "Perfil")
         return (<AccountCircleIcon sx={{color: common.white}}></AccountCircleIcon>)
     else if(props.icono === "Cerrar Sesión")
