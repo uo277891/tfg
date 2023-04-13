@@ -16,8 +16,8 @@ import { Usuario } from "../interfaces/interfaces";
 import Avatar from '@mui/material/Avatar';
 import Icono from '../util/iconosNavegacion';
 
-const nombrePagina = ['Sobre SocialFS'];
-const linkPagina = ['aboutSocialfs']
+const nombrePagina = ['Sobre SocialFS', "Obtener ID Spotify", "Datos de Spotify"];
+const linkPagina = ['aboutSocialfs', 'idspotify', 'spotify/explanation/']
 
 const paginasInicioSesion = ['Siguiendo', 'Buscar usuarios','Crear publicación'];
 const linkPaginaInicioSesion = ['follow', 'find', 'publication/new']

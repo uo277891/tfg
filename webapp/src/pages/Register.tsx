@@ -286,7 +286,7 @@ const Register = () => {
                     ))}
                   </TextField>
                   <br/>
-                  {tipoUsu !== "Estándar" && <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
+                  {tipoUsu !== "Estándar" && <TextField id="spotyName" label="ID Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
                   <br/>
                   <Grid container alignItems="center" justifyContent="center">
                     <Accordion sx={{width: '50%'}}>
@@ -326,6 +326,7 @@ const Register = () => {
               <Button className="boton" variant="contained" onClick={registrarse}>Registrarse</Button>
             </TabPanel>
             <p>¿Ya tienes cuenta?, ¡inicia sesión pulsando <Link href="/login" >aquí</Link>!</p>
+            <p>Consulta cómo obtener tu ID de Spotify <Link href="/idspotify" >aquí</Link>!</p>
             <Box sx={{ width: '100%' }}>
             <Collapse in={registerError}>
               <Alert

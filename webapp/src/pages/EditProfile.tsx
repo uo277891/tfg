@@ -177,7 +177,7 @@ const EditProfile = () => {
               </TextField>
               <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
               <br/>
-              <TextField id="spotyName" label="Nombre de Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>
+              <TextField id="spotyName" label="ID Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>
               <br/>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopDatePicker

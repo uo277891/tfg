@@ -16,6 +16,8 @@ import Publication from './pages/Publication';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Grid from "@mui/material/Grid";
 import Estadisticas from './pages/Estadisticas';
+import IDSpotify from './pages/IDSpotify';
+import ExplicacionSpotify from './pages/ExplicacionSpotify';
 
 const App = () => {
 
@@ -41,6 +43,8 @@ const App = () => {
               <Route path='/follow' element={<FollowingUsers/>}/>
               <Route path='/publication/:id' element={<Publication/>}/>
               <Route path='/stats/' element={<Estadisticas/>}/>
+              <Route path='/idspotify/' element={<IDSpotify/>}/>
+              <Route path='/spotify/explanation/' element={<ExplicacionSpotify/>}/>
             </Routes>
             <Footer />
           </Grid>

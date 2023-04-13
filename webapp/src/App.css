@@ -3,6 +3,7 @@
 @import url("./styles/externProfile.css");
 @import url("./styles/findUsers.css");
 @import url("./styles/estadisticas.css");
+@import url("./styles/idSpo.css");
 
 * {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;

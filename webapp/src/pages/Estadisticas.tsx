@@ -38,7 +38,7 @@ const Estadisticas = () => {
 
   const [posicionesTexto, setPosicionesTexto] = React.useState<number[]>([]);
 
-  const [textoEdad, setTextoEdad] = React.useState<string[]>(["Jóven", "Adulto", "Mayor"]);
+  const [textoEdad, setTextoEdad] = React.useState<string[]>(["Joven", "Adulto", "Mayor"]);
 
   const [textoPais, setTextoPais] = React.useState<string[]>(["", "", ""]);
 

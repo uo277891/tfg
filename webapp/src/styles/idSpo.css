@@ -1,0 +1,78 @@
+.idSpo {
+    align-items: center;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+.idSpo h1 {
+    font-size: 4em;
+}
+
+.idSpo p {
+    text-align: center;
+}
+
+.idSpo li{
+    font-size: 2em;
+    padding: 0.5em;
+}
+
+.idSpo .boton {
+    background-color: rgb(133, 39, 39);
+}
+
+.expSpo {
+    align-items: center;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+.expSpo h1 {
+    font-size: 3em;
+}
+
+.expSpo p {
+    text-align: center;
+}
+
+
+.expSpo{
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(3, auto);
+    gap: 1em;
+    align-items: center;
+    color: black;
+}
+
+.expSpo main {
+    padding: 1.5em;
+    margin: 1.5em;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 1;
+}
+
+.expSpo li{
+    font-size: 1em;
+    padding: 0.3em;
+}
+
+.expSpo main p {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  font-size: 1em;
+}
+
+.expSpo .boton{
+background-color: rgb(133, 39, 39);
+}
+
+.boton{
+  background-color: rgb(133, 39, 39);
+}
+
+.expSpo aside {
+  margin-top: 3em;
+}
