@@ -1,0 +1,80 @@
+.dataSpo {
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+.dataSpo audio {
+   align-items: center;
+   padding: 1em;
+}
+
+.dataSpo h1 {
+    font-size: 4em;
+}
+
+.dataSpo p {
+    font-size: 2em;
+    text-align: left;
+    color: rgb(133, 39, 39);
+}
+
+.dataSpo h4 {
+    font-size: 1.7em;
+    text-align: left;
+    color: rgb(255, 255, 255);
+}
+
+.dataSpo h5 {
+    font-size: 1.4em;
+    color: rgb(177, 244, 247);
+}
+
+.dataSpo .boton {
+    background-color: rgb(133, 39, 39);
+}
+
+#artistCard{
+    background-color: #3d3d3d
+}
+
+#externArtistCard{
+    background-color: #b3b3b3
+}
+
+#externArtistCard h4 {
+    font-size: 1.2em;
+    text-align: left;
+    color: rgb(255, 255, 255);
+}
+
+#externArtistCard h5 {
+    font-size: 1.2em;
+    color: rgb(20, 49, 51);
+}
+
+#externArtistCard p {
+    font-size: 2.5em;
+    text-align: center;
+    color: rgb(126, 29, 29);
+}
+
+#albumCard{
+    background-color: #000000
+}
+
+#albumCard h4 {
+    font-size: 1.1em;
+    text-align: left;
+    color: rgb(255, 255, 255);
+}
+
+#albumCard h5 {
+    font-size: 1.2em;
+    color: rgb(177, 244, 247);
+}
+
+#albumCard p {
+    font-size: 1.7em;
+    text-align: center;
+    color: rgb(226, 103, 103);
+}

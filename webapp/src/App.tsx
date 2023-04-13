@@ -18,6 +18,7 @@ import Grid from "@mui/material/Grid";
 import Estadisticas from './pages/Estadisticas';
 import IDSpotify from './pages/IDSpotify';
 import ExplicacionSpotify from './pages/ExplicacionSpotify';
+import SpotifyData from './pages/SpotifyData';
 
 const App = () => {
 
@@ -45,6 +46,7 @@ const App = () => {
               <Route path='/stats/' element={<Estadisticas/>}/>
               <Route path='/idspotify/' element={<IDSpotify/>}/>
               <Route path='/spotify/explanation/' element={<ExplicacionSpotify/>}/>
+              <Route path='/spotify/data/:idSpo' element={<SpotifyData/>}/>
             </Routes>
             <Footer />
           </Grid>
