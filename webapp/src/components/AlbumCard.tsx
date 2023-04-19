@@ -9,7 +9,7 @@ import { parseFecha } from '../util/parseFecha';
 const AlbumCard = (props: any) => {
 
     function listadoArtistas () {
-        var artistas = ""
+        var artistas = "" 
         props.album.artists.map( (artista: any) => {
             artistas += artista.name + ", "
         })
