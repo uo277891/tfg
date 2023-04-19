@@ -25,6 +25,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: Reporte
+        run: |
+          pip install -r requirements.txt
+          coverage run -m pytest
+          coverage xml
       - run: npm ci
       - run: npm test
       - uses: codecov/codecov-action@v3
