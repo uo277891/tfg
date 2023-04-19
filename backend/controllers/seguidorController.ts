@@ -37,7 +37,7 @@ const seguir = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.body.idUser;
     const id_seguidor = req.body.idSeg;
-    const fecha = Date.now()
+    const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
     const seguidorAInsertar = new seguidorModel({id_usuario, id_seguidor, fecha})
     seguidorAInsertar.save();
     return res.status(200).json({seguidor: true});
@@ -65,7 +65,6 @@ const dejarDeSeguir = async (req: Request, res: Response): Promise<Response> => 
 const getFollowingUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.params.idUser;
-    console.log(id_usuario)
     const users = await seguidorModel.find({id_seguidor: id_usuario});
     var listaIds: String[] = []
     users.map((user: any) => {
@@ -77,4 +76,18 @@ const getFollowingUsers = async (req: Request, res: Response): Promise<Response>
   }
 }
 
-module.exports = {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers}
+const getFollowsByUser = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_usuario = req.params.idUser;
+    const users = await seguidorModel.find({id_usuario: id_usuario});
+    var listaIds: String[] = []
+    users.map((user: any) => {
+      listaIds.push(user.id_seguidor)
+    })
+    return res.status(200).json({ followUsers: listaIds });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser}

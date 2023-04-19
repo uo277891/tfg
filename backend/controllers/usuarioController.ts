@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 const usuarioSquema = require('../models/usuarioModel');
 const {encriptar, comparaContraseñas} = require("../helpers/encryptContraseña");
-const jwt = require("jsonwebtoken")
 
 const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -27,7 +26,7 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
 
 const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo} = req.body;
+    const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo, genero, redes} = req.body;
 
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
     if(usuarioAsociado !== null){
@@ -35,7 +34,7 @@ const insertarUsuario = async (req: Request, res: Response): Promise<Response> =
     }
     else{
       const contrasena = await encriptar(contraseña)
-      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo})
+      const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo, genero, redes})
       await usuarioAInsertar.save();
       const user = await usuarioSquema.findOne({nombre: nombre});
       return res.status(200).json({creado: true, usuario: user});
@@ -76,6 +75,23 @@ const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
+const getUsuariosByIdInDate = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_user = req.params.idUser.split(',');
+    const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
+    const fechaFin = new Date(parseInt(req.params.fechaFin), 0);
+    const usuarios = await usuarioSquema.find({$and:[{_id: {$in: id_user}, fecha_nac: {"$gte" : fechaFin, "$lte" : fechaInicio}}]});
+    if(usuarios === null){
+      return res.status(400).json({users: []});
+    }
+    else{
+      return res.status(200).json({ users: usuarios });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
@@ -96,7 +112,84 @@ const getUsuariosByName = async (req: Request, res: Response): Promise<Response>
     const nombre = req.params.name;
     const usuarioAsociado = await usuarioSquema.find({nombre: { $regex: '.*' + nombre + '.*' }});
     if(usuarioAsociado === null){
-      return res.status(400).json("No hay usuarios con ese nombre");
+      return res.status(400).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const getUsuariosByNameAndId = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const nombre = req.params.name;
+    const id_usuario = req.params.idUsu.split(',');
+    const usuarioAsociado = await usuarioSquema.find({_id: {$in: id_usuario}, nombre: { $regex: '.*' + nombre + '.*' }});
+    if(usuarioAsociado === null){
+      return res.status(400).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const getUsuariosByCountry = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const pais = req.params.country;
+    const usuarioAsociado = await usuarioSquema.find({pais: pais });
+    if(usuarioAsociado === null){
+      return res.status(200).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const getUsuariosByTipoUsuario = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const tipo = req.params.tipoUsu;
+    const usuarioAsociado = await usuarioSquema.find({tipo: tipo });
+    if(usuarioAsociado === null){
+      return res.status(200).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const getUsuariosByGenero = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const genero = req.params.genero;
+    const usuarioAsociado = await usuarioSquema.find({genero: genero });
+    if(usuarioAsociado === null){
+      return res.status(200).json({ users: [] });
+    }
+    else{
+      return res.status(200).json({ users: usuarioAsociado });
+    } 
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const getUsuariosByFecha = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
+    const fechaFin = new Date(parseInt(req.params.fechaFin), 0);
+    const usuarioAsociado = await usuarioSquema.find({fecha_nac: {"$gte" : fechaFin, "$lte" : fechaInicio}});
+    if(usuarioAsociado === null){
+      return res.status(200).json({ users: [] });
     }
     else{
       return res.status(200).json({ users: usuarioAsociado });
@@ -143,4 +236,6 @@ const updateFoto = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, getUsuarios, updateFoto}
+module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, 
+  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByNameAndId,
+  getUsuariosByTipoUsuario, getUsuariosByFecha, getUsuariosByIdInDate, getUsuariosByGenero}

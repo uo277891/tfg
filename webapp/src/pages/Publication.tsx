@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect } from "react";
 import { useLocalStorage } from "../localStorage/useLocalStorage";
-import { actualizarLikes, añadirComentario, getComentarios, getPublicacion, getUsuario } from "../accesoApi/api";
+import { añadirComentario, getComentarios } from "../accesoApi/apiComentarios";
+import { actualizarLikes, getPublicacion } from "../accesoApi/apiPublicaciones";
+import { getUsuario } from "../accesoApi/apiUsuarios";
 import { useParams } from 'react-router-dom';
 import { Comentario, Publicacion, Usuario } from "../interfaces/interfaces";
 import { styled } from '@mui/material/styles';
@@ -26,6 +28,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import {parseFecha, parseHora} from '../util/parseFecha';
+import SimboloCarga from '../components/SimboloCarga';
 
 const Publication = () => {
 
@@ -123,97 +127,101 @@ const Publication = () => {
       }
   }
 
-    if(usuarioEstaAutenticado && !cargando && publicacion !== undefined && usuarioPublicacion !== undefined){
-        return (
-          <div id="profile">
-            <Card sx={{ margin: "auto", maxWidth: 600, minHeight:200 }}>
-            <CardHeader
-              avatar={
-                <Avatar alt="Foto de perfil"
-                src={usuarioPublicacion.enlace_foto}/>
-              }
-              title={usuarioPublicacion.nombre}
-              subheader={publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')}
-            />
-            {publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe"  &&
-            <CardMedia
-                component= {publicacion.tipo_multimedia}
-                image={publicacion.enlace_multimedia}
-            />}
-            <CardContent>
-              <Typography variant="body1" fontSize={22}>
-                {publicacion.texto}
-              </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-            <Tooltip title="Me gusta">
-                <IconButton aria-label="add to favorites">
-                  <FavoriteIcon style={{color: colorCorazon}} onClick={handleLike}/>
-                </IconButton>
+  if(cargando)
+    return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+
+  else if(usuarioEstaAutenticado && publicacion !== undefined && usuarioPublicacion !== undefined){
+    return (
+      <div id="profile">
+        <Card sx={{ margin: "auto", maxWidth: 600, minHeight:200 }}>
+        <CardHeader
+          avatar={
+            <Avatar alt="Foto de perfil"
+            src={usuarioPublicacion.enlace_foto}/>
+          }
+          title={usuarioPublicacion.nombre}
+          subheader={parseFecha(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) +
+        ", " + parseHora(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) }
+        />
+        {(publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe")  &&
+        <CardMedia
+            component= {publicacion.tipo_multimedia}
+            image={publicacion.enlace_multimedia}
+        />}
+        <CardContent>
+          <Typography variant="body1" fontSize={22}>
+            {publicacion.texto}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+        <Tooltip title="Me gusta">
+            <IconButton aria-label="add to favorites">
+              <FavoriteIcon style={{color: colorCorazon}} onClick={handleLike}/>
+            </IconButton>
+          </Tooltip>
+          <Typography variant="body1" color="text.primary" fontSize={20}>
+            {publicacion.likes.length}
+          </Typography>
+          <Tooltip title="Añadir comentario">
+            <IconButton aria-label="add comment">
+              <AddCommentIcon style={{color: "blue"}} onClick={handleClickOpen}/>
+            </IconButton>
+          </Tooltip>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Añadir comentario</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Atención: El comentario será público para todas las personas que puedan visualizar la publicación.
+              </DialogContentText>
+              <Textarea color="neutral" style={{ width: 550, fontSize:'1.4em' }} minRows={10} placeholder="Introducir comentario (máximo 200 caracteres)" 
+                    id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
+                {text.length} / 200
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancelar</Button>
+              {text.length > 0 && text.length < 200 && <Button onClick={enviarComentario}>Publicar</Button>}
+            </DialogActions>
+          </Dialog>
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <Tooltip title="Ver comentarios">
+                <ExpandMoreIcon />
               </Tooltip>
-              <Typography variant="body1" color="text.primary" fontSize={20}>
-                {publicacion.likes.length}
-              </Typography>
-              <Tooltip title="Añadir comentario">
-                <IconButton aria-label="add comment">
-                  <AddCommentIcon style={{color: "blue"}} onClick={handleClickOpen}/>
-                </IconButton>
-              </Tooltip>
-              <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Añadir comentario</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Atención: El comentario será público para todas las personas que puedan visualizar la publicación.
-                  </DialogContentText>
-                  <Textarea color="neutral" style={{ width: 550, fontSize:'1.4em' }} minRows={10} placeholder="Introducir comentario (máximo 200 caracteres)" 
-                        id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
-                    {text.length} / 200
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancelar</Button>
-                  {text.length > 0 && text.length < 200 && <Button onClick={enviarComentario}>Publicar</Button>}
-                </DialogActions>
-              </Dialog>
-                <ExpandMore
-                  expand={expanded}
-                  onClick={handleExpandClick}
-                  aria-expanded={expanded}
-                  aria-label="show more"
-                >
-                  <Tooltip title="Ver comentarios">
-                    <ExpandMoreIcon />
-                  </Tooltip>
-                </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <CardContent>
-                Comentarios:
-                {comentarios.map((comentario: Comentario) => 
-                  <CommentCard comentario = {comentario}></CommentCard>
-                )}
-              </CardContent>
-            </Collapse>
-            </Card>
-          </div>
-        )
-    }else if(!usuarioEstaAutenticado){
-        return(
-        <div id="externProfile">
-            <main>
-            <h1>Inicia sesión para poder ver perfiles ajenos.</h1>
-            </main>
-        </div>
-        )
-    }
-    else{
-        return(
-        <div id="externProfile">
-            <main>
+            </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            Comentarios:
+            {comentarios.map((comentario: Comentario) => 
+              <CommentCard comentario = {comentario}></CommentCard>
+            )}
+          </CardContent>
+        </Collapse>
+        </Card>
+      </div>
+    )
+  }else if(!usuarioEstaAutenticado){
+    return(
+    <div id="externProfile">
+        <main>
+        <h1>Inicia sesión para poder ver perfiles ajenos.</h1>
+        </main>
+    </div>
+    )
+  }
+  else{
+      return(
+      <div id="externProfile">
+          <main>
             <h1>Publicación no disponible.</h1>
-            </main>
-        </div>
-        )
-    }
+          </main>
+      </div>
+      )
+  }
 }
 
 export default Publication;

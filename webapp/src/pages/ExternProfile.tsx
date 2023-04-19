@@ -10,14 +10,35 @@ import TableRow from '@mui/material/TableRow';
 import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 import PublicationCard from "../components/PublicationCard";
-import { getPublicaciones, getSeguidores, getUsuario, isSeguidor, dejarDeSeguir, seguir } from "../accesoApi/api";
+import { getUsuario } from "../accesoApi/apiUsuarios";
+import { getPublicaciones, getPublicacionesByTipo } from "../accesoApi/apiPublicaciones";
+import { getSeguidores, isSeguidor, dejarDeSeguir, seguir } from "../accesoApi/apiSeguidores"
 import { useParams } from 'react-router-dom';
 import { Publicacion, Seguidor, Usuario } from "../interfaces/interfaces";
 import Link from '@mui/material/Link';
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
+import React from "react";
+import { Drawer, Typography } from "@mui/material";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import RedesSociales from "../util/linkRedesSociales";
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import Icono from '../util/iconosNavegacion';
+import { common } from '@mui/material/colors';
+import Filtro from '../components/FiltrosPublicaciones';
+import SimboloCarga from "../components/SimboloCarga";
+import spotifyLogo from "../images/SpotifyLogoMini.png"
+
+type Anchor = 'left';
 
 const ExternProfile = () => {
 
     const {id} = useParams();
+
+    const [state, setState] = React.useState({left: false});
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
@@ -33,10 +54,22 @@ const ExternProfile = () => {
 
     const [leSigue, setLeSigue] = useState<boolean>();
 
+    const [page, setPage] = React.useState(1);
+
+    const [filtroPublicacion, setFiltroPublicacion] = useState("todos");
+
+    const [ordenadoFecha, setOrdenadoFecha] = useState("fecha");
+
+    const numElementos = 9
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
+
     const datosIniciales = useCallback(async () => {
         setCargando(true)
         setSeguidores(await getSeguidores(id))
-        setPublicaciones(await getPublicaciones(id))
+        setPublicaciones(await getPublicaciones(id, "fecha"))
         const user = await getUsuario(id)
         if(user != undefined)
             setUsuario(user[0])
@@ -58,7 +91,58 @@ const ExternProfile = () => {
         await datosIniciales();
     }
 
-    if(usuarioEstaAutenticado && !cargando && usuario !== undefined){
+    async function handleFiltro () {
+        setCargando(true)
+        if(filtroPublicacion !== ""){
+            if(ordenadoFecha === "" || ordenadoFecha === undefined)
+                    setOrdenadoFecha("fecha")
+            if(filtroPublicacion !== "todos"){
+                const pubs = await getPublicacionesByTipo(id, filtroPublicacion, ordenadoFecha)
+                setPublicaciones(pubs)
+            }
+            else{
+                const publicaciones = await getPublicaciones(id, ordenadoFecha)
+                setPublicaciones(publicaciones)
+            }
+        }
+        setCargando(false)
+    }
+
+    const toggleDrawer =
+        (anchor: Anchor, open: boolean) =>
+        (event: React.KeyboardEvent | React.MouseEvent) => {
+          if (event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) {
+            return;
+          }
+    
+          setState({ ...state, [anchor]: open });
+        };
+    
+      const list = () => (
+        <Box sx={{ width: 250 }}>
+          <List>
+            {['Tipo publicación', 'Ordenar por'].map((text, index) => (
+                <Box key = {text} padding={'1em'}>
+                    <Typography variant='h5' >{text}<br/>
+                        <Filtro setFiltroPublicacion = {setFiltroPublicacion} setOrdenadoFecha={setOrdenadoFecha} index={index}></Filtro>
+                    </Typography>
+                    <Divider/>
+                </Box>
+
+            ))}
+            <Divider/>
+            <Box key = "buttonFilter" padding={'1em'}>
+                <Button fullWidth sx={{color: common.black}} startIcon={<Icono icono="Filtro"></Icono>} onClick={() => handleFiltro()}>
+                    <ListItemText primary="Aplicar filtros" />
+                </Button>
+            </Box>
+          </List>
+        </Box>
+      );
+
+    if(cargando)
+        return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+    else if(usuarioEstaAutenticado && !cargando && usuario !== undefined){
         return (
         <div id="externProfile">
             <main>
@@ -69,6 +153,7 @@ const ExternProfile = () => {
                         <TableCell align="center"></TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Publicaciones</TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Seguidores</TableCell>
+                            <TableCell sx={{fontSize: 20}} align="center">Genero Favorito</TableCell>
                             <TableCell align="center"></TableCell>
                         </TableRow>
                         </TableHead>
@@ -83,6 +168,12 @@ const ExternProfile = () => {
                             </TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{publicaciones.length}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{seguidores.length}</TableCell>
+                            <TableCell sx={{fontSize: 40}} align="center">{usuario.genero}</TableCell>
+                            {usuario.nombre_spotify !== "" && <TableCell sx={{fontSize: 20}} align="center">
+                                <Link href={"/spotify/data/" + usuario.nombre_spotify} underline="none">
+                                    <Button color="success" className="boton" variant="contained">Estadísticas Spotify</Button>
+                                </Link>
+                            </TableCell>}
                             {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
                             {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">
                                 <Link href="/profile" underline="none">
@@ -96,20 +187,31 @@ const ExternProfile = () => {
                 </TableContainer>
                 <h2>{usuario.nombre}</h2>
                 <p>{usuario.descripcion}</p>
+                <Typography variant="h4"><AutoAwesomeIcon id ="redes"></AutoAwesomeIcon>  Otras redes sociales</Typography>
+                <RedesSociales redes = {usuario.redes}></RedesSociales>
                 <h1>Publicaciones:</h1>
-                <section id="publicaciones">
-                    <Grid
-                        container
-                        spacing={{ xs: 2, md: 3 }}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                    >
-                        {publicaciones.map((publicacion: Publicacion) => 
+                <div className='estiloBase'>
+                    <React.Fragment key={'left'}>
+                        <Button className="boton" variant="contained" onClick={toggleDrawer('left', true)}>Filtros</Button>
+                        <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
+                            {list()}
+                        </Drawer>
+                    </React.Fragment>
+                </div>
+                <section className="publicaciones">
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {publicaciones.slice((page - 1) * numElementos, numElementos * page).map((publicacion: Publicacion) => 
                             <Grid item xs={4}>
                                 <PublicationCard publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
                             </Grid>
                         )}
                     </Grid>
                 </section>
+                <Grid container alignItems="center" justifyContent="center">
+                    <Stack spacing={2}>
+                        <Pagination color="secondary" count={Math.round(publicaciones.length / numElementos) + 1} page={page} onChange={handleChange} />
+                    </Stack>
+                </Grid>
             </main>
         </div>
         );
@@ -117,7 +219,7 @@ const ExternProfile = () => {
         return(
         <div id="externProfile">
             <main>
-            <h1>Inicia sesión para poder ver perfiles ajenos.</h1>
+                <h1>Inicia sesión para poder ver perfiles ajenos.</h1>
             </main>
         </div>
         )
@@ -126,7 +228,7 @@ const ExternProfile = () => {
         return(
         <div id="externProfile">
             <main>
-            <h1>Usuario no encontrado.</h1>
+                <h1>Usuario no encontrado.</h1>
             </main>
         </div>
         )

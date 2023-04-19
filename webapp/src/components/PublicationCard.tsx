@@ -14,7 +14,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { borrarPublicacion, eliminarPublicacion } from '../accesoApi/api';
+import { eliminarPublicacion } from '../accesoApi/apiPublicaciones';
+import { borrarPublicacion } from '../accesoApi/apiCloudinary';
+import {parseFecha} from '../util/parseFecha';
 
 function PublicationCard (props: any) {
 
@@ -36,21 +38,16 @@ function PublicationCard (props: any) {
         setOpen(false);
     }
 
-    console.log(props)
-
     return (
         <Card sx={{ maxWidth: 400 }} className='card'>
-            {props.publication.enlace_multimedia !== "" &&
-            <CardMedia
-                component= {props.publication.tipo_multimedia}
-                image={props.publication.enlace_multimedia}
-            />}
+            {(props.publication.tipo_multimedia === "img" || props.publication.tipo_multimedia === "iframe") &&
+            <CardMedia component= {props.publication.tipo_multimedia} image={props.publication.enlace_multimedia}/>}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                 {props.publication.texto}
                 </Typography>
                 <Typography gutterBottom variant="h6" component="div">
-                {props.publication.fecha.replace(/T/, ' ').replace(/\..+/, '')}
+                {parseFecha(props.publication.fecha.replace(/T/, ' ').replace(/\..+/, ''))}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
                 <FavoriteIcon sx={{color: red[500]}}></FavoriteIcon> {props.publication.likes.length}

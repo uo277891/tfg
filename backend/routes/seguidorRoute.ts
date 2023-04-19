@@ -1,7 +1,7 @@
 import express, {Router} from 'express';
 const api:Router = express.Router()
 
-const {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers} = require("../controllers/seguidorController")
+const {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser} = require("../controllers/seguidorController")
 
 api.get(
   "/seguidores/:idUsu",
@@ -26,6 +26,11 @@ api.delete(
 api.get(
   "/seguidores/getSeguidores/:idUser",
   getFollowingUsers
+);
+
+api.get(
+  "/seguidores/getseguidos/:idUser",
+  getFollowsByUser
 );
 
 module.exports = api;

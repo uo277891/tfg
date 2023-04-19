@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { getUsuario } from "../accesoApi/api";
+import { getUsuario } from "../accesoApi/apiUsuarios";
 import { Usuario } from "../interfaces/interfaces";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';

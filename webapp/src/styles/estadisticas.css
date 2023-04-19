@@ -1,0 +1,19 @@
+.est {
+    text-align: center;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+.est h1 {
+    font-size: 4em;
+}
+
+.est h4, h3 {
+    color: rgb(133, 39, 39);
+}
+
+.est .boton {
+    background-color: rgb(133, 39, 39);
+    margin: 0.5em;
+    color: rgb(255, 255, 255);
+}

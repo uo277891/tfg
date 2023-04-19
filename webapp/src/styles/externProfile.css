@@ -2,7 +2,7 @@
     padding-left: 1em;
 }
 
-#publicaciones{
+.publicaciones{
     padding: 3em;
 }
 
@@ -12,6 +12,10 @@ h1{
 
 h2{
     font-size: 2em;
+}
+
+#redes{
+    color: rgb(133, 39, 39);;
 }
 
 #externProfile p{

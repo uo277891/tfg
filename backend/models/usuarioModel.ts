@@ -24,6 +24,12 @@ const usuarioSchema = new Schema({
         type: String
     },tipo:{
         type: String
+    },
+    genero:{
+        type: String
+    },
+    redes:{
+        type: Array
     }
 })
 

@@ -15,13 +15,17 @@ import FollowingUsers from './pages/FollowingUsers';
 import Publication from './pages/Publication';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Grid from "@mui/material/Grid";
+import Estadisticas from './pages/Estadisticas';
+import IDSpotify from './pages/IDSpotify';
+import ExplicacionSpotify from './pages/ExplicacionSpotify';
+import SpotifyData from './pages/SpotifyData';
 
 const App = () => {
 
   return(
     <div className="App">
+      <Grid container>
       <Router>
-        <Grid container>
           <Grid item xs={2}>
             <NavBarLeft />
           </Grid>
@@ -39,11 +43,15 @@ const App = () => {
               <Route path='/find' element={<FindUsers/>}/>
               <Route path='/follow' element={<FollowingUsers/>}/>
               <Route path='/publication/:id' element={<Publication/>}/>
+              <Route path='/stats/' element={<Estadisticas/>}/>
+              <Route path='/idspotify/' element={<IDSpotify/>}/>
+              <Route path='/spotify/explanation/' element={<ExplicacionSpotify/>}/>
+              <Route path='/spotify/data/:idSpo' element={<SpotifyData/>}/>
             </Routes>
             <Footer />
           </Grid>
-        </Grid>
       </Router>
+      </Grid>
 		</div>
   );
 }

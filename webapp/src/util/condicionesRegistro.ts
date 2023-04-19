@@ -1,12 +1,11 @@
 import  Dayjs  from "dayjs";
 
 const errores: string[] = ["Algún campo está vacío", "Las contraseñas no coiciden", "La contraseña debe tener un mínimo de 8 caracteres", 
-"Debes tener más de 16 años", "La descripción debe ser de máximo 200 caracteres", "El nombre de usuario no puede ser mayor de 15 caracteres ni tener espacios",
+"Debes tener más de 16 años y menos de 150", "La descripción debe ser de máximo 200 caracteres", "El nombre de usuario no puede ser mayor de 15 caracteres ni tener espacios",
 "La localidad no puede ser mayor de 25 caracteres"]
 
 export function cumpleRegistro(userName:string, password: string, passwordConf: string, country:string, location:string, date: any, descripcion: string){
     const dateNow = Dayjs()
-    console.log(dateNow.diff(date, "days"))
     if(date === undefined)
         return 3;
     else if(userName === "" || password === "" || passwordConf === "" || country === ""){
@@ -18,7 +17,7 @@ export function cumpleRegistro(userName:string, password: string, passwordConf: 
     else if(password.length < 8) {
         return 2;
     }
-    else if(dateNow.diff(date, "days") < 5840 ) {
+    else if(dateNow.diff(date, "days") < 5840 ||  dateNow.diff(date, "days") > 54750) {
         return 3;
     }
     else if(descripcion.length > 200)

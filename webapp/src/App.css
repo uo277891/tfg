@@ -2,6 +2,9 @@
 @import url("./styles/forms.css");
 @import url("./styles/externProfile.css");
 @import url("./styles/findUsers.css");
+@import url("./styles/estadisticas.css");
+@import url("./styles/idSpo.css");
+@import url("./styles/dataSpo.css");
 
 * {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -31,6 +34,10 @@
 .estiloBase .boton{
   background-color: rgb(133, 39, 39);
 }
+
+.boton{
+	background-color: rgb(133, 39, 39);
+  }
 
 .estiloBase aside {
 	margin-top: 3em;
