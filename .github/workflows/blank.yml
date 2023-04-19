@@ -9,7 +9,7 @@ on:
     branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
-    
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   unit-test-webapp:
@@ -26,3 +26,5 @@ jobs:
       - run: npm test
       - name: Upload coverage reports to Codecov with GitHub Action
         uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
