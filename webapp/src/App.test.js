@@ -1,8 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/Login/i);
-  expect(linkElement).toBeInTheDocument();
+test('prueba codecov', () => {
+  const {getByText} = render(<App />);
+  expect(getByText("Red social de FreeStyle")).toBeInTheDocument();
 });
