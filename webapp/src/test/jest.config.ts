@@ -6,5 +6,4 @@ export default {
     collectCoverage: true,
     collectCoverageFrom:["/components/*.tsx"],
     testTimeout:15000
-
 }
