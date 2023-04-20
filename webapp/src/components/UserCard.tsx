@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
-import { Grid, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 function UserCard (props: any) {
 

@@ -30,7 +30,6 @@ import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
 import Filtro from '../components/FiltrosPublicaciones';
 import SimboloCarga from "../components/SimboloCarga";
-import spotifyLogo from "../images/SpotifyLogoMini.png"
 
 type Anchor = 'left';
 
