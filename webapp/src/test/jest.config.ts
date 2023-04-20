@@ -3,7 +3,5 @@ export default {
     transform: {
         "^.+\\.tsx?$": "ts-jest"
     },
-    collectCoverage: true,
-    collectCoverageFrom:["/components/*.tsx"],
-    testTimeout:15000
+    collectCoverage: true
 }
