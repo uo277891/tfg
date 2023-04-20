@@ -11,8 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { actualizaPublicacion, añadirPublicacion } from "../accesoApi/apiPublicaciones";
 import {uploadMultimedia} from "../accesoApi/apiCloudinary"
 
-const llamadaBase = "http://localhost:5000/"
-const NewPublication = () => {
+const NewPublication = (props: any) => {
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
@@ -78,7 +77,7 @@ const NewPublication = () => {
           }
     }
 
-    if(usuarioEstaAutenticado){
+    if(usuarioEstaAutenticado || props.test){
         return (
             <div id="newPublication" className="forms">
             <main>
@@ -93,8 +92,8 @@ const NewPublication = () => {
                     <h1>Nueva publicación</h1>
                     <Textarea color="neutral" style={{ width: 665, fontSize:'1.4em' }} minRows={10} placeholder="Introduce el texto de la publicación (máximo 200 caracteres)" 
                         id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
-                    <br></br>
-                    {text.length} / 200
+                    <br/>
+                        {text.length} / 200
                     <br/>
                     <br/>
                         ¡Añade una foto o un audio a tu publicación! <input type="file" onChange={actualizaArchivo} />

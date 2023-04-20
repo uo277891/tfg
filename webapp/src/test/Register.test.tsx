@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Ruta} from "react-router-dom";
 import Register from '../pages/Register';
 
 test('Renderiza primera página de Register correctamente', () => {
-  const {getByText} = render(<Router><Register /></Router>);
+  const {getByText} = render(<Ruta><Register /></Ruta>);
   expect(getByText('Registro')).toBeInTheDocument();
   expect(getByText('Información personal')).toBeInTheDocument();
   expect(getByText('Sobre ti')).toBeInTheDocument();
@@ -21,7 +21,7 @@ test('Renderiza primera página de Register correctamente', () => {
 });
 
 test('Renderiza segunda página de Register correctamente', () => {
-    const {getByText} = render(<Router><Register /></Router>);
+    const {getByText} = render(<Ruta><Register /></Ruta>);
     fireEvent.click(getByText('Siguiente'));
     expect(getByText('¡Añade enlaces a tus redes sociales!')).toBeInTheDocument();
     expect(screen.getByLabelText("Género favorito")).toBeInTheDocument();
@@ -36,7 +36,7 @@ test('Renderiza segunda página de Register correctamente', () => {
 });
 
 test('Renderiza tercera página de Register correctamente', () => {
-    const {getByText} = render(<Router><Register /></Router>);
+    const {getByText} = render(<Ruta><Register /></Ruta>);
     fireEvent.click(getByText('Siguiente'));
     fireEvent.click(getByText('Siguiente'));
     expect(getByText('Añade una foto de perfil (opcional):')).toBeInTheDocument();
