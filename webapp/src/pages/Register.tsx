@@ -299,7 +299,7 @@ const Register = () => {
                       </AccordionSummary>
                       <AccordionDetails>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                        id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                        id="Instrgram" label="Instagram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
                         id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
@@ -326,7 +326,7 @@ const Register = () => {
               <Button className="boton" variant="contained" onClick={registrarse}>Registrarse</Button>
             </TabPanel>
             <p>¿Ya tienes cuenta?, ¡inicia sesión pulsando <Link href="/login" >aquí</Link>!</p>
-            <p>Consulta cómo obtener tu ID de Spotify <Link href="/idspotify" >aquí</Link>!</p>
+            <p>Consulta cómo obtener tu ID de Spotify <Link href="/idspotify" >aquí</Link></p>
             <Box sx={{ width: '100%' }}>
             <Collapse in={registerError}>
               <Alert
