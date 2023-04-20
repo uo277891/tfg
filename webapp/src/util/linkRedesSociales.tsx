@@ -1,7 +1,5 @@
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
