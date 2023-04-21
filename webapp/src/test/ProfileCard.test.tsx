@@ -16,4 +16,5 @@ test('Renderiza ProfileCard correctamente', () => {
   expect(getByText("¿Está seguro de eliminar su foto de perfil? Se le aplicará una foto de perfil determinada y podrá volver a elegir su foto editando su usuario")).toBeInTheDocument();
   expect(getByText("Cancelar")).toBeInTheDocument();
   expect(getByText("Confirmar")).toBeInTheDocument();
+  fireEvent.click(getByText('Cancelar'));
 });
