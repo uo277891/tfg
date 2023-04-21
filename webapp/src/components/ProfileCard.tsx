@@ -50,13 +50,9 @@ function CardProfile (props: any) {
                     <Typography gutterBottom variant="h6" component="div">
                     Fecha de nacimiento: {parseFecha(props.usuario.fecha_nac.replace(/T/, ' ').replace(/\..+/, ''))}
                     </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                    Nacionalidad: {props.usuario.pais}
-                    <br/>
-                    Localidad: {props.usuario.localidad}
-                    <br/>
-                    Perfil de Spotify: {props.usuario.nombre_spotify}
-                    </Typography>
+                    <Typography variant="body1" color="text.secondary"> Nacionalidad: {props.usuario.pais} </Typography>
+                    <Typography variant="body1" color="text.secondary"> Localidad: {props.usuario.localidad} </Typography>
+                    <Typography variant="body1" color="text.secondary"> Perfil de Spotify: {props.usuario.nombre_spotify} </Typography>
                 </CardContent>
                 <CardActions sx={{justifyContent: "space-between"}}>
                     <Link href="/profile/edit" underline="none"><Button size="large" variant="contained">Editar</Button></Link>

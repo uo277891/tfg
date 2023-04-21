@@ -39,7 +39,7 @@ function agregarPaginas(){
     return hashmap.get(pagina)
   }
 
-export default function NestedList() {
+export default function NestedList(props: any) {
 
     const [open, setOpen] = React.useState(true);
 
@@ -85,7 +85,7 @@ export default function NestedList() {
                 sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
                 <img src={iconlogo} alt="Icono logo"></img>
             </Link>
-            {usuarioEstaAutenticado && paginasInicioSesion.map((nombre) => (
+            {(usuarioEstaAutenticado || props.test) && paginasInicioSesion.map((nombre) => (
                 <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}>
                     <ListItemButton>
                     <ListItemIcon>
