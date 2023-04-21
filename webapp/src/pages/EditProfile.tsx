@@ -37,6 +37,8 @@ const EditProfile = () => {
 
     const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
 
+    const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
+
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
     const [idUser, setIdUser] = useLocalStorage('idUser', '')
@@ -144,7 +146,7 @@ const EditProfile = () => {
   }
   if(cargando)
     return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
-  else
+  else if (usuarioEstaAutenticado)
     return (
       <div id="editProfile" className="forms">
         <main>
@@ -204,11 +206,11 @@ const EditProfile = () => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography>Actualiza los enlaces a tus redes sociales!</Typography>
+                        <Typography>¡Actualiza los enlaces a tus redes sociales!</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                        id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                        id="Instrgram" label="Instagram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
                         id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
@@ -253,6 +255,8 @@ const EditProfile = () => {
         </Box>
       </div>
     );
+    else
+            return (<h1>Inicia sesión para modificar tu perfil.</h1>)
 }
 
 export default EditProfile;

@@ -77,7 +77,7 @@ const NewPublication = (props: any) => {
           }
     }
 
-    if(usuarioEstaAutenticado || props.test){
+    if(usuarioEstaAutenticado){
         return (
             <div id="newPublication" className="forms">
             <main>

@@ -26,17 +26,22 @@ const FollowingUsers = () => {
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
+    const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
+
     const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
-    const [cargando, setCargando] = useState<Boolean>(true);
+    const [cargando, setCargando] = useState<Boolean>(false);
 
     const [texto, setTexto] = useState("");
 
     const buscarUsuarios = useCallback(async () => {
-        setCargando(true)
-        const users = await getFollowingUsers(idUser)
-        setUsuarios(await getUsuarios(users))
-        setCargando(false) 
+        if(usuarioEstaAutenticado){
+            setCargando(true)
+            const users = await getFollowingUsers(idUser)
+            if(users !== undefined)
+                setUsuarios(await getUsuarios(users))
+            setCargando(false)
+        }
     }, []);
  
     useEffect(() => {
@@ -60,7 +65,7 @@ const FollowingUsers = () => {
 
     if(cargando)
         return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
-    else{
+    else if (usuarioEstaAutenticado){
         return (
         <div id="findUsers">
             <main>
@@ -93,6 +98,9 @@ const FollowingUsers = () => {
             </main>
         </div>
         );
+    }
+    else{
+        return (<h1>Inicia sesión para ver a quien sigues.</h1>)
     }
 }
 
