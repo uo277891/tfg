@@ -15,4 +15,5 @@ test('PublicationCard se renderiza correctamente', () => {
   expect(getByText("La publicación, junto con sus me gusta y comentarios, será eliminada del sistema.")).toBeInTheDocument();
   expect(getByText("Cancelar")).toBeInTheDocument();
   expect(getByText("Confirmar")).toBeInTheDocument();
+  fireEvent.click(getByText('Cancelar'));
 });
