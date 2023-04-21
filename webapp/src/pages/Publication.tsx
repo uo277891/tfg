@@ -47,7 +47,7 @@ const Publication = () => {
 
     const [comentarios, setComentarios] = useState<Comentario[]>([]);
 
-    const [cargando, setCargando] = useState<Boolean>(true);
+    const [cargando, setCargando] = useState<Boolean>(false);
 
     const [colorCorazon, setColorCorazon] = useState<string>("");
 
@@ -84,17 +84,20 @@ const Publication = () => {
     };
 
     const datosIniciales = useCallback(async () => {
-        setCargando(true)
-        const pub = await getPublicacion(id)
-        if(pub !== undefined){
-            setPublicacion(pub)
-            const user = await getUsuario(pub.id_usuario)
-            if(user !== undefined)
-                setUsuarioPublicacion(user[0])
-            setColorCorazon(pub.likes.indexOf(idUser) === -1 ? "grey" : "red");
-            setComentarios(await getComentarios(pub._id))
-        }
-        setCargando(false)
+      if(usuarioEstaAutenticado){
+          setCargando(true)
+          const pub = await getPublicacion(id)
+          if(pub !== undefined){
+              setPublicacion(pub)
+              const user = await getUsuario(pub.id_usuario)
+              if(user !== undefined)
+                  setUsuarioPublicacion(user[0])
+              setColorCorazon(pub.likes.indexOf(idUser) === -1 ? "grey" : "red");
+              setComentarios(await getComentarios(pub._id))
+          }
+          setCargando(false)
+      }
+      setCargando(false)
     }, []);
 
     useEffect(() => {

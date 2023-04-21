@@ -16,7 +16,7 @@ test('Renderiza NewPublication correctamente', () => {
   window.localStorage.clear();
 });
 
-test('No hay usuario autentizado', () => {
+test('No hay usuario autenticado', () => {
   const {getByText} = render(<Ruta><NewPublication/></Ruta>);
   expect(getByText("Inicia sesión para crear publicaciones")).toBeInTheDocument();
 });

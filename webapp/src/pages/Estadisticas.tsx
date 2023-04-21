@@ -26,7 +26,9 @@ const Estadisticas = () => {
 
   const [cargando, setCargando] = React.useState(false);
 
-  const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
+  const [sinSeguidores, setSinSeguidores] = React.useState(false);
+
+  const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
   const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
@@ -96,36 +98,44 @@ const Estadisticas = () => {
   }
 
   const datosIniciales = useCallback(async () => {
-    setCargando(true)
-    const user = await getUsuario(idUser)
-    if(user[0] !== undefined)
-      setUsuario(user[0])
-    const users = await getFollowsByUser(idUser)
-    const objUsers = await getUsuarios(users)
-    if(users.length > 0){
-      var fechasNaciminento: any[] = []
-      objUsers.map((user: any) => {fechasNaciminento.push(Dayjs(user.fecha_nac))})
-      calculoFechas(fechasNaciminento);
-      var paises: string[] = []
-      objUsers.map((user: any) => {paises.push(user.pais)})
-      calculoPaises(paises);
-      objUsers.map((user: any) => {generos.push(user.genero)})
-      const usuariosJovenes = await getUsuarioByIdInDate(users, 2023 - 16, 2023 - 30)
-      porcentajesEdad[0] = Number((usuariosJovenes.length / users.length).toFixed(2)) * 100
-      const usuariosAdultos = await getUsuarioByIdInDate(users, 2023 - 31, 2023 - 65)
-      porcentajesEdad[1] = Number((usuariosAdultos.length / users.length).toFixed(2)) * 100
-      const usuariosMayores = await getUsuarioByIdInDate(users, 2023 - 65, 2023 - 150)
-      porcentajesEdad[2] = Number((usuariosMayores.length / users.length).toFixed(2)) * 100
-      var contador = 0
-      while(contador < porcentajesEdad.length){
-        const indice = porcentajesEdad.indexOf(Math.max(...porcentajesEdad));
-        posicionesTexto[contador] = indice
-        porcentajesEdad[indice] = -1
-        contador++;
-      }
-      porcentajesEdad[0] = Number((usuariosJovenes.length / users.length).toFixed(2)) * 100
-      porcentajesEdad[1] = Number((usuariosAdultos.length / users.length).toFixed(2)) * 100
-      porcentajesEdad[2] = Number((usuariosMayores.length / users.length).toFixed(2)) * 100
+    if(usuarioEstaAutenticado){
+      setCargando(true)
+      const user = await getUsuario(idUser)
+      if(user[0] !== undefined)
+        setUsuario(user[0])
+      const users = await getFollowsByUser(idUser)
+      const objUsers = await getUsuarios(users)
+      if(users.length > 0){
+        var fechasNaciminento: any[] = []
+        objUsers.map((user: any) => {fechasNaciminento.push(Dayjs(user.fecha_nac))})
+        calculoFechas(fechasNaciminento);
+        var paises: string[] = []
+        objUsers.map((user: any) => {paises.push(user.pais)})
+        calculoPaises(paises);
+        objUsers.map((user: any) => {generos.push(user.genero)})
+        const usuariosJovenes = await getUsuarioByIdInDate(users, 2023 - 16, 2023 - 30)
+        porcentajesEdad[0] = Number((usuariosJovenes.length / users.length).toFixed(2)) * 100
+        const usuariosAdultos = await getUsuarioByIdInDate(users, 2023 - 31, 2023 - 65)
+        porcentajesEdad[1] = Number((usuariosAdultos.length / users.length).toFixed(2)) * 100
+        const usuariosMayores = await getUsuarioByIdInDate(users, 2023 - 65, 2023 - 150)
+        porcentajesEdad[2] = Number((usuariosMayores.length / users.length).toFixed(2)) * 100
+        var contador = 0
+        while(contador < porcentajesEdad.length){
+          const indice = porcentajesEdad.indexOf(Math.max(...porcentajesEdad));
+          posicionesTexto[contador] = indice
+          porcentajesEdad[indice] = -1
+          contador++;
+        }
+        porcentajesEdad[0] = Number((usuariosJovenes.length / users.length).toFixed(2)) * 100
+        porcentajesEdad[1] = Number((usuariosAdultos.length / users.length).toFixed(2)) * 100
+        porcentajesEdad[2] = Number((usuariosMayores.length / users.length).toFixed(2)) * 100
+        setCargando(false)
+    }
+      setSinSeguidores(users.length > 0)
+      setCargando(false)
+    }
+    else{
+      setSinSeguidores(false)
       setCargando(false)
     }
   }, []);
@@ -137,7 +147,7 @@ const Estadisticas = () => {
   if(cargando)
     return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
 
-  else if(usuarioAutenticado && usuario !== undefined)
+  else if(usuarioEstaAutenticado && sinSeguidores && usuario !== undefined)
     return (
       <div className="est">
         <main>
@@ -185,7 +195,7 @@ const Estadisticas = () => {
         </main>
       </div>
     );
-    else if(!usuarioAutenticado)
+    else if(!usuarioEstaAutenticado)
       return (<h1>Inicia sesión para ver tus estadísticas</h1>)
     else
       return (<h1>No tienes seguidores para mostrar tus estadísticas</h1>)

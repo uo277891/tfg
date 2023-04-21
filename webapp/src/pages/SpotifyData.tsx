@@ -26,24 +26,26 @@ const SpotifyData = () => {
     const [artistasSimilares, setArtistasSimilaes] = React.useState<any>();
 
     const datosIniciales = useCallback(async () => {
-        setCargando(true)
-        const artist = await getArtista(idSpo)
-        if(artist !== undefined){
-            setArtista(artist)
+        if(usuarioEstaAutenticado){
+            setCargando(true)
+            const artist = await getArtista(idSpo)
+            if(artist !== undefined){
+                setArtista(artist)
+            }
+            const albumes = await getAlbumes(idSpo)
+            if(albumes !== undefined){
+                setAlbumes(albumes)
+            }
+            const canciones = await getCanciones(idSpo)
+            if(canciones !== undefined){
+                setCanciones(canciones)
+            }
+            const artSim = await getArtistasSimilares(idSpo)
+            if(artSim !== undefined){
+                setArtistasSimilaes(artSim)
+            }
+            setCargando(false)
         }
-        const albumes = await getAlbumes(idSpo)
-        if(albumes !== undefined){
-            setAlbumes(albumes)
-        }
-        const canciones = await getCanciones(idSpo)
-        if(canciones !== undefined){
-            setCanciones(canciones)
-        }
-        const artSim = await getArtistasSimilares(idSpo)
-        if(artSim !== undefined){
-            setArtistasSimilaes(artSim)
-        }
-        setCargando(false)
     }, []);
 
     useEffect(() => {

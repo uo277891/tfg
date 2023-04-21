@@ -45,7 +45,7 @@ const ExternProfile = () => {
 
     const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
 
-    const [cargando, setCargando] = useState<Boolean>(true);
+    const [cargando, setCargando] = useState<Boolean>(false);
 
     const [seguidores, setSeguidores] = useState<Seguidor[]>([]);
 
@@ -66,13 +66,16 @@ const ExternProfile = () => {
     };
 
     const datosIniciales = useCallback(async () => {
-        setCargando(true)
-        setSeguidores(await getSeguidores(id))
-        setPublicaciones(await getPublicaciones(id, "fecha"))
-        const user = await getUsuario(id)
-        if(user != undefined)
-            setUsuario(user[0])
-        setLeSigue(await isSeguidor(id, idUser))
+        if(usuarioEstaAutenticado){
+            setCargando(true)
+            setSeguidores(await getSeguidores(id))
+            setPublicaciones(await getPublicaciones(id, "fecha"))
+            const user = await getUsuario(id)
+            if(user != undefined)
+                setUsuario(user[0])
+            setLeSigue(await isSeguidor(id, idUser))
+            setCargando(false)
+        }
         setCargando(false)
     }, []);
 
