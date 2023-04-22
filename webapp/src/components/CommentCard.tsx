@@ -7,6 +7,8 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
+import { Link } from '@mui/material';
+import Button from '@mui/material/Button';
 
 const CommentCard = (props: any) => {
 
@@ -27,14 +29,14 @@ const CommentCard = (props: any) => {
   if(usuarioPublicacion !== undefined){
     return (
       <Card sx={{ maxWidth: 600, m: 1.5 }}>
-        <CardHeader
+        <Link href = {"/profile/" + usuarioPublicacion._id} underline="none" color="inherit"><CardHeader
                 avatar={
-                  <Avatar alt="Foto de perfil"
-                  src={usuarioPublicacion.enlace_foto}/>
+                  <Button><Avatar alt="Foto de perfil"
+                  src={usuarioPublicacion.enlace_foto}/></Button>
                 }
                 title={usuarioPublicacion.nombre}
                 subheader={props.comentario.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')}
-        />
+        /></Link>
         <CardContent>
           <Typography variant="body1" fontSize={17}>
             {props.comentario.texto}
