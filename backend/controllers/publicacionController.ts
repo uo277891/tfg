@@ -11,8 +11,9 @@ const getPublicaciones = async (req: Request, res: Response): Promise<Response> 
       var publicaciones;
       if(orden === "fecha")
         publicaciones = await publicacionModel.find({id_usuario: id_usuario}).sort({fecha: -1});
-      else
-        publicaciones = await publicacionModel.find({id_usuario: id_usuario}).sort({likes: -1});
+      else{
+        publicaciones = await publicacionModel.aggregate([  {$match: { id_usuario: id_usuario }}, { $addFields:{ len:{$size:"$likes"}}}, {$sort:{len:-1}}])
+      }
       if(publicaciones === null){
         return res.status(200).json({ publicaciones: [] });
       }
@@ -20,6 +21,7 @@ const getPublicaciones = async (req: Request, res: Response): Promise<Response> 
         return res.status(200).json({ publicaciones: publicaciones });
       } 
     } catch (error) {
+      console.log(error)
       return res.status(500).send(error);
     }
 }
@@ -33,7 +35,7 @@ const getPublicacionesByTipo = async (req: Request, res: Response): Promise<Resp
     if(orden === "fecha")
       publicaciones = await publicacionModel.find({id_usuario: id_usuario, tipo_multimedia: tipo}).sort({fecha: -1});
     else
-      publicaciones = await publicacionModel.find({id_usuario: id_usuario, tipo_multimedia: tipo}).sort({likes: -1});
+      publicaciones = await publicacionModel.aggregate([  {$match: { id_usuario: id_usuario, tipo_multimedia: tipo }}, { $addFields:{ len:{$size:"$likes"}}}, {$sort:{len:-1}}])
     if(publicaciones === null){
       return res.status(200).json({ publicaciones: [] });
     }

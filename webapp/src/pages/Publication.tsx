@@ -147,7 +147,8 @@ const Publication = () => {
           subheader={parseFecha(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) +
         ", " + parseHora(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) }
         /></Link>
-        {(publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe")  &&
+        {publicacion.tipo_multimedia === "iframe" && <audio controls src={publicacion.enlace_multimedia}></audio>}
+        {publicacion.tipo_multimedia === "img" &&
         <CardMedia
             component= {publicacion.tipo_multimedia}
             image={publicacion.enlace_multimedia}
