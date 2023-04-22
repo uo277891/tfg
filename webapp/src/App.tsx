@@ -41,7 +41,8 @@ const App = () => {
               <Route path='/profile/:id' element={<ExternProfile/>}/>
               <Route path='/publication/new' element={<NewPublication/>}/>
               <Route path='/find' element={<FindUsers/>}/>
-              <Route path='/follow' element={<FollowingUsers/>}/>
+              <Route path='/follow' element={<FollowingUsers you={false}/>}/>
+              <Route path='/follow/you' element={<FollowingUsers you={true}/>}/>
               <Route path='/publication/:id' element={<Publication/>}/>
               <Route path='/stats/' element={<Estadisticas/>}/>
               <Route path='/idspotify/' element={<IDSpotify/>}/>

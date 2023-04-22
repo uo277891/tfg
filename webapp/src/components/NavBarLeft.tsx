@@ -19,8 +19,8 @@ import Icono from '../util/iconosNavegacion';
 const nombrePagina = ['Sobre SocialFS', "Obtener ID Spotify", "Datos de Spotify"];
 const linkPagina = ['aboutSocialfs', 'idspotify', 'spotify/explanation/']
 
-const paginasInicioSesion = ['Siguiendo', 'Buscar usuarios','Crear publicación'];
-const linkPaginaInicioSesion = ['follow', 'find', 'publication/new']
+const paginasInicioSesion = ['Siguiendo', 'Tus seguidores', 'Buscar usuarios','Crear publicación'];
+const linkPaginaInicioSesion = ['follow', 'follow/you', 'find', 'publication/new']
 
 var hashmap = new Map();
 

@@ -30,6 +30,7 @@ import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
 import Filtro from '../components/FiltrosPublicaciones';
 import SimboloCarga from "../components/SimboloCarga";
+import { getFollowingUsers } from "../accesoApi/apiSeguidores";
 
 type Anchor = 'left';
 
@@ -48,6 +49,8 @@ const ExternProfile = () => {
     const [cargando, setCargando] = useState<Boolean>(false);
 
     const [seguidores, setSeguidores] = useState<Seguidor[]>([]);
+
+    const [seguidos, setSeguidos] = useState<number>(0);
 
     const [usuario, setUsuario] = useState<Usuario>();
 
@@ -70,6 +73,7 @@ const ExternProfile = () => {
             setCargando(true)
             setSeguidores(await getSeguidores(id))
             setPublicaciones(await getPublicaciones(id, "fecha"))
+            setSeguidos((await getFollowingUsers(id)).length)
             const user = await getUsuario(id)
             if(user != undefined)
                 setUsuario(user[0])
@@ -155,6 +159,7 @@ const ExternProfile = () => {
                         <TableCell align="center"></TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Publicaciones</TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Seguidores</TableCell>
+                            <TableCell sx={{fontSize: 20}} align="center">Seguidos</TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Genero Favorito</TableCell>
                             <TableCell align="center"></TableCell>
                         </TableRow>
@@ -170,6 +175,7 @@ const ExternProfile = () => {
                             </TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{publicaciones.length}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{seguidores.length}</TableCell>
+                            <TableCell sx={{fontSize: 40}} align="center">{seguidos}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{usuario.genero}</TableCell>
                             {usuario.nombre_spotify !== "" && <TableCell sx={{fontSize: 20}} align="center">
                                 <Link href={"/spotify/data/" + usuario.nombre_spotify} underline="none">
