@@ -126,4 +126,22 @@ const updatePublicacion = async (req: Request, res: Response): Promise<Response>
   }
 }
 
-module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo}
+const getPublicacionesWithLimit = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    
+    const skip = req.params.skip;
+
+    const publicaciones = await publicacionModel.find().skip(skip).limit(10).sort({fecha: -1});
+    if(publicaciones === null){
+      return res.status(200).json({ publicaciones: [] });
+    }
+    else{
+      return res.status(200).json({ publicaciones: publicaciones });
+    } 
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit}

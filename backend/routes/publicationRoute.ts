@@ -1,7 +1,7 @@
 import express, {Router} from 'express';
 const api:Router = express.Router()
 
-const {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo} = require("../controllers/publicacionController")
+const {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit} = require("../controllers/publicacionController")
 
 api.get(
   "/publicaciones/getpublicacion/:idUsu/:order",
@@ -16,6 +16,11 @@ api.get(
 api.get(
   "/publicaciones/getpublicacion/tipo/:idUsu/:tipo/:fecha",
   getPublicacionesByTipo
+);
+
+api.get(
+  "/publicaciones/getpublicacionskip/:skip",
+  getPublicacionesWithLimit
 );
 
 api.post(

@@ -32,9 +32,9 @@ import {parseFecha, parseHora} from '../util/parseFecha';
 import SimboloCarga from '../components/SimboloCarga';
 import { Link } from '@mui/material';
 
-const Publication = () => {
+const Publication = (props: any) => {
 
-    const {id} = useParams();
+    var {id} = useParams();
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
@@ -86,6 +86,8 @@ const Publication = () => {
 
     const datosIniciales = useCallback(async () => {
       if(usuarioEstaAutenticado){
+          if(id === undefined)
+            id = props.id_publicacion
           setCargando(true)
           const pub = await getPublicacion(id)
           if(pub !== undefined){
@@ -129,7 +131,7 @@ const Publication = () => {
           setText("");
           await datosIniciales();
       }
-  }
+    }
 
   if(cargando)
     return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
