@@ -30,10 +30,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {parseFecha, parseHora} from '../util/parseFecha';
 import SimboloCarga from '../components/SimboloCarga';
+import { Link } from '@mui/material';
 
-const Publication = () => {
+const Publication = (props: any) => {
 
-    const {id} = useParams();
+    var {id} = useParams();
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
@@ -85,6 +86,8 @@ const Publication = () => {
 
     const datosIniciales = useCallback(async () => {
       if(usuarioEstaAutenticado){
+          if(id === undefined)
+            id = props.id_publicacion
           setCargando(true)
           const pub = await getPublicacion(id)
           if(pub !== undefined){
@@ -128,7 +131,7 @@ const Publication = () => {
           setText("");
           await datosIniciales();
       }
-  }
+    }
 
   if(cargando)
     return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
@@ -137,16 +140,17 @@ const Publication = () => {
     return (
       <div id="profile">
         <Card sx={{ margin: "auto", maxWidth: 600, minHeight:200 }}>
-        <CardHeader
+        <Link href = {"/profile/" + publicacion.id_usuario} underline="none" color="inherit"><CardHeader
           avatar={
-            <Avatar alt="Foto de perfil"
-            src={usuarioPublicacion.enlace_foto}/>
+            <Button><Avatar alt="Foto de perfil"
+            src={usuarioPublicacion.enlace_foto}/></Button>
           }
           title={usuarioPublicacion.nombre}
           subheader={parseFecha(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) +
         ", " + parseHora(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) }
-        />
-        {(publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe")  &&
+        /></Link>
+        {publicacion.tipo_multimedia === "iframe" && <audio controls src={publicacion.enlace_multimedia}></audio>}
+        {publicacion.tipo_multimedia === "img" &&
         <CardMedia
             component= {publicacion.tipo_multimedia}
             image={publicacion.enlace_multimedia}

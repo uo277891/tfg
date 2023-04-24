@@ -12,9 +12,9 @@ import SimboloCarga from "../components/SimboloCarga";
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import { getFollowingUsers } from "../accesoApi/apiSeguidores";
+import { getFollowingUsers, getFollowsByUser } from "../accesoApi/apiSeguidores";
 
-const FollowingUsers = () => {
+const FollowingUsers = (props: any) => {
 
     const [page, setPage] = React.useState(1);
 
@@ -36,8 +36,14 @@ const FollowingUsers = () => {
 
     const buscarUsuarios = useCallback(async () => {
         if(usuarioEstaAutenticado){
+            var users;
             setCargando(true)
-            const users = await getFollowingUsers(idUser)
+            if(!props.you){
+                users = await getFollowingUsers(idUser)
+            }
+            else{
+                users = await getFollowsByUser(idUser)
+            }
             if(users !== undefined)
                 setUsuarios(await getUsuarios(users))
             setCargando(false)
@@ -51,13 +57,25 @@ const FollowingUsers = () => {
     async function HandleBuscaUsuarios () {
         if(texto.length === 0){
             setCargando(true)
-            const users = await getFollowingUsers(idUser)
+            var users;
+            if(!props.you){
+                users = await getFollowingUsers(idUser)
+            }
+            else{
+                users = await getFollowsByUser(idUser)
+            }
             setUsuarios(await getUsuarios(users))
             setCargando(false)
         }
         else{
             setCargando(true)
-            const users = await getFollowingUsers(idUser)
+            var users;
+            if(!props.you){
+                users = await getFollowingUsers(idUser)
+            }
+            else{
+                users = await getFollowsByUser(idUser)
+            }
             setUsuarios(await getUsuariosByNameAndId(users, texto))
             setCargando(false)
         }

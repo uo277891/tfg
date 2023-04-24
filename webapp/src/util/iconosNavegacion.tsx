@@ -11,11 +11,14 @@ import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { common } from '@mui/material/colors';
 
 function Icono(props: any) {
 	if(props.icono === "Siguiendo")
         return (<SupervisedUserCircleIcon sx={{color: common.white}}></SupervisedUserCircleIcon>)
+    if(props.icono === "Tus seguidores")
+        return (<SentimentSatisfiedAltIcon sx={{color: common.white}}></SentimentSatisfiedAltIcon>)
     else if(props.icono === "Buscar usuarios")
         return (<SearchIcon sx={{color: common.white}}></SearchIcon>)
     else if(props.icono === "Crear publicación")
