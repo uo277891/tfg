@@ -95,3 +95,11 @@
 footer{
   text-align: center;
 }
+
+#commentCard{
+	background-color: rgb(233, 233, 233);
+}
+
+#commentCardRes{
+	background-color: rgb(192, 192, 192);
+}

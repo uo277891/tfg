@@ -2,8 +2,7 @@ import {model, Schema}  from 'mongoose'
 
 const comentarioSchema = new Schema({
     id_publicacion:{
-        type: String,
-        require: true
+        type: String
     },id_usu_coment:{
         type: String,
         require: true
@@ -13,6 +12,10 @@ const comentarioSchema = new Schema({
     },fecha:{
         type: Date,
         require: true
+    },id_comment:{
+        type: String
+    },id_usu_respond:{
+        type: String
     }
 })
 
