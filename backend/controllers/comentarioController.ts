@@ -16,9 +16,9 @@ const insertarComentario = async (req: Request, res: Response): Promise<Response
 
 const insertarRespuestaComentario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const {id_comment, id_usu_coment, id_usu_respond, texto} = req.body;
+    const {id_comment, id_publicacion, id_usu_coment, id_usu_respond, texto} = req.body;
     const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
-    const comentarioAInsertar = new comentarioModel({id_usu_coment, texto, fecha, id_comment, id_usu_respond})
+    const comentarioAInsertar = new comentarioModel({id_publicacion, id_usu_coment, texto, fecha, id_comment, id_usu_respond})
     comentarioAInsertar.save();
     return res.status(200).json({insertado: true});
   } catch (error) {
@@ -29,7 +29,7 @@ const insertarRespuestaComentario = async (req: Request, res: Response): Promise
 const getComentarios = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_publicacion = req.params.idPub;
-    const comentarios = await comentarioModel.find({id_publicacion: id_publicacion}).sort({fecha: -1});
+    const comentarios = await comentarioModel.find({id_publicacion: id_publicacion, id_usu_respond:{ "$exists" : false }}).sort({fecha: -1});
     return res.status(200).json({ comentarios: comentarios });
   } catch (error) {
     return res.status(500).send(error);
