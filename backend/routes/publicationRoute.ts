@@ -1,5 +1,6 @@
 import express, {Router} from 'express';
-const api:Router = express.Router()
+const expressPr = require('express')
+const api:Router = expressPr.Router()
 
 const {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit} = require("../controllers/publicacionController")
 

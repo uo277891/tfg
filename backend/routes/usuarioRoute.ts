@@ -1,9 +1,11 @@
 import express, {Router} from 'express';
-const api:Router = express.Router()
 
-const {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, 
+const expressPr = require('express')
+const api:Router = expressPr.Router()
+
+import {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, 
   getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByNameAndId,
-  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate} = require("../controllers/usuarioController")
+  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario} from "../controllers/usuarioController"
 
 api.post(
     "/usuario/login",
@@ -13,6 +15,11 @@ api.post(
 api.post(
   "/usuario/register",
   insertarUsuario
+);
+
+api.delete(
+  "/usuario/delete/:id_user",
+  eliminarUsuario
 );
 
 api.get(

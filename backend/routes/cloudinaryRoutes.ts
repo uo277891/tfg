@@ -1,5 +1,6 @@
 import express, {Router} from 'express';
-const api:Router = express.Router()
+const expressPr = require('express')
+const api:Router = expressPr.Router()
 
 const {getSignature, borrarPublicacion} = require("../controllers/cloudinaryController") 
 

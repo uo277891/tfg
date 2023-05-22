@@ -46,4 +46,14 @@ const getRespuestaComentario = async (req: Request, res: Response): Promise<Resp
   }
 }
 
-module.exports = {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario}
+const eliminarComentariosPublicacion = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_publicacion = req.params.idPub;
+    await comentarioModel.deleteMany({id_publicacion: id_publicacion});
+    return res.status(200).json();
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion}

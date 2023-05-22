@@ -36,4 +36,4 @@ const conexion = () => {
 
 conexion()
 
-export default conexion;
+module.exports = app;

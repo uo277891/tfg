@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 const usuarioSquema = require('../models/usuarioModel');
 const {encriptar, comparaContraseñas} = require("../helpers/encryptContraseña");
 
-const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
+export const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {nombre, contraseña} = req.body;
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
@@ -24,7 +24,7 @@ const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
+export const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo, genero, redes} = req.body;
 
@@ -40,17 +40,16 @@ const insertarUsuario = async (req: Request, res: Response): Promise<Response> =
       return res.status(200).json({creado: true, usuario: user});
     }
   } catch (error) {
-    console.log("FALLO INSERTAR USUARIO")
     return res.status(500).send(error);
   }
 }
 
-const getUsuario = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuario = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id_user = req.params.id_user;
       const usuarioAsociado = await usuarioSquema.find({_id: id_user});
       if(usuarioAsociado === null){
-        return res.status(400).json("No hay usuario con ese nombre");
+        return res.status(400).json("No hay usuario con ese id");
       }
       else{
         return res.status(200).json({ user: usuarioAsociado });
@@ -60,7 +59,7 @@ const getUsuario = async (req: Request, res: Response): Promise<Response> => {
     }
 }
 
-const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_user = req.params.id_user.split(',');
     const usuarios = await usuarioSquema.find({_id: {$in: id_user}});
@@ -75,7 +74,7 @@ const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const getUsuariosByIdInDate = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuariosByIdInDate = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_user = req.params.idUser.split(',');
     const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
@@ -92,7 +91,7 @@ const getUsuariosByIdInDate = async (req: Request, res: Response): Promise<Respo
   }
 }
 
-const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
@@ -107,7 +106,7 @@ const getUsuarioByName = async (req: Request, res: Response): Promise<Response> 
   }
 }
 
-const getUsuariosByName = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuariosByName = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
     const usuarioAsociado = await usuarioSquema.find({nombre: { $regex: '.*' + nombre + '.*' }});
@@ -122,7 +121,7 @@ const getUsuariosByName = async (req: Request, res: Response): Promise<Response>
   }
 }
 
-const getUsuariosByNameAndId = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuariosByNameAndId = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
     const id_usuario = req.params.idUsu.split(',');
@@ -138,7 +137,7 @@ const getUsuariosByNameAndId = async (req: Request, res: Response): Promise<Resp
   }
 }
 
-const getUsuariosByCountry = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuariosByCountry = async (req: Request, res: Response): Promise<Response> => {
   try {
     const pais = req.params.country;
     const usuarioAsociado = await usuarioSquema.find({pais: pais });
@@ -153,7 +152,7 @@ const getUsuariosByCountry = async (req: Request, res: Response): Promise<Respon
   }
 }
 
-const getUsuariosByTipoUsuario = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuariosByTipoUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const tipo = req.params.tipoUsu;
     const usuarioAsociado = await usuarioSquema.find({tipo: tipo });
@@ -168,7 +167,7 @@ const getUsuariosByTipoUsuario = async (req: Request, res: Response): Promise<Re
   }
 }
 
-const getUsuariosByGenero = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuariosByGenero = async (req: Request, res: Response): Promise<Response> => {
   try {
     const genero = req.params.genero;
     const usuarioAsociado = await usuarioSquema.find({genero: genero });
@@ -183,7 +182,7 @@ const getUsuariosByGenero = async (req: Request, res: Response): Promise<Respons
   }
 }
 
-const getUsuariosByFecha = async (req: Request, res: Response): Promise<Response> => {
+export const getUsuariosByFecha = async (req: Request, res: Response): Promise<Response> => {
   try {
     const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
     const fechaFin = new Date(parseInt(req.params.fechaFin), 0);
@@ -199,7 +198,7 @@ const getUsuariosByFecha = async (req: Request, res: Response): Promise<Response
   }
 }
 
-const updateUsuario = async (req: Request, res: Response): Promise<Response> => {
+export const updateUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombreAnterior = req.params.nombreAnterior;
     const datosNuevos = req.body;
@@ -218,7 +217,7 @@ const updateUsuario = async (req: Request, res: Response): Promise<Response> => 
   }
 }
 
-const updateFoto = async (req: Request, res: Response): Promise<Response> => {
+export const updateFoto = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.nombre;
     const datosNuevos = req.body;
@@ -236,6 +235,8 @@ const updateFoto = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-module.exports = {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, 
-  getUsuariosByName, getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByNameAndId,
-  getUsuariosByTipoUsuario, getUsuariosByFecha, getUsuariosByIdInDate, getUsuariosByGenero}
+export const eliminarUsuario = async (req: Request, res: Response) => {
+  await usuarioSquema.findByIdAndDelete(req.params.id_user)
+
+  return res.status(200).json("Usuario eliminado");
+}
