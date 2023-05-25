@@ -9,11 +9,11 @@ let browser: any;
 defineFeature(feature, test => {
   
   beforeAll(async () => {
-    browser = await puppeteer.launch({ headless: false });
+    browser = await puppeteer.launch({ headless: false, slowMo: 1000 });
     page = await browser.newPage();
 
     await page
-      .goto("http://localhost:3000/", {
+      .goto("http://localhost:3000/register", {
         waitUntil: "networkidle0",
       })
       .catch(() => {});
@@ -41,4 +41,3 @@ defineFeature(feature, test => {
   })
 
 });
-
