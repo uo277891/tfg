@@ -39,8 +39,9 @@ function PublicationCard (props: any) {
     }
 
     return (
-        <Card sx={{ maxWidth: 400 }} className='card'>
-            {(props.publication.tipo_multimedia === "img" || props.publication.tipo_multimedia === "iframe") &&
+        <Card className='dataSpo'>
+            {props.publication.tipo_multimedia === "iframe" && <audio controls src={props.publication.enlace_multimedia}></audio>}
+            {(props.publication.tipo_multimedia === "img") &&
             <CardMedia component= {props.publication.tipo_multimedia} image={props.publication.enlace_multimedia}/>}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -54,8 +55,8 @@ function PublicationCard (props: any) {
                 </Typography>
             </CardContent>
             <CardActions sx={{justifyContent: "space-between"}}>
-                <Link href={"/publication/" + props.publication._id} underline="none"><Button size="large" variant="contained">Detalles</Button></Link>
-                {props.propiaPublicacion && <Button sx={{justifyContent: "space-between"}} color = 'error' size="large" variant="contained" onClick={handleClickOpen}>Eliminar</Button>}
+                <Link href={"/publication/" + props.publication._id} underline="none"><Button id = {"pub" + props.numeroPub} size="large" variant="contained">Detalles</Button></Link>
+                {props.propiaPublicacion && <Button sx={{justifyContent: "space-between"}} id = {"elim" + props.numeroPub} color = 'error' size="large" variant="contained" onClick={handleClickOpen}>Eliminar</Button>}
             </CardActions>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Confirmar eliminación</DialogTitle>
@@ -66,7 +67,7 @@ function PublicationCard (props: any) {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancelar</Button>
-                  <Button onClick={handleEliminar}>Confirmar</Button>
+                  <Button id="confirmar" onClick={handleEliminar}>Confirmar</Button>
                 </DialogActions>
               </Dialog>
         </Card>

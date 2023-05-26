@@ -20,6 +20,12 @@ export async function getPublicacion(id_publication: any): Promise<Publicacion> 
     return publicaciones.publicacion
 }
 
+export async function getPublicacionWithLimit(skip: any): Promise<Publicacion[]> {
+    let res = await fetch(llamadaBasica + '/publicaciones/getpublicacionskip/' + skip);
+    let publicaciones = await res.json()
+    return publicaciones.publicaciones
+}
+
 export async function actualizarLikes(id_pub: any, likes: any): Promise<Publicacion> {
     const requestOptions = {
         method: 'PUT',

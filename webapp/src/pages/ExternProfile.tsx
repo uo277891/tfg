@@ -30,7 +30,7 @@ import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
 import Filtro from '../components/FiltrosPublicaciones';
 import SimboloCarga from "../components/SimboloCarga";
-import spotifyLogo from "../images/SpotifyLogoMini.png"
+import { getFollowingUsers } from "../accesoApi/apiSeguidores";
 
 type Anchor = 'left';
 
@@ -46,9 +46,11 @@ const ExternProfile = () => {
 
     const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
 
-    const [cargando, setCargando] = useState<Boolean>(true);
+    const [cargando, setCargando] = useState<Boolean>(false);
 
     const [seguidores, setSeguidores] = useState<Seguidor[]>([]);
+
+    const [seguidos, setSeguidos] = useState<number>(0);
 
     const [usuario, setUsuario] = useState<Usuario>();
 
@@ -67,13 +69,17 @@ const ExternProfile = () => {
     };
 
     const datosIniciales = useCallback(async () => {
-        setCargando(true)
-        setSeguidores(await getSeguidores(id))
-        setPublicaciones(await getPublicaciones(id, "fecha"))
-        const user = await getUsuario(id)
-        if(user != undefined)
-            setUsuario(user[0])
-        setLeSigue(await isSeguidor(id, idUser))
+        if(usuarioEstaAutenticado){
+            setCargando(true)
+            setSeguidores(await getSeguidores(id))
+            setPublicaciones(await getPublicaciones(id, "fecha"))
+            setSeguidos((await getFollowingUsers(id)).length)
+            const user = await getUsuario(id)
+            if(user != undefined)
+                setUsuario(user[0])
+            setLeSigue(await isSeguidor(id, idUser))
+            setCargando(false)
+        }
         setCargando(false)
     }, []);
 
@@ -95,7 +101,7 @@ const ExternProfile = () => {
         setCargando(true)
         if(filtroPublicacion !== ""){
             if(ordenadoFecha === "" || ordenadoFecha === undefined)
-                    setOrdenadoFecha("fecha")
+                setOrdenadoFecha("fecha")
             if(filtroPublicacion !== "todos"){
                 const pubs = await getPublicacionesByTipo(id, filtroPublicacion, ordenadoFecha)
                 setPublicaciones(pubs)
@@ -153,6 +159,7 @@ const ExternProfile = () => {
                         <TableCell align="center"></TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Publicaciones</TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Seguidores</TableCell>
+                            <TableCell sx={{fontSize: 20}} align="center">Seguidos</TableCell>
                             <TableCell sx={{fontSize: 20}} align="center">Genero Favorito</TableCell>
                             <TableCell align="center"></TableCell>
                         </TableRow>
@@ -168,19 +175,20 @@ const ExternProfile = () => {
                             </TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{publicaciones.length}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{seguidores.length}</TableCell>
+                            <TableCell sx={{fontSize: 40}} align="center">{seguidos}</TableCell>
                             <TableCell sx={{fontSize: 40}} align="center">{usuario.genero}</TableCell>
                             {usuario.nombre_spotify !== "" && <TableCell sx={{fontSize: 20}} align="center">
                                 <Link href={"/spotify/data/" + usuario.nombre_spotify} underline="none">
                                     <Button color="success" className="boton" variant="contained">Estadísticas Spotify</Button>
                                 </Link>
                             </TableCell>}
-                            {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
+                            {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button id="seguir" size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
                             {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">
                                 <Link href="/profile" underline="none">
-                                    <Button className="boton" variant="contained">Editar perfil</Button>
+                                    <Button id="editarPerfil" className="boton" variant="contained">Editar perfil</Button>
                                 </Link>
                             </TableCell>}
-                            {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
+                            {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button id="dejarSeguir" size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -200,9 +208,9 @@ const ExternProfile = () => {
                 </div>
                 <section className="publicaciones">
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        {publicaciones.slice((page - 1) * numElementos, numElementos * page).map((publicacion: Publicacion) => 
+                        {publicaciones.slice((page - 1) * numElementos, numElementos * page).map((publicacion: Publicacion, index) => 
                             <Grid item xs={4}>
-                                <PublicationCard publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
+                                <PublicationCard numeroPub={index} publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
                             </Grid>
                         )}
                     </Grid>

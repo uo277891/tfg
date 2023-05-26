@@ -37,7 +37,7 @@
 
 .boton{
 	background-color: rgb(133, 39, 39);
-  }
+}
 
 .estiloBase aside {
 	margin-top: 3em;
@@ -48,7 +48,11 @@
 	align-items: center;
 	padding: 0.3em;
 	color: black;
-  }
+}
+
+#aboutFS .boton{
+	background-color: rgb(133, 39, 39);
+}
 
 #aboutFS main h1{
 	font-size: 4em;
@@ -67,22 +71,35 @@
 	align-items: left;
 	font-size: 1em;
 }
-  
-#aboutFS .boton{
-	background-color: rgb(77, 133, 39);
-  }
 
 #profile{
 	align-items: center;
 	padding: 0.3em;
 	color: black;
-  }
+}
+
+#profile audio{
+	margin: 0 auto; 
+	display: block;
+}
 
 #profile main h1{
 	text-align: center;
 	font-size: 3em;
 }
 
+#profile .boton{
+	background-color: rgb(133, 39, 39);
+}
+
 footer{
   text-align: center;
+}
+
+#commentCard{
+	background-color: rgb(233, 233, 233);
+}
+
+#commentCardRes{
+	background-color: rgb(192, 192, 192);
 }

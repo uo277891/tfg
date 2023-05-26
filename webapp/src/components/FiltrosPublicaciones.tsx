@@ -5,9 +5,9 @@ import listaPaises from "../util/listaPaises";
 
 const paises = listaPaises()
 
-function FiltrosUsuario(props: any) {
+function FiltrosPublicaciones(props: any) {
 
-    const tipoPublicacion: string[] = [ "Todos", "Solo texto", "Imágenes", "Audios",]
+    const tipoPublicacion: string[] = [ "Todos", "Solo texto", "Imágenes", "Audios"]
 
     const tiposOrdenacion: string[] = ["Fecha", "Número de me gustas"]
 
@@ -42,10 +42,11 @@ function FiltrosUsuario(props: any) {
                 select
                 value={tipoPub}
                 fullWidth
+                role="publicaciones"
                 onChange={(tipo: any) => handleChangePublicacion(tipo.target.value)}
               >
                 {tipoPublicacion.map((tipo) => (
-                  <MenuItem key={tipo} value={tipo}>
+                  <MenuItem role="tipoPub" key={tipo} value={tipo}>
                     {tipo}
                   </MenuItem>
                 ))}
@@ -73,4 +74,4 @@ function FiltrosUsuario(props: any) {
     }
 }
 
-export default FiltrosUsuario;
+export default FiltrosPublicaciones;

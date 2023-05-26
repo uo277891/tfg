@@ -93,7 +93,7 @@ const Login = () => {
               <div>
                   <TextField id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
               </div>
-              <Button className="boton" variant="contained" onClick={iniciarSesion}>Iniciar Sesión</Button>
+              <Button className="boton" id = "inicioSesion" variant="contained" onClick={iniciarSesion}>Comprobar credenciales</Button>
           </Box>
           <p>Si no tienes cuenta, ¡crea una ahora pulsando <Link href="/register" >aquí</Link>!</p>
         </main>

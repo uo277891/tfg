@@ -13,31 +13,31 @@ const ExplicacionSpotify = () => {
                 <li><strong>Sobre ti</strong></li>
                     <ul>
                         <li>Imagen de perfil.</li>
-                        <li>Género(s) con los que se te relaciona.</li>
-                        <li>Popularidad en la plataforma.</li>
+                        <li>Géneros con los que se te relaciona.</li>
+                        <li>Popularidad en Spotify.</li>
                         <li>Número de seguidores.</li>
                         <li>Enlace a tu perfil de Spotify.</li>
                     </ul>
                 <li><strong>Tus 6 álbumes más populares</strong></li>
                     <ul>
                         <li>Imagen del álbum.</li>
-                        <li>Fecha de salida.</li>
-                        <li>Género(s).</li>
-                        <li>Popularidad en la plataforma.</li>
+                        <li>Fecha de lanzamiento.</li>
+                        <li>Número de canciones.</li>
+                        <li>Artistas.</li>
                         <li>Enlace al álbum.</li>
                     </ul>
                 <li><strong>Tus 6 canciones más populares</strong></li>
                     <ul>
                         <li>Imagen del álbum o canción.</li>
-                        <li>Fecha de salida.</li>
-                        <li>Género(s).</li>
                         <li>Álbum al que pertenece.</li>
-                        <li>Artistas asociados.</li>
+                        <li>Fecha de salida.</li>
+                        <li>Artistas que participan.</li>
                         <li>Popularidad en la plataforma.</li>
                         <li>Duración.</li>
+                        <li>Extracto de la canción.</li>
                         <li>Enlace a la canción.</li>
                     </ul>
-                <li><strong>Artistas similares a ti (según Spotify)</strong></li>
+                <li><strong>12 artistas similares a ti (según Spotify)</strong></li>
                     <ul>
                         <li>Mismos datos que se muestran para tu perfil.</li>
                     </ul>

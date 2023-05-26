@@ -1,6 +1,6 @@
 import  Dayjs  from "dayjs";
 
-const errores: string[] = ["Algún campo está vacío", "Las contraseñas no coiciden", "La contraseña debe tener un mínimo de 8 caracteres", 
+const errores: string[] = ["Algún campo está vacío", "Las contraseñas no coinciden", "La contraseña debe tener un mínimo de 8 caracteres", 
 "Debes tener más de 16 años y menos de 150", "La descripción debe ser de máximo 200 caracteres", "El nombre de usuario no puede ser mayor de 15 caracteres ni tener espacios",
 "La localidad no puede ser mayor de 25 caracteres"]
 
