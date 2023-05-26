@@ -41,5 +41,5 @@ test('Renderiza tercera página de Register correctamente', () => {
     fireEvent.click(getByText('Siguiente'));
     expect(getByText('Añade una foto de perfil (opcional):')).toBeInTheDocument();
     fireEvent.click(getByText('Registrarse'));
-    expect(getByText('Debes tener más de 16 años y menos de 150')).toBeInTheDocument();
+    expect(getByText('Algún campo está vacío')).toBeInTheDocument();
 });
