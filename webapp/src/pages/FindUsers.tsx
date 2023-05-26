@@ -108,7 +108,7 @@ const FindUsers = () => {
                     <Typography variant='h5' >{text}<br/>
                         <Filtro setFiltroGenero = {setFiltroGenero} setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Filtro>
                         <ListItem key={text} disablePadding>
-                            <Button fullWidth sx={{color: common.black}} startIcon={<Icono icono={text}></Icono>} onClick={() => handleFiltro(index)}>
+                            <Button id={"filtro" + index} fullWidth sx={{color: common.black}} startIcon={<Icono icono={text}></Icono>} onClick={() => handleFiltro(index)}>
                                 <ListItemText primary="Aplicar filtro" />
                             </Button>
                         </ListItem>
@@ -129,20 +129,20 @@ const FindUsers = () => {
             <main>
                 <Grid container spacing={5}>
                     <Grid item xs={11}>
-                        <TextField fullWidth label="Buscar usuarios"  value={texto}
+                        <TextField fullWidth label="Buscar usuarios" id="searchName" value={texto}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 setTexto(event.target.value);
                         }}/>
                     </Grid>
                     <Grid item xs={1}>
                         <IconButton onClick = {HandleBuscaUsuarios}>
-                            <SearchIcon  id="questionIcon" fontSize="large"></SearchIcon>
+                            <SearchIcon  id="search" fontSize="large"></SearchIcon>
                         </IconButton>
                     </Grid>
                 </Grid>
                 <div className='estiloBase'>
                     <React.Fragment key={'left'}>
-                        <Button className="boton" variant="contained" onClick={toggleDrawer('left', true)}>Filtros</Button>
+                        <Button className="boton" id="buscar" variant="contained" onClick={toggleDrawer('left', true)}>Filtros</Button>
                         <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
                             {list()}
                         </Drawer>

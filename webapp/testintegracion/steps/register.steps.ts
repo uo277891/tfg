@@ -46,7 +46,7 @@ defineFeature(feature, test => {
 
     then('El sistema indica que el nombre está en uso', async () => {
       await page.click("#registrarse")
-      await delay(200)
+      await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('El nombre ya está en uso')
@@ -82,7 +82,7 @@ defineFeature(feature, test => {
 
     then('El sistema indica que hay campos sin completar', async () => {
       await page.click("#registrarse")
-      await delay(200)
+      await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('Algún campo está vacío')
@@ -121,7 +121,7 @@ defineFeature(feature, test => {
 
     then('El sistema indica que las contraseñas no coinciden', async () => {
       await page.click("#registrarse")
-      await delay(200)
+      await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('Las contraseñas no coinciden')
@@ -160,7 +160,7 @@ defineFeature(feature, test => {
 
     then('El sistema indica que el nombre no es válido', async () => {
       await page.click("#registrarse")
-      await delay(200)
+      await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('El nombre de usuario no puede ser mayor de 15 caracteres ni tener espacios')
@@ -199,7 +199,7 @@ defineFeature(feature, test => {
 
     then('El sistema indica que la contraseña es muy corta', async () => {
       await page.click("#registrarse")
-      await delay(200)
+      await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('La contraseña debe tener un mínimo de 8 caracteres')
