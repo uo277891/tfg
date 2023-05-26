@@ -56,7 +56,7 @@ function PublicationCard (props: any) {
             </CardContent>
             <CardActions sx={{justifyContent: "space-between"}}>
                 <Link href={"/publication/" + props.publication._id} underline="none"><Button id = {"pub" + props.numeroPub} size="large" variant="contained">Detalles</Button></Link>
-                {props.propiaPublicacion && <Button sx={{justifyContent: "space-between"}} color = 'error' size="large" variant="contained" onClick={handleClickOpen}>Eliminar</Button>}
+                {props.propiaPublicacion && <Button sx={{justifyContent: "space-between"}} id = {"elim" + props.numeroPub} color = 'error' size="large" variant="contained" onClick={handleClickOpen}>Eliminar</Button>}
             </CardActions>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Confirmar eliminación</DialogTitle>
@@ -67,7 +67,7 @@ function PublicationCard (props: any) {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancelar</Button>
-                  <Button onClick={handleEliminar}>Confirmar</Button>
+                  <Button id="confirmar" onClick={handleEliminar}>Confirmar</Button>
                 </DialogActions>
               </Dialog>
         </Card>

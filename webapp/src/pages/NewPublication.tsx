@@ -99,7 +99,7 @@ const NewPublication = (props: any) => {
                         ¡Añade una foto o un audio a tu publicación! <input type="file" onChange={actualizaArchivo} />
                     <br/>
                     <br/>
-                    <Button className="boton" variant="contained" onClick={crearPublicacion}>Crear publicación</Button>
+                    <Button id="crearPub" className="boton" variant="contained" onClick={crearPublicacion}>Crear publicación</Button>
                 </Box>
             </main>
             <Box sx={{ width: '100%' }}>
