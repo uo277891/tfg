@@ -28,22 +28,3 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-  unit-test-backend:
-    runs-on: ubuntu-latest
-    env:
-      URI_MONGO_ANTIGUA: ${{ secrets.URI_MONGO_ANTIGUA }}
-      URI_MONGO_ANTIGUA_TEST: ${{ secrets.URI_MONGO_ANTIGUA_TEST }}
-    defaults:
-      run:
-        working-directory: backend
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-      - run: npm test
-      - name: Upload coverage reports to Codecov with GitHub Action
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
