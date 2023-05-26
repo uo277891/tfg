@@ -15,6 +15,7 @@ import { getUsuario } from "../accesoApi/apiUsuarios";
 import { Usuario } from "../interfaces/interfaces";
 import Avatar from '@mui/material/Avatar';
 import Icono from '../util/iconosNavegacion';
+import Tooltip from '@mui/material/Tooltip';
 
 const nombrePagina = ['Sobre SocialFS', "Obtener ID Spotify", "Datos de Spotify"];
 const linkPagina = ['aboutSocialfs', 'idspotify', 'spotify/explanation/']
@@ -57,6 +58,16 @@ export default function NestedList() {
 
     const [usuario, setUsuario] = useState<Usuario>();
 
+    const [width, setWidth] = useState(window.innerWidth);
+
+    const handleResize = () => {
+        setWidth(window.innerWidth);
+    };
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+    }, []);
+
     const datosIniciales = useCallback(async () => {
         if(usuarioEstaAutenticado){
         const user = await getUsuario(idUser)
@@ -78,66 +89,78 @@ export default function NestedList() {
 
     return (
         <List id = "navBar" sx={{ width: '100%', height: '100%' }} component="nav" aria-labelledby="nested-list-subheader">
-            <Link key="home"
-                href="/"
-                variant="h6"
-                noWrap
-                sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
-                <img src={iconlogo} alt="Icono logo"></img>
-            </Link>
+                <Link key="home"
+                    href="/"
+                    variant="h6"
+                    noWrap
+                    sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
+                    <img src={iconlogo} alt="Icono logo"></img>
+                </Link>
             {usuarioEstaAutenticado && paginasInicioSesion.map((nombre) => (
                 <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}>
                     <ListItemButton>
-                    <ListItemIcon>
-                        <Icono icono={nombre}></Icono>
-                    </ListItemIcon>
-                    <ListItemText primary={nombre} />
-                </ListItemButton>
+                        <Tooltip title={nombre}>
+                            <ListItemIcon>
+                                <Icono icono={nombre}></Icono>
+                            </ListItemIcon>
+                        </Tooltip>
+                        {width > 1200 && <ListItemText primary={nombre} />}
+                    </ListItemButton>
                 </Link>
             ))}
             {nombrePagina.map((nombre) => (
                 <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}> 
                     <ListItemButton>
-                        <ListItemIcon>
-                            <Icono icono={nombre}></Icono>
-                        </ListItemIcon>
-                        <ListItemText primary={nombre} />
+                        <Tooltip title={nombre}>
+                            <ListItemIcon>
+                                <Icono icono={nombre}></Icono>
+                            </ListItemIcon>
+                        </Tooltip>
+                            {width > 1200 && <ListItemText primary={nombre} />}
                     </ListItemButton>
                 </Link>
                 ))}
             {usuario !== undefined && <ListItemButton key="perfil" onClick={handleClick}>
                 <ListItemIcon>
-                <IconButton key = "person" sx={{ p: 0 }}>
-                    <Avatar sx={{ width: 30, height: 30 }} src= {usuario.enlace_foto}></Avatar>
-                </IconButton>
+                <Tooltip title="Cuenta">
+                    <IconButton key = "person" sx={{ p: 0 }}>
+                        <Avatar sx={{ width: 30, height: 30 }} src= {usuario.enlace_foto}></Avatar>
+                    </IconButton>
+                </Tooltip> 
                 </ListItemIcon>
-                <ListItemText primary="Cuenta" />
+                { width > 1200 && <ListItemText primary="Cuenta" />}
                 {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>}
             <Collapse in={open} timeout="auto" unmountOnExit>
                 {usuario !== undefined && <List component="div" disablePadding>
                 <Link id="publicProfile" href={"/profile/" + idUser} underline='none' color="inherit"> 
                         <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemIcon>
-                            <Icono icono="Perfil"></Icono>
-                        </ListItemIcon>
-                        <ListItemText primary="Perfil" />
+                        <Tooltip title="Perfil">
+                            <ListItemIcon>
+                                <Icono icono="Perfil"></Icono>
+                            </ListItemIcon>
+                        </Tooltip>
+                        {width > 1200 && <ListItemText primary="Perfil" />}
                         </ListItemButton>
                     </Link>
                     <Link id="stats" href={"/stats/"} underline='none' color="inherit"> 
                         <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemIcon>
-                            <Icono icono="Estadísticas"></Icono>
-                        </ListItemIcon>
-                        <ListItemText primary="Estadísticas" />
+                        <Tooltip title="Estadísticas">
+                            <ListItemIcon>
+                                <Icono icono="Estadísticas"></Icono>
+                            </ListItemIcon>
+                        </Tooltip>
+                        {width > 1200 && <ListItemText primary="Estadísticas" />}
                         </ListItemButton>
                     </Link>
                     <Link id="cerrarSesion" href={"/logout"} onClick={handleCerrarSesion} underline='none' color="inherit"> 
                         <ListItemButton sx={{ pl: 4 }} onClick={handleCerrarSesion}>
-                        <ListItemIcon onClick={handleCerrarSesion}>
-                            <Icono icono="Cerrar Sesión"></Icono>
-                        </ListItemIcon>
-                        <ListItemText primary="Cerrar Sesión" />
+                        <Tooltip title="Cerrar sesión">
+                            <ListItemIcon onClick={handleCerrarSesion}>
+                                <Icono icono="Cerrar Sesión"></Icono>
+                            </ListItemIcon>
+                        </Tooltip>
+                        {width > 1200 && <ListItemText primary="Cerrar Sesión" />}
                         </ListItemButton>
                     </Link>
             </List>}
