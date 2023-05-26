@@ -162,7 +162,7 @@ const Publication = (props: any) => {
         </CardContent>
         <CardActions disableSpacing>
         <Tooltip title="Me gusta">
-            <IconButton aria-label="add to favorites">
+            <IconButton id="meGusta" aria-label="add to favorites">
               <FavoriteIcon style={{color: colorCorazon}} onClick={handleLike}/>
             </IconButton>
           </Tooltip>

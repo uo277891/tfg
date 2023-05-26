@@ -19,8 +19,8 @@ const Home = () => {
             <Link href="/login" underline="none">
               <Button className="boton" variant="contained">Iniciar Sesión</Button>
             </Link>
-            <Link href="/register" underline="none">
-              <Button className="boton" variant="contained">Registrarse</Button>
+            <Link href="/register" id = "registrarse" underline="none">
+              <Button className="boton" id = "registrarse" variant="contained">Registrarse</Button>
             </Link>
           </Stack>
         </main>
