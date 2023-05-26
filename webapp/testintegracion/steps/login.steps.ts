@@ -28,7 +28,7 @@ defineFeature(feature, test => {
     });
 
     when('Introduce datos y procede a iniciar sesión', async () => {
-        await page.goto("http://localhost:3000/login", {waitUntil: "networkidle0"})
+      await page.goto("http://localhost:3000/login", {waitUntil: "networkidle0"})
       const text = await page.evaluate(() => document.body.textContent);
       await expect(text).toContain('Iniciar Sesión')
       await page.type('input[id=password]', contraseña)
@@ -86,7 +86,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema inicia sesión', async () => {
-      await delay(500)
+      await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       await expect(text).toContain('usuario1')
     });

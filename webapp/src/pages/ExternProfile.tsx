@@ -101,7 +101,7 @@ const ExternProfile = () => {
         setCargando(true)
         if(filtroPublicacion !== ""){
             if(ordenadoFecha === "" || ordenadoFecha === undefined)
-                    setOrdenadoFecha("fecha")
+                setOrdenadoFecha("fecha")
             if(filtroPublicacion !== "todos"){
                 const pubs = await getPublicacionesByTipo(id, filtroPublicacion, ordenadoFecha)
                 setPublicaciones(pubs)
@@ -182,13 +182,13 @@ const ExternProfile = () => {
                                     <Button color="success" className="boton" variant="contained">Estadísticas Spotify</Button>
                                 </Link>
                             </TableCell>}
-                            {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
+                            {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button id="seguir" size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
                             {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">
                                 <Link href="/profile" underline="none">
-                                    <Button className="boton" variant="contained">Editar perfil</Button>
+                                    <Button id="editarPerfil" className="boton" variant="contained">Editar perfil</Button>
                                 </Link>
                             </TableCell>}
-                            {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
+                            {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button id="dejarSeguir" size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -208,9 +208,9 @@ const ExternProfile = () => {
                 </div>
                 <section className="publicaciones">
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        {publicaciones.slice((page - 1) * numElementos, numElementos * page).map((publicacion: Publicacion) => 
+                        {publicaciones.slice((page - 1) * numElementos, numElementos * page).map((publicacion: Publicacion, index) => 
                             <Grid item xs={4}>
-                                <PublicationCard publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
+                                <PublicationCard numeroPub={index} publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
                             </Grid>
                         )}
                     </Grid>
