@@ -37,6 +37,8 @@ const EditProfile = () => {
 
     const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
 
+    const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
+
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
@@ -63,6 +65,8 @@ const EditProfile = () => {
 
     const[generoFav, setGeneroFav] = React.useState("");
 
+    const[tipoUsu, setTipoUsu] = React.useState("");
+
     const[redesSociales, setRedesSociales] = React.useState<string[]>(["", "", ""]);
 
     const [error, seterror] = React.useState("");
@@ -86,6 +90,7 @@ const EditProfile = () => {
         setLocation(user[0].localidad)
         setDate(user[0].fecha_nac)
         setDescripcion(user[0].descripcion)
+        setTipoUsu(user[0].tipo)
         setGeneroFav(user[0].genero)
         setRedesSociales(user[0].redes)
       }
@@ -131,7 +136,13 @@ const EditProfile = () => {
         setCargando(false)
       }
     else {
-      const actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, nomSpoty, descripcion, url_foto, generoFav, redesSociales)
+      let actualizado:Boolean = false
+      if(tipoUsu === tipoUsuario[2]){
+        actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, "", descripcion, tipoUsu, url_foto, generoFav, redesSociales)
+      }
+      else{
+        actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, nomSpoty, descripcion, tipoUsu, url_foto, generoFav, redesSociales)
+      }
       if(actualizado){
         setUsuarioAutenticado(userName);
         setCargando(false)
@@ -179,7 +190,7 @@ const EditProfile = () => {
               </TextField>
               <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
               <br/>
-              <TextField id="spotyName" label="ID Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>
+              {tipoUsu !== "Estándar" && <TextField id="spotyName" label="ID Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
               <br/>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopDatePicker
@@ -199,6 +210,14 @@ const EditProfile = () => {
                     ))}
               </TextField>
               <br/>
+              <TextField id="tipoUsuario" select value={tipoUsu} label="Tipo de perfil" onChange={(tipo) => setTipoUsu(tipo.target.value)}>
+                    {tipoUsuario.map((tipo) => (
+                      <MenuItem key={tipo} value={tipo}>
+                        {tipo}
+                      </MenuItem>
+                    ))}
+              </TextField>
+
               <Grid container alignItems="center" justifyContent="center">
                     <Accordion sx={{width: '50%'}}>
                       <AccordionSummary
