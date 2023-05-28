@@ -78,9 +78,8 @@
 	color: black;
 }
 
-#profile audio{
-	margin: 0 auto; 
-	display: block;
+audio{
+	width: 100%;
 }
 
 #profile main h1{

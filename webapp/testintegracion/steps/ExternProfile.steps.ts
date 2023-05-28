@@ -37,18 +37,18 @@ defineFeature(feature, test => {
     });
 
     when('Pulsar el botón para seguir', async () => {
-        await delay(1000)
+        await delay(1500)
         const text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('usuario3')
         await page.click("#seguir")
-        await delay(1000)
+        await delay(1500)
     });
 
     then('El sistema seguirá al usuario', async () => {
         const text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('Dejar de seguir')
         await page.click("#dejarSeguir")
-        await delay(1000)
+        await delay(1500)
     });
   })
 

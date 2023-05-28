@@ -10,6 +10,7 @@ export type Usuario ={
     nombre_spotify: string,
     enlace_foto: string,
     descripcion: string,
+    tipo: string,
     genero: string,
     redes: Array<string>
 }
