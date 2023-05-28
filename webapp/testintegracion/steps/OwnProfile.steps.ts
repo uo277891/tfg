@@ -33,7 +33,7 @@ defineFeature(feature, test => {
     });
 
     when('Pulsar el botón para editar perfil', async () => {
-        await delay(1000)
+        await delay(1500)
         const text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('usuario1')
         await expect(text).toContain('2')
@@ -44,7 +44,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema redirigirá al usuario al perfil privado', async () => {
-        await delay(1000)
+        await delay(1500)
         const text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('Perfil')
     });
@@ -65,12 +65,12 @@ defineFeature(feature, test => {
     });
 
     when('Pulsar el botón para acceder a los detalles de una publicación', async () => {
-        await delay(1000)
+        await delay(1500)
         await page.click("#pub0")
     });
 
     then('El sistema redirigirá a la publicación', async () => {
-        await delay(1000)
+        await delay(1500)
         const text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('publicacion 2')
     });
