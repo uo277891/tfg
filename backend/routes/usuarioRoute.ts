@@ -5,11 +5,16 @@ const api:Router = expressPr.Router()
 
 import {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, 
   getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByNameAndId,
-  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario} from "../controllers/usuarioController"
+  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario, reCaptchaGoogle} from "../controllers/usuarioController"
 
 api.post(
     "/usuario/login",
     inicioSesion
+);
+
+api.post(
+  "/usuario/captcha",
+  reCaptchaGoogle
 );
 
 api.post(

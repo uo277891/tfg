@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 
 const usuarioSquema = require('../models/usuarioModel');
 const {encriptar, comparaContraseñas} = require("../helpers/encryptContraseña");
+const axios = require("axios");
+
+require("dotenv").config();
 
 export const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -239,4 +242,12 @@ export const eliminarUsuario = async (req: Request, res: Response) => {
   await usuarioSquema.findByIdAndDelete(req.params.id_user)
 
   return res.status(200).json("Usuario eliminado");
+}
+
+export const reCaptchaGoogle = async (req: Request, res: Response) => {
+  const token = req.body.token
+  const respuesta = await axios.post("https://www.google.com/recaptcha/api/siteverify?secret=" + process.env.CAPTCHA_SECRET_KEY + "&response=" + token + "");
+  console.log(respuesta.data.success)
+  const robot = respuesta.data.success
+  return res.status(200).json({robot: robot});
 }

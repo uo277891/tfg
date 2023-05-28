@@ -19,14 +19,14 @@ defineFeature(feature, test => {
       .catch(() => {});
   });
 
-  test('Intertar registro con nombre en uso', ({given,when,then}) => {
+  test('Intertar registro sin autenticar que no eres un robot', ({given,when,then}) => {
     jest.setTimeout(100000);
     let nombre:string;
     let localidad:string;
     let cont:string;
     let repCont:string;
 
-    given('Datos con nombre en uso', () => { 
+    given('Datos correctos', () => { 
         nombre = "usuario1"
         localidad = "Gijon"
         cont = "12345678"
@@ -44,12 +44,12 @@ defineFeature(feature, test => {
       await page.click("#siguiente2")
     });
 
-    then('El sistema indica que el nombre está en uso', async () => {
+    then('El sistema indica que confirmes que no eres un robot', async () => {
       await page.click("#registrarse")
       await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
-      await expect(text).toContain('El nombre ya está en uso')
+      await expect(text).toContain('Confirme que no es un robot por favor 🤖')
     });
   })
 

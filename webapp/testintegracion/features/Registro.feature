@@ -1,9 +1,9 @@
 Feature: Escenarios para el registro
 
-Scenario: Intertar registro con nombre en uso
-    Given Datos con nombre en uso
+Scenario: Intertar registro sin autenticar que no eres un robot
+    Given Datos correctos
     When Introduce datos y procede a registrarse
-    Then El sistema indica que el nombre está en uso
+    Then El sistema indica que confirmes que no eres un robot
 
 Scenario: Intertar registro sin introducir nombre
     Given Datos sin nombre

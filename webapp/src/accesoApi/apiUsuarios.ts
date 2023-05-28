@@ -113,3 +113,14 @@ export async function actualizaUsuario(nombre_anterior: string, nombre: string, 
     let user = await res.json()
     return user.actualizado
 }
+
+export async function reCaptchaGoogle(token: string): Promise<boolean> {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({token: token})
+    };
+    const res = await fetch(llamadaBasica + "/usuario/captcha/", requestOptions);
+    const dev = await res.json()
+    return dev.robot
+}
