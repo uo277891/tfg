@@ -13,7 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import { registro, actualizaFoto } from '../accesoApi/apiUsuarios';
+import { registro, actualizaFoto, reCaptchaGoogle } from '../accesoApi/apiUsuarios';
 import { uploadMultimedia } from '../accesoApi/apiCloudinary';
 import {cumpleRegistro, errorUsuario} from '../util/condicionesRegistro'
 import Tabs from '@mui/material/Tabs';
@@ -30,6 +30,8 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import SimboloCarga from '../components/SimboloCarga';
+import ReCAPTCHA from "react-google-recaptcha";
+import { useRef } from 'react';
 
 const fechaInicio = require('dayjs');
 
@@ -122,6 +124,8 @@ const Register = () => {
 
     const [error, seterror] = React.useState("");
 
+    const captchaRef = useRef<any>()
+
     function handleRedesSociales(indice: number, valorAct: string) {
       const redesAct = redesSociales.map((valor, i) => {
         if (i === indice) return valorAct;
@@ -173,33 +177,42 @@ const Register = () => {
         setCargando(false)
       }
       else{
-        const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, 
-        process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + "", descripcion, tipoUsu, generoFav, redesSociales)
-        if(usuarioRegistrado.creado){
-          const user = await usuarioRegistrado.usuario
-          setUsuarioAutenticado(userName.toLowerCase())
-          setUsuarioEstaAcutenticado(true)
-          setIdUser(user._id)
-          const foto = await actualizarFoto(userName.toLowerCase(), user._id)
-          if(foto){
-            setRegisterError(false);
+        const token = captchaRef.current.getValue();
+        const noEsRobot = await reCaptchaGoogle(token)
+        if(noEsRobot){
+          const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, 
+          process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + "", descripcion, tipoUsu, generoFav, redesSociales)
+          if(usuarioRegistrado.creado){
+            const user = await usuarioRegistrado.usuario
             setUsuarioAutenticado(userName.toLowerCase())
             setUsuarioEstaAcutenticado(true)
             setIdUser(user._id)
-            setCargando(false)
-            redirigir("/profile/" + user._id)
-          }
-          else{
+            const foto = await actualizarFoto(userName.toLowerCase(), user._id)
+            if(foto){
+              setRegisterError(false);
+              setUsuarioAutenticado(userName.toLowerCase())
+              setUsuarioEstaAcutenticado(true)
+              setIdUser(user._id)
+              setCargando(false)
+              redirigir("/profile/" + user._id)
+            }
+            else{
+              setRegisterError(true);
+              seterror("Usuario creado, la foto no ha podido ser insertada");
+              setCargando(false)
+            }
+          }else{
             setRegisterError(true);
-            seterror("Usuario creado, la foto no ha podido ser insertada");
+            setUsuarioAutenticado("")
+            setUsuarioEstaAcutenticado(false)
+            setIdUser("")
+            seterror("El nombre ya está en uso");
             setCargando(false)
           }
-        }else{
+        }
+        else{
           setRegisterError(true);
-          setUsuarioAutenticado("")
-          setUsuarioEstaAcutenticado(false)
-          setIdUser("")
-          seterror("El nombre ya está en uso");
+          seterror("Confirme que no es un robot por favor 🤖");
           setCargando(false)
         }
       }
@@ -327,6 +340,9 @@ const Register = () => {
               <br/>
                   Añade una foto de perfil (opcional): <input type="file" onChange={actualizaArchivo} />
               <br/>
+              <Grid container justifyContent="center" p={2}>
+                <ReCAPTCHA ref={captchaRef} sitekey={process.env.REACT_APP_CAPTCHA_SITE_KEY + ""}/>
+              </Grid>
               <Button className="boton" id="registrarse" variant="contained" onClick={registrarse}>Registrarse</Button>
             </TabPanel>
             <p>¿Ya tienes cuenta?, ¡inicia sesión pulsando <Link href="/login" >aquí</Link>!</p>
