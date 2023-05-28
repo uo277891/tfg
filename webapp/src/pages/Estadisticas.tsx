@@ -53,8 +53,6 @@ const Estadisticas = () => {
 
   const [textoEdad, setTextoEdad] = React.useState<string[]>(["Joven", "Adulto", "Mayor"]);
 
-  const [textoPais, setTextoPais] = React.useState<string[]>(["", "", ""]);
-
   const [paises, setPaises] = React.useState<string[]>([]);
 
   const [porcentajesGenero, setPorcentajesGenero] = React.useState<number[]>([]);
@@ -209,7 +207,7 @@ const Estadisticas = () => {
             </AccordionSummary>
             <AccordionDetails>
             <Grid container justifyContent="center">
-              <Grid xs={8}>
+              <Grid xs={6}>
                 <PolarArea data={graficaPolar}/>
               </Grid>
             </Grid>
