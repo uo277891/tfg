@@ -44,6 +44,7 @@ const CommentCard = (props: any) => {
 
   async function comentar() {
     await añadirRespuestaComentario(props.comentario._id, props.comentario.id_publicacion, idUser, props.comentario.id_usu_coment, text)
+    await datosIniciales();
   }
 
   if(usuarioPublicacion !== undefined){

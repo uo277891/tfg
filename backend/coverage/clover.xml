@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1685291178415" clover="3.2.0">
-  <project timestamp="1685291178416" name="All files">
+<coverage generated="1685609268693" clover="3.2.0">
+  <project timestamp="1685609268694" name="All files">
     <metrics statements="369" coveredstatements="263" conditionals="55" coveredconditionals="32" methods="88" coveredmethods="68" elements="512" coveredelements="363" complexity="0" loc="369" ncloc="369" packages="1" files="6" classes="6"/>
     <file name="cloudinaryController.ts" path="C:\Users\Hugo\Desktop\CUARTO_CURSO_INGENIERIA\TFG\proyecto\tfg\backend\controllers\cloudinaryController.ts">
       <metrics statements="16" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>

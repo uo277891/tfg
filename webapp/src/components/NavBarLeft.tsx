@@ -70,9 +70,9 @@ export default function NestedList(props: any) {
 
     const datosIniciales = useCallback(async () => {
         if(usuarioEstaAutenticado){
-        const user = await getUsuario(idUser)
-        if(user != undefined)
-            setUsuario(user[0])
+            const user = await getUsuario(idUser)
+            if(user != undefined)
+                setUsuario(user[0])
         }
     }, []);
 
