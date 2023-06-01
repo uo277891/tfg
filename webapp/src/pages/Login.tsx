@@ -59,6 +59,7 @@ const Login = () => {
               setIdUser(user.usuario._id)
               setCargando(false)
               redirigir("/profile/" + user.usuario._id)
+              window.location.reload();
             }
             else{
               setLoginError(true);

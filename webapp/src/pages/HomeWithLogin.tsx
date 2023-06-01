@@ -25,12 +25,14 @@ const HomeWithLogin = () => {
     }, [])
 
     async function cargarMasPublicaciones(){
+        setCargando(true)
         const num = saltarPubs + 10
         setSaltarPubs(num)
         var publicacionesActuales = publicaciones
         const masPublicaciones = await getPublicacionWithLimit(num)
         masPublicaciones.map((publicacion: Publicacion) => {publicacionesActuales.push(publicacion)})
         setPublicaciones(publicacionesActuales)
+        setCargando(false)
     }
 
     if(cargando)
