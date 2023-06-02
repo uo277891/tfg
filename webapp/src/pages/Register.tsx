@@ -242,8 +242,9 @@ const Register = () => {
                   }}
                   noValidate
                   autoComplete="off"
+                  name='Register'
                   >
-                  <form name="Register">
+                  
                     <TextField required id="userName" name = "userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
                     <br/>
                     <TextField
@@ -277,7 +278,6 @@ const Register = () => {
                     <TextField required name = "repPasswd" id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
                     <br/>
                     <Button className="boton" id = "siguiente1" variant="contained" onClick={() => setValue(1)}>Siguiente</Button>
-                  </form>
               </Box>
             </TabPanel>
             <TabPanel value={value} index={1}>

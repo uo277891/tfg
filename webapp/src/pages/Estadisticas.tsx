@@ -170,7 +170,7 @@ const Estadisticas = () => {
               <Typography variant='h4'>Estadísticas por edad</Typography>
             </AccordionSummary>
             <Grid container justifyContent="center">
-              <Grid xs={8}>
+              <Grid item xs={8}>
                 <Bar data={grafica}/>
               </Grid>
             </Grid>
@@ -195,7 +195,7 @@ const Estadisticas = () => {
             </AccordionSummary>
             <AccordionDetails>
             <Grid container justifyContent="center">
-              <Grid xs={8}>
+              <Grid item xs={8}>
                 <MapPaises totalSeguidores={totalSeguidores} mapPaises={paises}></MapPaises>
               </Grid>
             </Grid>
@@ -207,7 +207,7 @@ const Estadisticas = () => {
             </AccordionSummary>
             <AccordionDetails>
             <Grid container justifyContent="center">
-              <Grid xs={6}>
+              <Grid item xs={6}>
                 <PolarArea data={graficaPolar}/>
               </Grid>
             </Grid>

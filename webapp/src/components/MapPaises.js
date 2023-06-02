@@ -24,7 +24,7 @@ const geoUrl = geoJSON;
     .domain([0.29, 0.68])
     .range(["#f58d7c", "#ff2700"]);
 
-const MapPaises = (props, {setTooltipContent}) => {
+const MapPaises = (props) => {
 
     const mapISO = listaPaises();
 
@@ -92,15 +92,9 @@ const MapPaises = (props, {setTooltipContent}) => {
                     key={geo.rsmKey}
                     geography={geo}
                     
-                    onMouseEnter={() => {
-                      setTooltipContent("HEYYY");
-                    }}
-                    onMouseLeave={() => {
-                      setTooltipContent("");
-                    }}
                     style={{
                       hover: {
-                        fill: "#F53",
+                        fill: "#bbe2CA",
                         outline: "none"
                       },
                       pressed: {
@@ -135,7 +129,7 @@ const MapPaises = (props, {setTooltipContent}) => {
                 <TableCell component="th" scope="row">
                   {text}
                 </TableCell>
-                <TableCell align="right">{(porcentajeUsuarios[index] * 100) + "%"}</TableCell>
+                <TableCell align="right">{(Number(porcentajeUsuarios[index] * 100).toFixed(2)) + "%"}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -15,7 +15,6 @@ const SongCard = (props: any) => {
         })
         return artistas.substring(0, artistas.length - 2)
     }
-    console.log(props.cancion.album.release_date)
   return (
     <Card sx={{ padding: "0.5em", margin: "auto", maxWidth: 500, minHeight:200 }} id="albumCard">
         <CardMedia 

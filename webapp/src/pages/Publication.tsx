@@ -162,16 +162,16 @@ const Publication = (props: any) => {
         </CardContent>
         <CardActions disableSpacing>
         <Tooltip title="Me gusta">
-            <IconButton id="meGusta" aria-label="add to favorites">
-              <FavoriteIcon style={{color: colorCorazon}} onClick={handleLike}/>
+            <IconButton onClick={handleLike} id="meGusta" aria-label="add to favorites">
+              <FavoriteIcon style={{color: colorCorazon}} />
             </IconButton>
           </Tooltip>
           <Typography variant="body1" color="text.primary" fontSize={20}>
             {publicacion.likes.length}
           </Typography>
           <Tooltip title="Añadir comentario">
-            <IconButton aria-label="add comment">
-              <AddCommentIcon style={{color: "blue"}} onClick={handleClickOpen}/>
+            <IconButton onClick={handleClickOpen} aria-label="add comment">
+              <AddCommentIcon style={{color: "blue"}}/>
             </IconButton>
           </Tooltip>
           <Dialog open={open} onClose={handleClose}>
@@ -203,8 +203,8 @@ const Publication = (props: any) => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
             Comentarios:
-            {comentarios.map((comentario: Comentario) => 
-              <CommentCard comentario = {comentario}></CommentCard>
+            {comentarios.map((comentario: Comentario, index: number) => 
+              <CommentCard key={"com" + index} comentario = {comentario}></CommentCard>
             )}
           </CardContent>
         </Collapse>

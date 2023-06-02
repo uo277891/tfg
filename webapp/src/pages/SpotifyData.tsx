@@ -63,35 +63,29 @@ const SpotifyData = () => {
                 <p>Sobre <strong>{artista.name}:</strong></p>
                 <ArtistCard artista = {artista} artistaPropio={true}></ArtistCard>
                 <p><strong>Sus mejores álbumes:</strong></p>
-                <section className="publicaciones">
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {albumes.map((album: any) => 
-                                <Grid item xs={4}>
-                                    <AlbumCard album={album}></AlbumCard>
-                                </Grid>
-                            )}
-                        </Grid>
-                </section>
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {albumes.map((album: any, index: number) => 
+                            <Grid key = {"alb" + index} item xs={4}>
+                                <AlbumCard album={album}></AlbumCard>
+                            </Grid>
+                        )}
+                    </Grid>
                 <p><strong>Sus mejores canciones:</strong></p>
-                <section className="publicaciones">
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {canciones.slice(0, 6).map((cancion: any) => 
-                                <Grid item xs={4}>
-                                    <SongCard cancion={cancion}></SongCard>
-                                </Grid>
-                            )}
-                        </Grid>
-                </section>
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {canciones.slice(0, 6).map((cancion: any, index: number) => 
+                            <Grid key = {"can" + index} item xs={4}>
+                                <SongCard cancion={cancion}></SongCard>
+                            </Grid>
+                        )}
+                    </Grid>
                 <p><strong>Si te gusta {artista.name} también podría gustarte:</strong></p>
-                <section className="publicaciones">
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {artistasSimilares.slice(0, 12).map((art: any) => 
-                                <Grid item xs={3}>
-                                    <ArtistCard artista = {art} artistaPropio={false}></ArtistCard>
-                                </Grid>
-                            )}
-                        </Grid>
-                </section>
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {artistasSimilares.slice(0, 12).map((art: any, index: number) => 
+                            <Grid key = {"art" + index} item xs={3}>
+                                <ArtistCard artista = {art} artistaPropio={false}></ArtistCard>
+                            </Grid>
+                        )}
+                    </Grid>
             </main>
         </div>
         );

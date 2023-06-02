@@ -104,7 +104,7 @@ const FindUsers = () => {
         <Box sx={{ width: 250 }}>
           <List>
             {['Tipo artista', 'País', 'Rango edad', 'Género'].map((text, index) => (
-                <Box key = "text" padding={'1em'}>
+                <Box key = {"texto" + index} padding={'1em'}>
                     <Typography variant='h5' >{text}<br/>
                         <Filtro setFiltroGenero = {setFiltroGenero} setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Filtro>
                         <ListItem key={text} disablePadding>

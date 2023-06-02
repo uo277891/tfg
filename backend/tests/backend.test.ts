@@ -46,6 +46,64 @@ afterAll(async () => {
     bd.disconnect();
 });
 
+describe('Eliminación de una cuenta ', () => {
+    it('Se crea el usuario, con una publicación, un comentario y un seguimiento', async () => {
+        let usuario = { "nombre": "usuario5", "contraseña": "contrasenaPrueba", "pais":"España", "localidad":"Gijon", "fecha_nac":"2000-05-21T16:27:36.132Z", "nombre_spotify":"", "enlace_foto":"", "descripcion":"descripcion usuario 5","tipo":"Artista", "genero":"FreeStyle", "redes":["","",""]}
+        let response = await request(app).post('/usuario/register').send(usuario).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+
+        response = await request(app).get("/usuario/getusuario/name/usuario5");
+        const idUser = response._body.user._id
+
+        let publicacion = { "id_usuario": idUser,"texto":"publicacion 3","enlace_multimedia":"","tipo_multimedia":"txt","fecha":"2023-05-21T18:35:40.884Z","likes":[]}
+        response = await request(app).post('/publicaciones/new').send(publicacion).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+
+        response = await request(app).get("/publicaciones/getpublicacion/" + idUser + "/fecha");
+        expect(response.text).not.toEqual('{"publicaciones":[]}')
+        expect(response.statusCode).toBe(200);
+
+        const comentario = {"id_publicacion":"1", "id_usu_coment": idUser,"texto":"comentario 2","fecha":"2023-05-21T18:35:59.494Z"}
+        response = await request(app).post("/comentarios/new").send(comentario).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+
+        response = await request(app).get("/comentarios/getcomentarios/1");
+        expect(response.text).not.toEqual('{"comentarios":[]}')
+        expect(response.statusCode).toBe(200);
+
+        const seguir = {"idUser":"1","idSeg": idUser}
+        response = await request(app).post("/seguidores/follow/").send(seguir).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+    });
+    it('Se elimina todo', async () => {
+        let response = await request(app).get("/usuario/getusuario/name/usuario5");
+        const idUser = response._body.user._id
+        const body = {idUser}
+        response = await request(app).delete("/usuario/delete/").send(body).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+        response = await request(app).delete("/publicacion/delete/usuario/").send(body).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+        response = await request(app).delete("/seguidores/delete/all/").send(body).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+        response = await request(app).delete("/usuario/delete/").send(body).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+        response = await request(app).delete("/comentarios/eliminar/").send(body).set('Accept', 'application/json');
+        expect(response.statusCode).toBe(200);
+
+        response = await request(app).get("/usuario/getusuario/name/usuario5");
+        expect(response.text).toEqual('"No hay usuario con ese nombre"')
+        expect(response.statusCode).toBe(400);
+
+        response = await request(app).get("/publicaciones/getpublicacion/" + idUser + "/fecha");
+        expect(response.text).toEqual('{"publicaciones":[]}')
+        expect(response.statusCode).toBe(200);
+
+        response = await request(app).get("/comentarios/getcomentarios/" + idUser);
+        expect(response.text).toEqual('{"comentarios":[]}')
+        expect(response.statusCode).toBe(200);
+    });
+})
+
 describe('Pruebas para los usuarios ', () => {
     it('Búsqueda por ID', async () => {
         const response = await request(app).get("/usuario/getusuario/646a47025e73d6bf56559576");
@@ -278,63 +336,4 @@ describe('Pruebas para los seguidores ', () => {
         expect(response.text).toEqual('{"isSeguidor":true}')
         expect(response.statusCode).toBe(200);
     });
-
-    describe('Eliminación de una cuenta ', () => {
-        it('Se crea el usuario, con una publicación, un comentario y un seguimiento', async () => {
-            let usuario = { "nombre": "usuario5", "contraseña": "contrasenaPrueba", "pais":"España", "localidad":"Gijon", "fecha_nac":"2000-05-21T16:27:36.132Z", "nombre_spotify":"", "enlace_foto":"", "descripcion":"descripcion usuario 5","tipo":"Artista", "genero":"FreeStyle", "redes":["","",""]}
-            let response = await request(app).post('/usuario/register').send(usuario).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-
-            response = await request(app).get("/usuario/getusuario/name/usuario5");
-            const idUser = response._body.user._id
-            console.log(idUser)
-
-            let publicacion = { "id_usuario": idUser,"texto":"publicacion 3","enlace_multimedia":"","tipo_multimedia":"txt","fecha":"2023-05-21T18:35:40.884Z","likes":[]}
-            response = await request(app).post('/publicaciones/new').send(publicacion).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-
-            response = await request(app).get("/publicaciones/getpublicacion/" + idUser + "/fecha");
-            expect(response.text).not.toEqual('{"publicaciones":[]}')
-            expect(response.statusCode).toBe(200);
-
-            const comentario = {"id_publicacion":"646a485c5e73d6bf565595d7", "id_usu_coment": idUser,"texto":"comentario 2","fecha":"2023-05-21T18:35:59.494Z"}
-            response = await request(app).post("/comentarios/new").send(comentario).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-
-            response = await request(app).get("/comentarios/getcomentarios/646a485c5e73d6bf565595d7");
-            expect(response.text).not.toEqual('{"comentarios":[]}')
-            expect(response.statusCode).toBe(200);
-
-            const seguir = {"idUser":"646a47415e73d6bf56559584","idSeg": idUser}
-            response = await request(app).post("/seguidores/follow/").send(seguir).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-        });
-        it('Se elimina todo', async () => {
-            let response = await request(app).get("/usuario/getusuario/name/usuario5");
-            const idUser = response._body.user._id
-            const body = {idUser}
-            response = await request(app).delete("/usuario/delete/").send(body).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-            response = await request(app).delete("/publicacion/delete/usuario/").send(body).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-            response = await request(app).delete("/seguidores/delete/all/").send(body).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-            response = await request(app).delete("/usuario/delete/").send(body).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-            response = await request(app).delete("/comentarios/eliminar/").send(body).set('Accept', 'application/json');
-            expect(response.statusCode).toBe(200);
-
-            response = await request(app).get("/usuario/getusuario/name/usuario5");
-            expect(response.text).toEqual('"No hay usuario con ese nombre"')
-            expect(response.statusCode).toBe(400);
-
-            response = await request(app).get("/publicaciones/getpublicacion/" + idUser + "/fecha");
-            expect(response.text).toEqual('{"publicaciones":[]}')
-            expect(response.statusCode).toBe(200);
-
-            response = await request(app).get("/comentarios/getcomentarios/" + idUser);
-            expect(response.text).toEqual('{"comentarios":[]}')
-            expect(response.statusCode).toBe(200);
-        });
-    })
 })

@@ -209,7 +209,7 @@ const ExternProfile = () => {
                 <section className="publicaciones">
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                         {publicaciones.slice((page - 1) * numElementos, numElementos * page).map((publicacion: Publicacion, index) => 
-                            <Grid item xs={4}>
+                            <Grid key = {"pub" + index * page} item xs={4}>
                                 <PublicationCard numeroPub={index} publication={publicacion} propiaPublicacion={usuario._id === idUser}></PublicationCard>
                             </Grid>
                         )}

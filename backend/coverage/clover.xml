@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1685706699382" clover="3.2.0">
-  <project timestamp="1685706699382" name="All files">
-    <metrics statements="392" coveredstatements="288" conditionals="55" coveredconditionals="33" methods="95" coveredmethods="78" elements="542" coveredelements="399" complexity="0" loc="392" ncloc="392" packages="1" files="6" classes="6"/>
+<coverage generated="1685729138051" clover="3.2.0">
+  <project timestamp="1685729138051" name="All files">
+    <metrics statements="395" coveredstatements="288" conditionals="56" coveredconditionals="33" methods="95" coveredmethods="78" elements="546" coveredelements="399" complexity="0" loc="395" ncloc="395" packages="1" files="6" classes="6"/>
     <file name="cloudinaryController.ts" path="C:\Users\Hugo\Desktop\CUARTO_CURSO_INGENIERIA\TFG\proyecto\tfg\backend\controllers\cloudinaryController.ts">
       <metrics statements="16" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
       <line num="3" count="1" type="stmt"/>
@@ -230,7 +230,7 @@
       <line num="105" count="1" type="stmt"/>
     </file>
     <file name="spotifyController.ts" path="C:\Users\Hugo\Desktop\CUARTO_CURSO_INGENIERIA\TFG\proyecto\tfg\backend\controllers\spotifyController.ts">
-      <metrics statements="34" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="12" coveredmethods="3"/>
+      <metrics statements="37" coveredstatements="12" conditionals="1" coveredconditionals="0" methods="12" coveredmethods="3"/>
       <line num="3" count="1" type="stmt"/>
       <line num="5" count="1" type="stmt"/>
       <line num="7" count="1" type="stmt"/>
@@ -240,31 +240,34 @@
       <line num="18" count="1" type="stmt"/>
       <line num="23" count="1" type="stmt"/>
       <line num="24" count="0" type="stmt"/>
+      <line num="25" count="0" type="stmt"/>
       <line num="26" count="0" type="stmt"/>
       <line num="27" count="0" type="stmt"/>
-      <line num="28" count="0" type="stmt"/>
+      <line num="29" count="0" type="cond" truecount="0" falsecount="1"/>
       <line num="30" count="0" type="stmt"/>
-      <line num="34" count="1" type="stmt"/>
-      <line num="35" count="0" type="stmt"/>
-      <line num="37" count="0" type="stmt"/>
+      <line num="31" count="0" type="stmt"/>
+      <line num="33" count="0" type="stmt"/>
+      <line num="37" count="1" type="stmt"/>
       <line num="38" count="0" type="stmt"/>
-      <line num="39" count="0" type="stmt"/>
+      <line num="40" count="0" type="stmt"/>
       <line num="41" count="0" type="stmt"/>
-      <line num="45" count="1" type="stmt"/>
-      <line num="46" count="0" type="stmt"/>
-      <line num="48" count="0" type="stmt"/>
+      <line num="42" count="0" type="stmt"/>
+      <line num="44" count="0" type="stmt"/>
+      <line num="48" count="1" type="stmt"/>
       <line num="49" count="0" type="stmt"/>
-      <line num="50" count="0" type="stmt"/>
       <line num="51" count="0" type="stmt"/>
+      <line num="52" count="0" type="stmt"/>
       <line num="53" count="0" type="stmt"/>
-      <line num="57" count="1" type="stmt"/>
-      <line num="58" count="0" type="stmt"/>
-      <line num="60" count="0" type="stmt"/>
+      <line num="54" count="0" type="stmt"/>
+      <line num="56" count="0" type="stmt"/>
+      <line num="60" count="1" type="stmt"/>
       <line num="61" count="0" type="stmt"/>
-      <line num="62" count="0" type="stmt"/>
+      <line num="63" count="0" type="stmt"/>
       <line num="64" count="0" type="stmt"/>
-      <line num="68" count="1" type="stmt"/>
-      <line num="70" count="1" type="stmt"/>
+      <line num="65" count="0" type="stmt"/>
+      <line num="67" count="0" type="stmt"/>
+      <line num="71" count="1" type="stmt"/>
+      <line num="73" count="1" type="stmt"/>
     </file>
     <file name="usuarioController.ts" path="C:\Users\Hugo\Desktop\CUARTO_CURSO_INGENIERIA\TFG\proyecto\tfg\backend\controllers\usuarioController.ts">
       <metrics statements="143" coveredstatements="112" conditionals="32" coveredconditionals="20" methods="32" coveredmethods="30"/>
