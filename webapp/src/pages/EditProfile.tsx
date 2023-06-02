@@ -82,17 +82,21 @@ const EditProfile = () => {
     }
 
     const datosIniciales = useCallback(async () => {
-      const user = await getUsuario(idUser)
-      if(user != undefined){
-        setUserName(user[0].nombre)
-        setNomSpoty(user[0].nombre_spotify)
-        setCountry(user[0].pais)
-        setLocation(user[0].localidad)
-        setDate(user[0].fecha_nac)
-        setDescripcion(user[0].descripcion)
-        setTipoUsu(user[0].tipo)
-        setGeneroFav(user[0].genero)
-        setRedesSociales(user[0].redes)
+      if(usuarioAutenticado){
+        setCargando(true)
+        const user = await getUsuario(idUser)
+        if(user != undefined){
+          setUserName(user[0].nombre)
+          setNomSpoty(user[0].nombre_spotify)
+          setCountry(user[0].pais)
+          setLocation(user[0].localidad)
+          setDate(user[0].fecha_nac)
+          setDescripcion(user[0].descripcion)
+          setTipoUsu(user[0].tipo)
+          setGeneroFav(user[0].genero)
+          setRedesSociales(user[0].redes)
+        }
+        setCargando(false)
       }
     }, []);
   

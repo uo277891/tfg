@@ -36,6 +36,7 @@ function PublicationCard (props: any) {
         await borrarPublicacion(props.publication._id)
         await eliminarPublicacion(props.publication._id, idUser)
         setOpen(false);
+        window.location.reload()
     }
 
     return (
@@ -55,8 +56,8 @@ function PublicationCard (props: any) {
                 </Typography>
             </CardContent>
             <CardActions sx={{justifyContent: "space-between"}}>
-                <Link href={"/publication/" + props.publication._id} underline="none"><Button id = {"pub" + props.numeroPub} size="large" variant="contained">Detalles</Button></Link>
-                {props.propiaPublicacion && <Button sx={{justifyContent: "space-between"}} id = {"elim" + props.numeroPub} color = 'error' size="large" variant="contained" onClick={handleClickOpen}>Eliminar</Button>}
+                <Link href={"/publication/" + props.publication._id} underline="none"><Button id = {"pub" + props.numeroPub} size="small" variant="contained">Detalles</Button></Link>
+                {props.propiaPublicacion && <Button id = {"elim" + props.numeroPub} color = 'error' size="small" variant="contained" onClick={handleClickOpen}>Eliminar</Button>}
             </CardActions>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Confirmar eliminación</DialogTitle>

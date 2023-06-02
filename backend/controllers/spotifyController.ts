@@ -20,13 +20,16 @@ const getToken = async () => {
     )
 }
 
-const getArtista = async (req: Request, res: Response): Promise<Response> => {
+const getArtista = async (req: Request, res: Response, tieneToken: boolean): Promise<Response> => {
     try {
-        //await getToken()
         const idArtist = req.params.idArtist
         const artista = await spotify.getArtist(idArtist)
         return res.status(200).json({artista: artista.body});
     } catch (error) {
+        if(!tieneToken){
+            await getToken()
+            getArtista(req, res, true)
+        }
         return res.status(500).send(error);
     }
 }

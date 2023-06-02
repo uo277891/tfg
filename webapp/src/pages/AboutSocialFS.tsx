@@ -1,8 +1,11 @@
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import { useLocalStorage } from '../localStorage/useLocalStorage';
 
 const AboutSocialFS = () => {
+
+  const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
   return (
     <div id="aboutFS">
@@ -26,10 +29,10 @@ const AboutSocialFS = () => {
             <Button className="boton" variant="contained">Página de inicio</Button>
           </Link>
           <Link href="/login" underline="none">
-            <Button className="boton" variant="contained">Iniciar Sesión</Button>
+            {!usuarioEstaAutenticado && <Button className="boton" variant="contained">Iniciar Sesión</Button>}
           </Link>
           <Link href="/register" underline="none">
-            <Button className="boton" variant="contained">Registrarse</Button>
+            {!usuarioEstaAutenticado && <Button className="boton" variant="contained">Registrarse</Button>}
           </Link>
         </Stack>
       </main>

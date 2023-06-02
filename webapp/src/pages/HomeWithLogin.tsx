@@ -43,8 +43,8 @@ const HomeWithLogin = () => {
             <main>
                 <h1>Últimas publicaciones</h1>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        {publicaciones.map((publicacion: Publicacion) => 
-                            <Grid item xs={12}>
+                        {publicaciones.map((publicacion: Publicacion, index: number) => 
+                            <Grid key={"pub" + (index + saltarPubs)} item xs={12}>
                                 <Publication id_publicacion = {publicacion._id}></Publication>
                             </Grid>
                         )}
