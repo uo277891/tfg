@@ -124,3 +124,14 @@ export async function reCaptchaGoogle(token: string): Promise<boolean> {
     const dev = await res.json()
     return dev.robot
 }
+
+export async function eliminarUsuario(idUser: any): Promise<boolean> {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idUser: idUser })
+    };
+    let res = await fetch(llamadaBasica + '/usuario/delete/', requestOptions);
+    let borrado = await res.json()
+    return borrado
+}

@@ -35,3 +35,14 @@ export async function getRespuestaComentario(id_comment: any): Promise<Comentari
     let comentarios = await res.json()
     return comentarios.comentarios
 }
+
+export async function eliminarComentariosUsuario(idUser: any): Promise<boolean> {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idUser: idUser })
+    };
+    let res = await fetch(llamadaBasica + '/comentarios/eliminar/', requestOptions);
+    let borrado = await res.json()
+    return borrado
+}

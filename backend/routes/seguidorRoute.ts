@@ -2,7 +2,7 @@ import express, {Router} from 'express';
 const expressPr = require('express')
 const api:Router = expressPr.Router()
 
-const {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser} = require("../controllers/seguidorController")
+const {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser, eliminarSeguimientos} = require("../controllers/seguidorController")
 
 api.get(
   "/seguidores/:idUsu",
@@ -22,6 +22,11 @@ api.post(
 api.delete(
   "/seguidores/unfollow/",
   dejarDeSeguir
+);
+
+api.delete(
+  "/seguidores/delete/all/",
+  eliminarSeguimientos
 );
 
 api.get(

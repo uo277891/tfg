@@ -56,4 +56,18 @@ const eliminarComentariosPublicacion = async (req: Request, res: Response): Prom
   }
 }
 
-module.exports = {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion}
+const eliminarComentariosUsuario = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_usuario = req.body.idUser;
+    const comentarios = await comentarioModel.find({id_usu_coment: id_usuario});
+    await comentarioModel.deleteMany({id_usu_coment: id_usuario});
+    let id_comentarios: string[] = [];
+    comentarios.map((comentario:any) => id_comentarios.push(comentario._id))
+    await comentarioModel.deleteMany({id_comment: {$in: id_comentarios}});
+    return res.status(200).json({borrado: true});
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion, eliminarComentariosUsuario}

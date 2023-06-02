@@ -12,6 +12,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { common } from '@mui/material/colors';
 
 function Icono(props: any) {
@@ -43,6 +44,8 @@ function Icono(props: any) {
         return (<AutoGraphIcon sx={{color: common.white}}></AutoGraphIcon>)
     else if(props.icono === "Filtro")
         return (<FilterAltIcon></FilterAltIcon>)
+    else if(props.icono === "Eliminar Cuenta")
+        return (<HighlightOffIcon sx={{color: common.white}}></HighlightOffIcon>)
     
     return <p></p>
 }

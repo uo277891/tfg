@@ -22,7 +22,7 @@ const getToken = async () => {
 
 const getArtista = async (req: Request, res: Response): Promise<Response> => {
     try {
-        getToken()
+        //await getToken()
         const idArtist = req.params.idArtist
         const artista = await spotify.getArtist(idArtist)
         return res.status(200).json({artista: artista.body});
@@ -33,7 +33,7 @@ const getArtista = async (req: Request, res: Response): Promise<Response> => {
 
 const getAlbumesArtista = async (req: Request, res: Response): Promise<Response> => {
     try {
-        getToken()
+        //await getToken()
         const idArtist = req.params.idArtist
         const albumes = await spotify.getArtistAlbums(idArtist, { limit: 6, offset: 0 })
         return res.status(200).json({albumes: albumes.body.items});
@@ -44,7 +44,7 @@ const getAlbumesArtista = async (req: Request, res: Response): Promise<Response>
 
 const getMejoresCancionesArtista = async (req: Request, res: Response): Promise<Response> => {
     try {
-        getToken()
+        //await getToken()
         const idArtist = req.params.idArtist
         const pais = req.params.pais
         const canciones = await spotify.getArtistTopTracks(idArtist, pais)
@@ -56,7 +56,7 @@ const getMejoresCancionesArtista = async (req: Request, res: Response): Promise<
 
 const getArtistasSimilares = async (req: Request, res: Response): Promise<Response> => {
     try {
-        getToken()
+        //await getToken()
         const idArtist = req.params.idArtist
         const artSimilares = await spotify.getArtistRelatedArtists(idArtist)
         return res.status(200).json({artSimilares: artSimilares.body.artists});
@@ -64,5 +64,7 @@ const getArtistasSimilares = async (req: Request, res: Response): Promise<Respon
         return res.status(500).send(error);
     }
 }
+
+getToken();
 
 module.exports = {getArtista, getAlbumesArtista, getMejoresCancionesArtista, getArtistasSimilares}
