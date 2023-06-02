@@ -90,4 +90,16 @@ const getFollowsByUser = async (req: Request, res: Response): Promise<Response> 
   }
 }
 
-module.exports = {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser}
+const eliminarSeguimientos = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_usuario = req.body.idUser;
+    await seguidorModel.deleteMany({id_usuario: id_usuario});
+    await seguidorModel.deleteMany({id_seguidor: id_usuario});
+    return res.status(200).json({ borrado: true });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser, eliminarSeguimientos}

@@ -25,6 +25,17 @@ export async function dejarDeSeguir(idUser: any, idSeg: any): Promise<boolean> {
     return borrado
 }
 
+export async function eliminarSeguimientos(idUser: any): Promise<boolean> {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idUser: idUser })
+    };
+    let res = await fetch(llamadaBasica + '/seguidores/delete/all/', requestOptions);
+    let borrado = await res.json()
+    return borrado
+}
+
 export async function seguir(idUser: any, idSeg: any): Promise<boolean> {
     const requestOptions = {
         method: 'POST',

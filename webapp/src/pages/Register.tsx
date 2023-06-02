@@ -195,6 +195,7 @@ const Register = () => {
               setIdUser(user._id)
               setCargando(false)
               redirigir("/profile/" + user._id)
+              window.location.reload()
             }
             else{
               setRegisterError(true);

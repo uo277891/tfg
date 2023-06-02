@@ -2,7 +2,7 @@ import express, {Router} from 'express';
 const expressPr = require('express')
 const api:Router = expressPr.Router()
 
-const {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit} = require("../controllers/publicacionController")
+const {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit, eliminarPublicacionesUsuario} = require("../controllers/publicacionController")
 
 api.get(
   "/publicaciones/getpublicacion/:idUsu/:order",
@@ -42,6 +42,11 @@ api.put(
 api.delete(
   "/publicacion/delete",
   eliminarPublicacion
+);
+
+api.delete(
+  "/publicacion/delete/usuario/",
+  eliminarPublicacionesUsuario
 );
 
 module.exports = api;

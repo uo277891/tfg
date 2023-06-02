@@ -108,6 +108,16 @@ const eliminarPublicacion = async (req: Request, res: Response): Promise<Respons
   }
 }
 
+const eliminarPublicacionesUsuario = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_usu = req.body.idUser;
+    await publicacionModel.deleteMany({id_usuario: id_usu});
+    return res.status(200).json({ borrado: true });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
 const updatePublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_publicacion = req.params.idPub;
@@ -144,4 +154,4 @@ const getPublicacionesWithLimit = async (req: Request, res: Response): Promise<R
   }
 }
 
-module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit}
+module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit, eliminarPublicacionesUsuario}

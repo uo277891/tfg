@@ -48,6 +48,17 @@ export async function eliminarPublicacion(idPub: any, idUser: any): Promise<bool
     return borrado
 }
 
+export async function eliminarPublicacionesUsuario(idUser: any): Promise<boolean> {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idUser: idUser })
+    };
+    let res = await fetch(llamadaBasica + '/publicacion/delete/usuario/', requestOptions);
+    let borrado = await res.json()
+    return borrado
+}
+
 export async function añadirPublicacion(id_usuario: string, texto: string, enlace_multimedia: string, tipo_multimedia: string): Promise<Publicacion> {
     const requestOptions = {
         method: 'POST',

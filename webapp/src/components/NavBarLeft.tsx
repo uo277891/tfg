@@ -11,11 +11,22 @@ import Link from "@mui/material/Link";
 import iconlogo from "../images/iconLogoBlanco.png";
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useState, useCallback, useEffect } from "react";
-import { getUsuario } from "../accesoApi/apiUsuarios";
-import { Usuario } from "../interfaces/interfaces";
+import { eliminarUsuario, getUsuario } from "../accesoApi/apiUsuarios";
+import { Publicacion, Usuario } from "../interfaces/interfaces";
 import Avatar from '@mui/material/Avatar';
 import Icono from '../util/iconosNavegacion';
 import Tooltip from '@mui/material/Tooltip';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import { eliminarSeguimientos } from '../accesoApi/apiSeguidores';
+import { eliminarComentariosUsuario } from '../accesoApi/apiComentarios';
+import { eliminarPublicacionesUsuario, getPublicaciones } from '../accesoApi/apiPublicaciones';
+import { getSignature, borrarPublicacion } from '../accesoApi/apiCloudinary';
+import { useNavigate } from "react-router-dom";
 
 const nombrePagina = ['Sobre SocialFS', "Obtener ID Spotify", "Datos de Spotify"];
 const linkPagina = ['aboutSocialfs', 'idspotify', 'spotify/explanation/']
@@ -44,8 +55,18 @@ export default function NestedList(props: any) {
 
     const [open, setOpen] = React.useState(true);
 
+    const [dialog, setDialog] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setDialog(false);
+    };
+
     const handleClick = () => {
-        setOpen(!open);
+        setDialog(true);
     };
 
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
@@ -85,6 +106,26 @@ export default function NestedList(props: any) {
         setUsuarioAutenticado("");
         setUsuarioEstaAcutenticado(false);
         setIdUser("")
+    };
+
+    const redirigir = useNavigate();
+
+    const handleEliminarCuenta = async () => {
+        if(usuarioEstaAutenticado){
+            await eliminarSeguimientos(idUser)
+            await eliminarComentariosUsuario(idUser)
+            await eliminarPublicacionesUsuario(idUser)
+            await getSignature(idUser)
+            const publicaciones = await getPublicaciones(idUser, "fecha")
+            publicaciones.map(async (publicacion: Publicacion) => {
+                if(publicacion.tipo_multimedia !== "txt") await borrarPublicacion(publicacion._id)
+            })
+            await eliminarUsuario(idUser)
+            handleCerrarSesion()
+            handleClose()
+            redirigir("/logout")
+            window.location.reload();
+        }
     };
 
     return (
@@ -163,8 +204,37 @@ export default function NestedList(props: any) {
                         {width > 1200 && <ListItemText primary="Cerrar Sesión" />}
                         </ListItemButton>
                     </Link>
+                    <ListItemButton sx={{ pl: 4 }} onClick={handleClick}>
+                    <Tooltip title="Eliminar cuenta">
+                        <ListItemIcon onClick={handleClick}>
+                            <Icono icono="Eliminar Cuenta"></Icono>
+                        </ListItemIcon>
+                    </Tooltip>
+                    {width > 1200 && <ListItemText primary="Eliminar cuenta" />}
+                    </ListItemButton>
             </List>}
         </Collapse>
+        <Dialog
+        open={dialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Eliminación de cuenta"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Está seguro de eliminar su cuenta?, su usuario, junto con sus publicaciones y comentarios serán eliminados permanenetemente.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={handleEliminarCuenta} autoFocus>
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
         </List>
     );
 }

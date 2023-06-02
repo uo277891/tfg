@@ -23,7 +23,7 @@ api.post(
 );
 
 api.delete(
-  "/usuario/delete/:id_user",
+  "/usuario/delete/",
   eliminarUsuario
 );
 

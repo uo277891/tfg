@@ -239,9 +239,12 @@ export const updateFoto = async (req: Request, res: Response): Promise<Response>
 }
 
 export const eliminarUsuario = async (req: Request, res: Response) => {
-  await usuarioSquema.findByIdAndDelete(req.params.id_user)
-
-  return res.status(200).json("Usuario eliminado");
+  try{
+    await usuarioSquema.findByIdAndDelete(req.body.idUser)
+    return res.status(200).json({borrado: true});
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 }
 
 export const reCaptchaGoogle = async (req: Request, res: Response) => {
