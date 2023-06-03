@@ -204,7 +204,7 @@ const Publication = (props: any) => {
           <CardContent>
             Comentarios:
             {comentarios.map((comentario: Comentario, index: number) => 
-              <CommentCard key={"com" + index} comentario = {comentario}></CommentCard>
+              <CommentCard key={"com" + index} comentario = {comentario} idUsuPub={usuarioPublicacion._id}></CommentCard>
             )}
           </CardContent>
         </Collapse>

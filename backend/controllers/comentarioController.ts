@@ -70,4 +70,15 @@ const eliminarComentariosUsuario = async (req: Request, res: Response): Promise<
   }
 }
 
-module.exports = {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion, eliminarComentariosUsuario}
+const eliminarComentario = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id_com = req.body.idCom;
+    await comentarioModel.deleteOne({_id: id_com});
+    await comentarioModel.deleteMany({id_comment: id_com});
+    return res.status(200).json({borrado: true});
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion, eliminarComentariosUsuario, eliminarComentario}

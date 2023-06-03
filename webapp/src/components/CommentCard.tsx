@@ -1,3 +1,9 @@
+import * as React from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { useState, useCallback, useEffect } from "react";
 import { getUsuario } from "../accesoApi/apiUsuarios";
 import { Comentario, Usuario } from "../interfaces/interfaces";
@@ -7,10 +13,10 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
-import { Grid, Link } from '@mui/material';
+import { CardActions, Grid, Link } from '@mui/material';
 import Button from '@mui/material/Button';
 import Textarea from '@mui/base/TextareaAutosize';
-import { añadirRespuestaComentario, getRespuestaComentario } from "../accesoApi/apiComentarios";
+import { añadirRespuestaComentario, eliminarComentarioYRespuestas, getRespuestaComentario } from "../accesoApi/apiComentarios";
 
 const CommentCard = (props: any) => {
 
@@ -23,6 +29,16 @@ const CommentCard = (props: any) => {
   const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
   const [text, setText] = useState("");
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const datosIniciales = useCallback(async () => {
     const user = await getUsuario(props.comentario.id_usu_coment)
@@ -47,6 +63,12 @@ const CommentCard = (props: any) => {
     await datosIniciales();
   }
 
+  async function eliminarComentario() {
+    await eliminarComentarioYRespuestas(props.comentario._id)
+    handleClose();
+    window.location.reload()
+  }
+
   if(usuarioPublicacion !== undefined){
     var idCom = "commentCard"
     if(props.respuesta) idCom = "commentCardRes"
@@ -67,12 +89,37 @@ const CommentCard = (props: any) => {
           </Typography>}
           {!props.respuesta && <Typography variant="body1" fontSize={17}>{props.comentario.texto}</Typography>}
           <Textarea color="neutral" minRows={5} style={{ width: '100%', fontSize:'1em' }} placeholder="Responder" id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
-          {text.length > 0 && <Button className="boton" variant="contained" sx={{justifyContent: "space-between"}} onClick={comentar}>Comentar</Button>}
         </CardContent>
+        <CardActions sx={{justifyContent: "space-between"}}>
+          {(usuarioPublicacion._id === idUser || props.idUsuPub === idUser) && <Button variant="contained" color="error" onClick={handleClickOpen}>Eliminar comentario</Button>}
+          {text.length > 0 && <Button className="boton" variant="contained" onClick={comentar}>Comentar</Button>}
+        </CardActions>
         {comentariosRespuesta.map((comentario: Comentario) => 
               <CommentCard respuesta = {true} comentario = {comentario}></CommentCard>
-          )}
+        )}
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alerta-eliminacion-title"
+        aria-describedby="alerta-eliminacion-description"
+      >
+        <DialogTitle id="alerta-eliminacion-title">
+          {"¿Desea eliminar este comentario?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alerta-eliminacion-description">
+            El comentario será eliminado y no podrá deshacer esta acción.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={eliminarComentario} autoFocus>
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
       </Card>
+      
     );
   }
   else{

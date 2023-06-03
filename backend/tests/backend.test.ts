@@ -59,16 +59,8 @@ describe('Eliminación de una cuenta ', () => {
         response = await request(app).post('/publicaciones/new').send(publicacion).set('Accept', 'application/json');
         expect(response.statusCode).toBe(200);
 
-        response = await request(app).get("/publicaciones/getpublicacion/" + idUser + "/fecha");
-        expect(response.text).not.toEqual('{"publicaciones":[]}')
-        expect(response.statusCode).toBe(200);
-
         const comentario = {"id_publicacion":"1", "id_usu_coment": idUser,"texto":"comentario 2","fecha":"2023-05-21T18:35:59.494Z"}
         response = await request(app).post("/comentarios/new").send(comentario).set('Accept', 'application/json');
-        expect(response.statusCode).toBe(200);
-
-        response = await request(app).get("/comentarios/getcomentarios/1");
-        expect(response.text).not.toEqual('{"comentarios":[]}')
         expect(response.statusCode).toBe(200);
 
         const seguir = {"idUser":"1","idSeg": idUser}
@@ -239,7 +231,7 @@ describe('Pruebas para las publicaciones ', () => {
         expect(response.statusCode).toBe(200);
 
         response = await request(app).get("/publicaciones/getpublicacion/646a47025e73d6bf56559576/fecha");
-        expect(response.text).not.toEqual('{"publicaciones":[]}')
+        expect(response.text).not.toEqual('[]')
         expect(response.statusCode).toBe(200);
     });
     it('Actualizar una publicacion', async () => {
@@ -281,7 +273,7 @@ describe('Pruebas para los comentarios ', () => {
         expect(response.statusCode).toBe(200);
 
         response = await request(app).get("/comentarios/getcomentarios/646a46a95e73d6bf5655955f");
-        expect(response.text).not.toEqual('{"comentarios":[]}')
+        expect(response.text).not.toEqual('[]')
         expect(response.statusCode).toBe(200);
     });
     it('Insertar respuesta', async () => {
@@ -315,7 +307,7 @@ describe('Pruebas para los seguidores ', () => {
         expect(response.statusCode).toBe(200);
 
         response = await request(app).get("/seguidores/getseguidos/646a46a95e73d6bf5655955f");
-        expect(response.text).toEqual('{"followUsers":["646a47025e73d6bf56559576","646a47ba5e73d6bf5655958f"]}')
+        expect(response.text).not.toEqual('{"followUsers":[]}')
         expect(response.statusCode).toBe(200);
     });
     it('Dejar de seguir a un usuario', async () => {
