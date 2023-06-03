@@ -137,8 +137,8 @@ export default function NestedList(props: any) {
                 idPubs.push(publicacion._id);
         })
         if(idPubs.length === 1){
-            const id = idPubs[0].split("/")
-            await borrarPublicacion(id[1])
+            console.log(idPubs[0])
+            await borrarPublicacion(idPubs[0])
         }
         else if(idPubs.length > 0)
             await borrarPublicaciones(idPubs)
