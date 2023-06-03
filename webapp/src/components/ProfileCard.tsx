@@ -32,7 +32,7 @@ function CardProfile (props: any) {
 
     async function handleEliminar() {
         await getSignature(idUser)
-        await actualizaFoto(props.usuario.nombre, "https://res.cloudinary.com/ddtcz5fqr/image/upload/v1679309731/perfiles/default_user_image_a8y5kc")
+        await actualizaFoto(props.usuario.nombre, "https://res.cloudinary.com/ddtcz5fqr/image/upload/v1685798226/default_olkdoe.jpg")
         setOpen(false);
     }
 

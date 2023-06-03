@@ -14,6 +14,12 @@ export async function borrarPublicacion(idPub: any): Promise<Signature> {
     return respuesta
 }
 
+export async function borrarPublicaciones(idPubs: any): Promise<Signature> {
+    let res = await fetch(llamadaBasica + '/cloudinary/publicaciones/delete/' + idPubs);
+    let respuesta = await res.json()
+    return respuesta
+}
+
 export async function uploadMultimedia(idUser: string, archivo: File, perfiles:boolean, eliminarFoto: boolean): Promise<string>{
     let data = new FormData();
     var url_foto = ""

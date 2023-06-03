@@ -30,4 +30,18 @@ const borrarPublicacion = async (req: Request, res: Response): Promise<Response>
     }
   }
 
-module.exports = {getSignature, borrarPublicacion}
+  const borrarPublicaciones = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const idPubs = req.params.idPubs.split(',');
+      let idPubsBien: string[] = []
+      idPubs.map((id:string) => {idPubsBien.push("publicaciones/" + id)})
+      idPubsBien.map(async (id:string) => {
+        await cloudinary.v2.uploader.destroy(id);
+      })
+      return res.status(200).json("Todo ok");
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+module.exports = {getSignature, borrarPublicacion, borrarPublicaciones}

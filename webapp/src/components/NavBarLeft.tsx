@@ -25,8 +25,9 @@ import Button from '@mui/material/Button';
 import { eliminarSeguimientos } from '../accesoApi/apiSeguidores';
 import { eliminarComentariosUsuario } from '../accesoApi/apiComentarios';
 import { eliminarPublicacionesUsuario, getPublicaciones } from '../accesoApi/apiPublicaciones';
-import { getSignature, borrarPublicacion } from '../accesoApi/apiCloudinary';
+import { getSignature, borrarPublicacion, borrarPublicaciones } from '../accesoApi/apiCloudinary';
 import { useNavigate } from "react-router-dom";
+import SimboloCarga from './SimboloCarga';
 
 const nombrePagina = ['Sobre SocialFS', "Obtener ID Spotify", "Datos de Spotify"];
 const linkPagina = ['aboutSocialfs', 'idspotify', 'spotify/explanation/']
@@ -56,6 +57,8 @@ export default function NestedList(props: any) {
     const [open, setOpen] = React.useState(true);
 
     const [dialog, setDialog] = React.useState(false);
+
+    const [cargando, setCargando] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -112,129 +115,150 @@ export default function NestedList(props: any) {
 
     const handleEliminarCuenta = async () => {
         if(usuarioEstaAutenticado){
+            setCargando(true)
             await eliminarSeguimientos(idUser)
             await eliminarComentariosUsuario(idUser)
             await eliminarPublicacionesUsuario(idUser)
-            await getSignature(idUser)
-            const publicaciones = await getPublicaciones(idUser, "fecha")
-            publicaciones.map(async (publicacion: Publicacion) => {
-                if(publicacion.tipo_multimedia !== "txt") await borrarPublicacion(publicacion._id)
-            })
             await eliminarUsuario(idUser)
+            await getSignature(idUser)
             handleCerrarSesion()
+            setCargando(false)
             handleClose()
             redirigir("/logout")
             window.location.reload();
         }
     };
 
-    return (
-        <List id = "navBar" sx={{ width: '100%', height: '100%' }} component="nav" aria-labelledby="nested-list-subheader">
-                <Link key="home"
-                    href="/"
-                    variant="h6"
-                    noWrap
-                    sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
-                    <img src={iconlogo} alt="Icono logo"></img>
-                </Link>
-            {usuarioEstaAutenticado && paginasInicioSesion.map((nombre) => (
-                <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}>
-                    <ListItemButton>
-                        <Tooltip title={nombre}>
-                            <ListItemIcon>
-                                <Icono icono={nombre}></Icono>
-                            </ListItemIcon>
-                        </Tooltip>
-                        {width > 1200 && <ListItemText primary={nombre} />}
-                    </ListItemButton>
-                </Link>
-            ))}
-            {nombrePagina.map((nombre) => (
-                <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}> 
-                    <ListItemButton>
-                        <Tooltip title={nombre}>
-                            <ListItemIcon>
-                                <Icono icono={nombre}></Icono>
-                            </ListItemIcon>
-                        </Tooltip>
+    const handleEliminarMultimedia = async () => {
+        const publicaciones = await getPublicaciones(idUser, "fecha")
+        let idPubs: string[] = []
+        publicaciones.map((publicacion) => {
+            if(publicacion.tipo_multimedia !== "txt")
+                idPubs.push(publicacion._id);
+        })
+        if(idPubs.length === 1){
+            const id = idPubs[0].split("/")
+            await borrarPublicacion(id[1])
+        }
+        else if(idPubs.length > 0)
+            await borrarPublicaciones(idPubs)
+        await handleEliminarCuenta()
+        handleCerrarSesion()
+        handleClose()
+        redirigir("/logout")
+        window.location.reload();
+    };
+
+    if(cargando)
+        return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+    else
+        return (
+            <List id = "navBar" sx={{ width: '100%', height: '100%' }} component="nav" aria-labelledby="nested-list-subheader">
+                    <Link key="home"
+                        href="/"
+                        variant="h6"
+                        noWrap
+                        sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
+                        <img src={iconlogo} alt="Icono logo"></img>
+                    </Link>
+                {usuarioEstaAutenticado && paginasInicioSesion.map((nombre) => (
+                    <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}>
+                        <ListItemButton>
+                            <Tooltip title={nombre}>
+                                <ListItemIcon>
+                                    <Icono icono={nombre}></Icono>
+                                </ListItemIcon>
+                            </Tooltip>
                             {width > 1200 && <ListItemText primary={nombre} />}
-                    </ListItemButton>
-                </Link>
+                        </ListItemButton>
+                    </Link>
                 ))}
-            {usuario !== undefined && <ListItemButton key="perfil" onClick={handleClick}>
-                <ListItemIcon>
-                <Tooltip title="Cuenta">
-                    <IconButton key = "person" sx={{ p: 0 }}>
-                        <Avatar sx={{ width: 30, height: 30 }} src= {usuario.enlace_foto}></Avatar>
-                    </IconButton>
-                </Tooltip> 
-                </ListItemIcon>
-                { width > 1200 && <ListItemText primary="Cuenta" />}
-                {open ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>}
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                {usuario !== undefined && <List component="div" disablePadding>
-                <Link id="publicProfile" href={"/profile/" + idUser} underline='none' color="inherit"> 
-                        <ListItemButton sx={{ pl: 4 }}>
-                        <Tooltip title="Perfil">
-                            <ListItemIcon>
-                                <Icono icono="Perfil"></Icono>
-                            </ListItemIcon>
-                        </Tooltip>
-                        {width > 1200 && <ListItemText primary="Perfil" />}
+                {nombrePagina.map((nombre) => (
+                    <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}> 
+                        <ListItemButton>
+                            <Tooltip title={nombre}>
+                                <ListItemIcon>
+                                    <Icono icono={nombre}></Icono>
+                                </ListItemIcon>
+                            </Tooltip>
+                                {width > 1200 && <ListItemText primary={nombre} />}
                         </ListItemButton>
                     </Link>
-                    <Link id="stats" href={"/stats/"} underline='none' color="inherit"> 
-                        <ListItemButton sx={{ pl: 4 }}>
-                        <Tooltip title="Estadísticas">
-                            <ListItemIcon>
-                                <Icono icono="Estadísticas"></Icono>
+                    ))}
+                {usuario !== undefined && <ListItemButton key="perfil" onClick={handleClick}>
+                    <ListItemIcon>
+                    <Tooltip title="Cuenta">
+                        <IconButton key = "person" sx={{ p: 0 }}>
+                            <Avatar sx={{ width: 30, height: 30 }} src= {usuario.enlace_foto}></Avatar>
+                        </IconButton>
+                    </Tooltip> 
+                    </ListItemIcon>
+                    { width > 1200 && <ListItemText primary="Cuenta" />}
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>}
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    {usuario !== undefined && <List component="div" disablePadding>
+                    <Link id="publicProfile" href={"/profile/" + idUser} underline='none' color="inherit"> 
+                            <ListItemButton sx={{ pl: 4 }}>
+                            <Tooltip title="Perfil">
+                                <ListItemIcon>
+                                    <Icono icono="Perfil"></Icono>
+                                </ListItemIcon>
+                            </Tooltip>
+                            {width > 1200 && <ListItemText primary="Perfil" />}
+                            </ListItemButton>
+                        </Link>
+                        <Link id="stats" href={"/stats/"} underline='none' color="inherit"> 
+                            <ListItemButton sx={{ pl: 4 }}>
+                            <Tooltip title="Estadísticas">
+                                <ListItemIcon>
+                                    <Icono icono="Estadísticas"></Icono>
+                                </ListItemIcon>
+                            </Tooltip>
+                            {width > 1200 && <ListItemText primary="Estadísticas" />}
+                            </ListItemButton>
+                        </Link>
+                        <Link id="cerrarSesion" href={"/logout"} onClick={handleCerrarSesion} underline='none' color="inherit"> 
+                            <ListItemButton sx={{ pl: 4 }} onClick={handleCerrarSesion}>
+                            <Tooltip title="Cerrar sesión">
+                                <ListItemIcon onClick={handleCerrarSesion}>
+                                    <Icono icono="Cerrar Sesión"></Icono>
+                                </ListItemIcon>
+                            </Tooltip>
+                            {width > 1200 && <ListItemText primary="Cerrar Sesión" />}
+                            </ListItemButton>
+                        </Link>
+                        <ListItemButton sx={{ pl: 4 }} onClick={handleClick}>
+                        <Tooltip title="Eliminar cuenta">
+                            <ListItemIcon onClick={handleClick}>
+                                <Icono icono="Eliminar Cuenta"></Icono>
                             </ListItemIcon>
                         </Tooltip>
-                        {width > 1200 && <ListItemText primary="Estadísticas" />}
+                        {width > 1200 && <ListItemText primary="Eliminar cuenta" />}
                         </ListItemButton>
-                    </Link>
-                    <Link id="cerrarSesion" href={"/logout"} onClick={handleCerrarSesion} underline='none' color="inherit"> 
-                        <ListItemButton sx={{ pl: 4 }} onClick={handleCerrarSesion}>
-                        <Tooltip title="Cerrar sesión">
-                            <ListItemIcon onClick={handleCerrarSesion}>
-                                <Icono icono="Cerrar Sesión"></Icono>
-                            </ListItemIcon>
-                        </Tooltip>
-                        {width > 1200 && <ListItemText primary="Cerrar Sesión" />}
-                        </ListItemButton>
-                    </Link>
-                    <ListItemButton sx={{ pl: 4 }} onClick={handleClick}>
-                    <Tooltip title="Eliminar cuenta">
-                        <ListItemIcon onClick={handleClick}>
-                            <Icono icono="Eliminar Cuenta"></Icono>
-                        </ListItemIcon>
-                    </Tooltip>
-                    {width > 1200 && <ListItemText primary="Eliminar cuenta" />}
-                    </ListItemButton>
-            </List>}
-        </Collapse>
-        <Dialog
-        open={dialog}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Eliminación de cuenta"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            ¿Está seguro de eliminar su cuenta?, su usuario, junto con sus publicaciones y comentarios serán eliminados permanenetemente.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleEliminarCuenta} autoFocus>
-            Eliminar
-          </Button>
-        </DialogActions>
-      </Dialog>
-        </List>
-    );
+                </List>}
+            </Collapse>
+            <Dialog
+            open={dialog}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="alert-dialog-title">
+            {"Eliminación de cuenta"}
+            </DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+                ¿Está seguro de eliminar su cuenta?, su usuario, junto con sus publicaciones y comentarios serán eliminados permanentemente.
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={handleEliminarMultimedia} autoFocus>
+                Eliminar
+            </Button>
+            </DialogActions>
+        </Dialog>
+            </List>
+        );
 }

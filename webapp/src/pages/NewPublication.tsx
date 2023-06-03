@@ -10,6 +10,7 @@ import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { actualizaPublicacion, añadirPublicacion } from "../accesoApi/apiPublicaciones";
 import {uploadMultimedia} from "../accesoApi/apiCloudinary"
+import SimboloCarga from "../components/SimboloCarga";
 
 const NewPublication = (props: any) => {
 
@@ -18,6 +19,8 @@ const NewPublication = (props: any) => {
     const[text, setText] = React.useState("");
 
     const[error, setError] = React.useState("");
+
+    const[cargando, setCargando] = React.useState(false);
 
     const [publicationError, setPublicationError] = React.useState(false);
 
@@ -29,12 +32,17 @@ const NewPublication = (props: any) => {
 
     const actualizaArchivo = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png" || e.target.files[0].type === "audio/mpeg"){
+            if(e.target.files[0].size > 1000000){
+                setPublicationError(true);
+                setError("La multimedia no puede ser superior a 1 MB (si no lo cambia la publicación se creará sin multimedia)");
+                setArchivo(undefined);
+            }
+            else if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png" || e.target.files[0].type === "audio/mpeg"){
                 setArchivo(e.target.files[0]);
             }
             else{
                 setPublicationError(true);
-                setError("La multimedia debe tener extensión png, jpg o mp3");
+                setError("La multimedia debe tener extensión png, jpg o mp3 (si no lo cambia la publicación se creará sin multimedia)");
                 setArchivo(undefined);
             }
         }
@@ -46,38 +54,60 @@ const NewPublication = (props: any) => {
             setError("Se debe escribir algo en el texto para crear la publicación.");
         }
         else {
+            setCargando(true)
             const pub = await añadirPublicacion(idUser, text, "", "txt")
             if(archivo !== undefined){
-                const respuesta = await uploadMultimedia(pub._id, archivo, false, false)
-                if(respuesta !== ""){
-                    const url_multimedia = respuesta
-                    var tipo_multimedia = ""
-                    if(archivo.type === "audio/mpeg")
-                        tipo_multimedia = "iframe"
-                    else
-                        tipo_multimedia = "img"
-                    const fotoAct = await actualizaPublicacion(pub._id, url_multimedia, tipo_multimedia)
-                    if(fotoAct)
+                if(archivo.size > 3000000){
+                    setPublicationError(true);
+                    setError("La multimedia no puede ser superior a 1 MB (si no lo cambia la publicación se creará sin multimedia)");
+                    setArchivo(undefined);
+                }
+                else if(archivo.type !== "image/jpeg" && archivo.type !== "image/png" && archivo.type !== "audio/mpeg"){
+                    setPublicationError(true);
+                    setError("La multimedia debe tener extensión png, jpg o mp3 (si no lo cambia la publicación se creará sin multimedia)");
+                    setArchivo(undefined);
+                }
+                else{
+                    const respuesta = await uploadMultimedia(pub._id, archivo, false, false)
+                    if(respuesta !== ""){
+                        const url_multimedia = respuesta
+                        var tipo_multimedia = ""
+                        if(archivo.type === "audio/mpeg")
+                            tipo_multimedia = "iframe"
+                        else
+                            tipo_multimedia = "img"
+                        const fotoAct = await actualizaPublicacion(pub._id, url_multimedia, tipo_multimedia)
+                        if(fotoAct){
+                            setCargando(false)
                             redirigir('/profile/' + idUser)
+                        }
                         else{
+                            setCargando(false)
                             setPublicationError(true);
                             setError("La publicación se ha creado, pero la multimedia no ha podido ser añadida.");
                         }
-                }else{
-                    setPublicationError(true);
-                    setError("La publicación se ha creado, pero la multimedia no ha podido ser añadida.");
+                    }else{
+                        setCargando(false)
+                        setPublicationError(true);
+                        setError("La publicación se ha creado, pero la multimedia no ha podido ser añadida.");
+                    }
                 }
             }
-            else if(pub !== undefined)
+            else if(pub !== undefined){
+                setCargando(false)
                 redirigir('/profile/' + idUser)
+            }
             else{
+                setCargando(false)
                 setPublicationError(true);
                 setError("Ha ocurrido un error, la publicación no ha podido ser creada.");
             }
           }
     }
 
-    if(usuarioEstaAutenticado){
+    if(cargando)
+        return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
+    else if(usuarioEstaAutenticado){
         return (
             <div id="newPublication" className="forms">
             <main>
