@@ -2,7 +2,7 @@ import express, {Router} from 'express';
 const expressPr = require('express')
 const api:Router = expressPr.Router()
 
-const {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion, eliminarComentariosUsuario} = require("../controllers/comentarioController")
+const {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion, eliminarComentariosUsuario, eliminarComentario} = require("../controllers/comentarioController")
 
 api.post(
   "/comentarios/new",
@@ -32,6 +32,11 @@ api.delete(
 api.delete(
   "/comentarios/eliminar/",
   eliminarComentariosUsuario
+);
+
+api.delete(
+  "/comentario/eliminar/",
+  eliminarComentario
 );
 
 module.exports = api;

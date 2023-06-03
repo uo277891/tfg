@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1685729138051" clover="3.2.0">
-  <project timestamp="1685729138051" name="All files">
-    <metrics statements="395" coveredstatements="288" conditionals="56" coveredconditionals="33" methods="95" coveredmethods="78" elements="546" coveredelements="399" complexity="0" loc="395" ncloc="395" packages="1" files="6" classes="6"/>
+<coverage generated="1685785609258" clover="3.2.0">
+  <project timestamp="1685785609259" name="All files">
+    <metrics statements="402" coveredstatements="289" conditionals="56" coveredconditionals="33" methods="97" coveredmethods="78" elements="555" coveredelements="400" complexity="0" loc="402" ncloc="402" packages="1" files="6" classes="6"/>
     <file name="cloudinaryController.ts" path="C:\Users\Hugo\Desktop\CUARTO_CURSO_INGENIERIA\TFG\proyecto\tfg\backend\controllers\cloudinaryController.ts">
       <metrics statements="16" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
       <line num="3" count="1" type="stmt"/>
@@ -22,7 +22,7 @@
       <line num="33" count="1" type="stmt"/>
     </file>
     <file name="comentarioController.ts" path="C:\Users\Hugo\Desktop\CUARTO_CURSO_INGENIERIA\TFG\proyecto\tfg\backend\controllers\comentarioController.ts">
-      <metrics statements="46" coveredstatements="40" conditionals="0" coveredconditionals="0" methods="13" coveredmethods="13"/>
+      <metrics statements="53" coveredstatements="41" conditionals="0" coveredconditionals="0" methods="15" coveredmethods="13"/>
       <line num="3" count="1" type="stmt"/>
       <line num="5" count="2" type="stmt"/>
       <line num="6" count="2" type="stmt"/>
@@ -40,11 +40,11 @@
       <line num="22" count="1" type="stmt"/>
       <line num="23" count="1" type="stmt"/>
       <line num="25" count="0" type="stmt"/>
-      <line num="29" count="5" type="stmt"/>
-      <line num="30" count="5" type="stmt"/>
-      <line num="31" count="5" type="stmt"/>
-      <line num="32" count="5" type="stmt"/>
-      <line num="33" count="5" type="stmt"/>
+      <line num="29" count="4" type="stmt"/>
+      <line num="30" count="4" type="stmt"/>
+      <line num="31" count="4" type="stmt"/>
+      <line num="32" count="4" type="stmt"/>
+      <line num="33" count="4" type="stmt"/>
       <line num="35" count="0" type="stmt"/>
       <line num="39" count="1" type="stmt"/>
       <line num="40" count="1" type="stmt"/>
@@ -69,21 +69,28 @@
       <line num="67" count="1" type="stmt"/>
       <line num="69" count="0" type="stmt"/>
       <line num="73" count="1" type="stmt"/>
+      <line num="74" count="0" type="stmt"/>
+      <line num="75" count="0" type="stmt"/>
+      <line num="76" count="0" type="stmt"/>
+      <line num="77" count="0" type="stmt"/>
+      <line num="78" count="0" type="stmt"/>
+      <line num="80" count="0" type="stmt"/>
+      <line num="84" count="1" type="stmt"/>
     </file>
     <file name="publicacionController.ts" path="C:\Users\Hugo\Desktop\CUARTO_CURSO_INGENIERIA\TFG\proyecto\tfg\backend\controllers\publicacionController.ts">
       <metrics statements="90" coveredstatements="65" conditionals="17" coveredconditionals="9" methods="18" coveredmethods="16"/>
       <line num="3" count="1" type="stmt"/>
       <line num="5" count="1" type="stmt"/>
-      <line num="7" count="8" type="stmt"/>
-      <line num="8" count="8" type="stmt"/>
-      <line num="9" count="8" type="stmt"/>
-      <line num="10" count="8" type="stmt"/>
-      <line num="12" count="8" type="cond" truecount="2" falsecount="0"/>
-      <line num="13" count="7" type="stmt"/>
+      <line num="7" count="7" type="stmt"/>
+      <line num="8" count="7" type="stmt"/>
+      <line num="9" count="7" type="stmt"/>
+      <line num="10" count="7" type="stmt"/>
+      <line num="12" count="7" type="cond" truecount="2" falsecount="0"/>
+      <line num="13" count="6" type="stmt"/>
       <line num="15" count="1" type="stmt"/>
-      <line num="17" count="8" type="cond" truecount="1" falsecount="1"/>
+      <line num="17" count="7" type="cond" truecount="1" falsecount="1"/>
       <line num="18" count="0" type="stmt"/>
-      <line num="21" count="8" type="stmt"/>
+      <line num="21" count="7" type="stmt"/>
       <line num="24" count="0" type="stmt"/>
       <line num="25" count="0" type="stmt"/>
       <line num="29" count="2" type="stmt"/>
