@@ -135,3 +135,12 @@ export async function eliminarUsuario(idUser: any): Promise<boolean> {
     let borrado = await res.json()
     return borrado
 }
+
+export async function getUsuariosByFilters(tipoUsu: string, pais: string, fechaInicio: any, fechaFin: any, genero: string): Promise<Usuario[]> {
+    console.log(tipoUsu)
+    console.log(pais)
+    console.log(genero)
+    let res = await fetch(llamadaBasica + '/usuario/getusuario/filter/' + tipoUsu + '/' + pais + '/' + fechaInicio + '/' + fechaFin + '/' + genero);
+    let usuario = await res.json()
+    return usuario.users
+}

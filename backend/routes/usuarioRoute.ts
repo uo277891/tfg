@@ -5,7 +5,7 @@ const api:Router = expressPr.Router()
 
 import {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, 
   getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByNameAndId,
-  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario, reCaptchaGoogle} from "../controllers/usuarioController"
+  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario, reCaptchaGoogle, getUsuariosByFilters} from "../controllers/usuarioController"
 
 api.post(
     "/usuario/login",
@@ -50,6 +50,11 @@ api.get(
 api.get(
   "/usuario/getusuario/country/:country",
   getUsuariosByCountry
+);
+
+api.get(
+  "/usuario/getusuario/filter/:tipoUsu/:country/:fechaInicio/:fechaFin/:genero",
+  getUsuariosByFilters
 );
 
 api.get(

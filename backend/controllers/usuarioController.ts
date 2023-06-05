@@ -254,3 +254,27 @@ export const reCaptchaGoogle = async (req: Request, res: Response) => {
   const robot = respuesta.data.success
   return res.status(200).json({robot: robot});
 }
+
+export const getUsuariosByFilters = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    let tipoUsu = [req.params.tipoUsu];
+    const country = req.params.country;
+    const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
+    const fechaFin = new Date(parseInt(req.params.fechaFin), 0);
+    let genre = [req.params.genero];
+    if(tipoUsu[0] === "nada") tipoUsu = ["Artista", "Promotor", "Estándar"]
+    if(genre[0] === "nada") genre = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+    if(country === "nada"){
+      const usuarioAsociado = await usuarioSquema.find({
+        tipo: {$in: tipoUsu}, fecha_nac: {"$gte" : fechaInicio, "$lte" : fechaFin}, genero: {$in: genre}});
+      return res.status(200).json({ users: usuarioAsociado });
+      }
+    else{
+      const usuarioAsociado = await usuarioSquema.find({ pais: country,
+        tipo: {$in: tipoUsu}, fecha_nac: {"$gte" : fechaInicio, "$lte" : fechaFin}, genero: {$in: genre}});
+      return res.status(200).json({ users: usuarioAsociado });
+    }
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}

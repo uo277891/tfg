@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Grid from "@mui/material/Grid";
-import { getUsuarioByCountry, getUsuarioByFecha, getUsuarioByGenero, getUsuarioByTipoUsuario, getUsuariosByName } from "../accesoApi/apiUsuarios";
+import { getUsuarioByCountry, getUsuarioByFecha, getUsuarioByGenero, getUsuarioByTipoUsuario, getUsuariosByFilters, getUsuariosByName } from "../accesoApi/apiUsuarios";
 import { Usuario } from "../interfaces/interfaces";
 import UserCard from "../components/UserCard";
 import Typography from '@mui/material/Typography';
@@ -39,11 +39,11 @@ const FindUsers = () => {
 
     const [texto, setTexto] = useState("");
 
-    const [filtroPais, setFiltroPais] = useState("");
+    const [filtroPais, setFiltroPais] = useState("nada");
 
-    const [filtroTipo, setFiltroTipo] = useState("");
+    const [filtroTipo, setFiltroTipo] = useState("nada");
 
-    const [filtroGenero, setFiltroGenero] = useState("");
+    const [filtroGenero, setFiltroGenero] = useState("nada");
 
     const [filtroEdad, setFiltroEdad] = React.useState<number[]>([16, 150]);
 
@@ -63,31 +63,12 @@ const FindUsers = () => {
             await buscarUsuarios(texto);
     }
 
-    async function handleFiltro (index: number) {
-        if(index === 0 && filtroTipo !== ""){
-            setCargando(true)
-            const users = await getUsuarioByTipoUsuario(filtroTipo)
-            setUsuarios(users)
-            setCargando(false)
-        }
-        else if(index === 1 && filtroPais !== ""){
-            setCargando(true)
-            const users = await getUsuarioByCountry(filtroPais)
-            setUsuarios(users)
-            setCargando(false)
-        }
-        else if(index === 2){
+    async function handleFiltro () {
             setCargando(true)
             const añoActual = Dayjs()
-            const users = await getUsuarioByFecha(añoActual.year() - filtroEdad[0], añoActual.year() - filtroEdad[1])
+            const users = await getUsuariosByFilters(filtroTipo, filtroPais, añoActual.year() - filtroEdad[1], añoActual.year() - filtroEdad[0], filtroGenero)
             setUsuarios(users)
             setCargando(false)
-        }else if(index === 3 && filtroGenero !== ""){
-            setCargando(true)
-            const users = await getUsuarioByGenero(filtroGenero)
-            setUsuarios(users)
-            setCargando(false)
-        }
     }
     
       const toggleDrawer =
@@ -107,15 +88,15 @@ const FindUsers = () => {
                 <Box key = {"texto" + index} padding={'1em'}>
                     <Typography variant='h5' >{text}<br/>
                         <Filtro setFiltroGenero = {setFiltroGenero} setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Filtro>
-                        <ListItem key={text} disablePadding>
-                            <Button id={"filtro" + index} fullWidth sx={{color: common.black}} startIcon={<Icono icono={text}></Icono>} onClick={() => handleFiltro(index)}>
-                                <ListItemText primary="Aplicar filtro" />
-                            </Button>
-                        </ListItem>
                     </Typography>
-                    <Divider/>
                 </Box>
             ))}
+            <Divider/>
+            <Box key = "buttonFilter" padding={'1em'}>
+                <Button fullWidth sx={{color: common.black}} startIcon={<Icono icono="Filtro"></Icono>} onClick={() => handleFiltro()}>
+                    <ListItemText primary="Aplicar filtros" />
+                </Button>
+            </Box>
           </List>
         </Box>
       );
@@ -154,7 +135,7 @@ const FindUsers = () => {
                     </Typography>
                     <List>
                         {usuarios.slice((page - 1) * numElementos, numElementos * page).map((usuario: Usuario) =>
-                            <UserCard usuario = {usuario}></UserCard>
+                            <UserCard key = {usuario._id} usuario = {usuario}></UserCard>
                         )}
                     </List>
                 </Grid>
