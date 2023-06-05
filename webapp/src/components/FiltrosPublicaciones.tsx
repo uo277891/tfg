@@ -1,10 +1,12 @@
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import listaPaises from "../util/listaPaises";
 
-const paises = listaPaises()
-
+/**
+ * Devuelve los filtros a aplicar para las publicaciones
+ * @param props Atributos que se deben modificar en la página si cambian su estado en este componente
+ * @returns Filtros disponibles
+ */
 function FiltrosPublicaciones(props: any) {
 
     const tipoPublicacion: string[] = [ "Todos", "Solo texto", "Imágenes", "Audios"]

@@ -9,6 +9,9 @@ import Grid from '@mui/material/Grid';
 import AlbumCard from '../components/AlbumCard';
 import SongCard from '../components/SongCard';
 
+/**
+ * @returns Página para representar los datos de Spotify
+ */
 const SpotifyData = () => {
 
     const {idSpo} = useParams();

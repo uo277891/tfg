@@ -1,0 +1,6 @@
+{
+    "typedocOptions": {
+        "entryPoints": ["./controllers/*.ts"],
+        "out": "docs"
+      }
+}

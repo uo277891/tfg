@@ -4,6 +4,9 @@ import { useState, useCallback, useEffect } from "react";
 import { getUsuario } from "../accesoApi/apiUsuarios";
 import { Usuario } from "../interfaces/interfaces";
 
+/**
+ * @returns Página para representar el perfil de un usuario
+ */
 const Profile = () => {
 
   const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)

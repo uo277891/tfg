@@ -18,6 +18,11 @@ import { eliminarPublicacion } from '../accesoApi/apiPublicaciones';
 import { borrarPublicacion } from '../accesoApi/apiCloudinary';
 import {parseFecha} from '../util/parseFecha';
 
+/**
+ * Devuelve un componente que renderiza una publicación 
+ * @param props publicación recibida desde la página
+ * @returns Representación de la publicación
+ */
 function PublicationCard (props: any) {
 
     const [idUser, setIdUser] = useLocalStorage('idUser', '')
@@ -32,11 +37,14 @@ function PublicationCard (props: any) {
       setOpen(false);
     };
 
+    /**
+    * Permite eliminar la publicación 
+    */
     async function handleEliminar() {
-        await borrarPublicacion(props.publication._id)
-        await eliminarPublicacion(props.publication._id, idUser)
-        setOpen(false);
-        window.location.reload()
+      await borrarPublicacion(props.publication._id)
+      await eliminarPublicacion(props.publication._id, idUser)
+      setOpen(false);
+      window.location.reload()
     }
 
     return (

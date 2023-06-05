@@ -3,6 +3,9 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { useLocalStorage } from '../localStorage/useLocalStorage';
 
+/**
+ * @returns Página para representar los datos asociados a SocialFS
+ */
 const AboutSocialFS = () => {
 
   const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)

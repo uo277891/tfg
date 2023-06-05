@@ -6,6 +6,11 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { parseDuracion, parseFecha } from '../util/parseFecha';
 
+/**
+ * Devuelve un componente que renderiza una canción 
+ * @param props canción recibida desde la página
+ * @returns Representación de la canción
+ */
 const SongCard = (props: any) => {
 
     function listadoArtistas () {

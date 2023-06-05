@@ -2,6 +2,9 @@ import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import logo from '../images/logo.png';
 
+/**
+ * @returns Página para representar la despedida a un usuario
+ */
 const Logout = () => {
 
   return (

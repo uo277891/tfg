@@ -18,6 +18,11 @@ import Button from '@mui/material/Button';
 import Textarea from '@mui/base/TextareaAutosize';
 import { añadirRespuestaComentario, eliminarComentarioYRespuestas, getRespuestaComentario } from "../accesoApi/apiComentarios";
 
+/**
+ * Devuelve un componente que renderiza un comentario o una respuesta 
+ * @param props comentario o respuesta recibido desde la página
+ * @returns Representación del comentario
+ */
 const CommentCard = (props: any) => {
 
   const [usuarioPublicacion, setUsuarioPublicacion] = useState<Usuario>();
@@ -40,6 +45,9 @@ const CommentCard = (props: any) => {
     setOpen(false);
   };
 
+  /**
+   * Carga el usuario asociado al comentario y las respuestas que tiene ese comentario
+   */
   const datosIniciales = useCallback(async () => {
     const user = await getUsuario(props.comentario.id_usu_coment)
     if(props.respuesta){
@@ -58,11 +66,17 @@ const CommentCard = (props: any) => {
       datosIniciales();
   }, [])
 
+  /**
+   * Permite añadir una respuesta al comentario
+   */
   async function comentar() {
     await añadirRespuestaComentario(props.comentario._id, props.comentario.id_publicacion, idUser, props.comentario.id_usu_coment, text)
     await datosIniciales();
   }
 
+  /**
+   * Permite eliminar el comentario y sus respuestas
+   */
   async function eliminarComentario() {
     await eliminarComentarioYRespuestas(props.comentario._id)
     handleClose();

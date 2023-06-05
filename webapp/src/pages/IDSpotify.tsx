@@ -3,6 +3,9 @@ import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 
+/**
+ * @returns Página para representar cómo se puede obtener un ID de Spotify
+ */
 const IDSpotify = () => {
 
   const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)

@@ -5,6 +5,11 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
+/**
+ * Devuelve un componente que renderiza un artista 
+ * @param props artista recibido desde la página
+ * @returns Representación del artista
+ */
 const ArtistCard = (props: any) => {
 
     const idCss = props.artistaPropio === true ? "artistCard" : "externArtistCard"
