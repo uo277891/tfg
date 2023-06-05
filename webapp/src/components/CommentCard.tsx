@@ -95,7 +95,7 @@ const CommentCard = (props: any) => {
           {text.length > 0 && <Button className="boton" variant="contained" onClick={comentar}>Comentar</Button>}
         </CardActions>
         {comentariosRespuesta.map((comentario: Comentario) => 
-              <CommentCard respuesta = {true} comentario = {comentario}></CommentCard>
+              <CommentCard key = {comentario._id} respuesta = {true} comentario = {comentario} idUsuPub = {props.idUsuPub}></CommentCard>
         )}
         <Dialog
         open={open}

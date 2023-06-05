@@ -27,6 +27,7 @@ export type Publicacion ={
 }
 
 export type Comentario ={
+    _id: string,
     id_publicacion: string,
     id_usu_coment: string,
     fecha: Date,

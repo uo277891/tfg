@@ -17,12 +17,12 @@ test('Renderiza primera página de Register correctamente', () => {
   expect(screen.getByLabelText("Contraseña *")).toBeInTheDocument();
   expect(screen.getByLabelText("Repetir Contraseña *")).toBeInTheDocument();
   fireEvent.click(getByText('Siguiente'));
-  expect(screen.getByLabelText("Tipo de perfil")).toBeInTheDocument();
+  expect(getByText('Algún campo está vacío')).toBeInTheDocument();
 });
 
 test('Renderiza segunda página de Register correctamente', () => {
     const {getByText} = render(<Ruta><Register /></Ruta>);
-    fireEvent.click(getByText('Siguiente'));
+    fireEvent.click(getByText('Sobre ti'));
     expect(getByText('¡Añade enlaces a tus redes sociales!')).toBeInTheDocument();
     expect(screen.getByLabelText("Género favorito")).toBeInTheDocument();
     expect(screen.getByLabelText("ID Spotify")).toBeInTheDocument();
@@ -32,13 +32,12 @@ test('Renderiza segunda página de Register correctamente', () => {
     expect(screen.getByLabelText("Twitter")).toBeInTheDocument();
     expect(screen.getByLabelText("YouTube")).toBeInTheDocument();
     fireEvent.click(getByText('Siguiente'));
-    expect(getByText('Añade una foto de perfil (opcional):')).toBeInTheDocument();
+    expect(getByText('Algún campo está vacío')).toBeInTheDocument();
 });
 
 test('Renderiza tercera página de Register correctamente', () => {
     const {getByText} = render(<Ruta><Register /></Ruta>);
-    fireEvent.click(getByText('Siguiente'));
-    fireEvent.click(getByText('Siguiente'));
+    fireEvent.click(getByText('Resultado final'));
     expect(getByText('Añade una foto de perfil (opcional):')).toBeInTheDocument();
     fireEvent.click(getByText('Registrarse'));
     expect(getByText('Algún campo está vacío')).toBeInTheDocument();

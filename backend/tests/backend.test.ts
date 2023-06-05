@@ -147,6 +147,11 @@ describe('Pruebas para los usuarios ', () => {
         expect(response.text).toEqual('{"users":[]}')  
         expect(response.statusCode).toBe(200);
     });
+    it('Búsqueda por varios filtros', async () => {
+        const response = await request(app).get("/usuario/getusuario/filter/Artista/España/1999/2001/FreeStyle");
+        expect(response.text).toEqual('{"users":[{"_id":"646a46a95e73d6bf5655955f","nombre":"usuario1","contrasena":"$2a$10$sCpp/RtjZvBU2U1OT8fvaeLRAsCRsEQEfI3VArX/RImtsvfYwdrJq","pais":"España","localidad":"Gijon","fecha_nac":"2000-05-21T16:27:36.132Z","nombre_spotify":"","enlace_foto":"https://res.cloudinary.com/ddtcz5fqr/image/upload/v1679309731/perfiles/default_user_image_a8y5kc","descripcion":"descripcion usuario 1","tipo":"Artista","genero":"FreeStyle","redes":["","",""],"__v":0}]}')
+        expect(response.statusCode).toBe(200);
+    });
     it('Insertar un usuario', async () => {
         let usuario = { "nombre": "usuario5", "contraseña": "contrasenaPrueba", "pais":"España", "localidad":"Gijon", "fecha_nac":"2000-05-21T16:27:36.132Z", "nombre_spotify":"", "enlace_foto":"", "descripcion":"descripcion usuario 5","tipo":"Artista", "genero":"FreeStyle", "redes":["","",""]}
         let response = await request(app).post('/usuario/register').send(usuario).set('Accept', 'application/json');

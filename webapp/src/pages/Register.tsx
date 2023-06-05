@@ -138,12 +138,17 @@ const Register = () => {
       if(e !== undefined)
           if (e.target.files) {
             if(e.target.files[0].type !== undefined){
-                if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png"){
+                if(e.target.files[0].size > 1000000){
+                  setRegisterError(true);
+                  seterror("La multimedia no puede ser superior a 1 MB (si no lo cambia el perfil se creará sin foto)");
+                  setArchivo(undefined);
+                } 
+                else if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png"){
                     setArchivo(e.target.files[0]);
                 }
                 else{
                     setRegisterError(true);
-                    seterror("La foto de perfil debe tener la extensión png o jpg.");
+                    seterror("La foto de perfil debe tener la extensión png o jpg (si no lo cambia el perfil se creará sin foto)");
                     setArchivo(undefined);
                 }
             }
@@ -156,16 +161,41 @@ const Register = () => {
 
     async function actualizarFoto(userName: string, userId: string) {
       if(archivo !== undefined){
-        const respuesta = await uploadMultimedia(userId, archivo, true, false)
-        if(respuesta !== ""){
-          const url_foto = respuesta
-          const fotoAct = await actualizaFoto(userName, url_foto)
-          return fotoAct
-        }else{
-          return false;
+        if(archivo.size > 3000000){
+          setRegisterError(true);
+          seterror("La multimedia no puede ser superior a 1 MB (si no lo cambia el perfil se creará sin foto)");
+          setArchivo(undefined);
+        }
+        else if(archivo.type !== "image/jpeg" && archivo.type !== "image/png" && archivo.type !== "audio/mpeg"){
+            setRegisterError(true);
+            seterror("La multimedia debe tener extensión png, jpg o mp3 (si no lo cambia el perfil se creará sin foto)");
+            setArchivo(undefined);
+        }
+        else{
+          const respuesta = await uploadMultimedia(userId, archivo, true, false)
+          if(respuesta !== ""){
+            const url_foto = respuesta
+            const fotoAct = await actualizaFoto(userName, url_foto)
+            return fotoAct
+          }else{
+            return false;
+          }
         }
       }
       return true;
+    }
+
+    function siguiente (sig: number) {
+      const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion)
+      if(numError > -1){
+        setRegisterError(true);
+        seterror(errorUsuario(numError));
+        setCargando(false)
+        if(numError === 4) setValue(1)
+        else setValue(0)
+      }
+      else
+        setValue(sig)
     }
 
     async function registrarse() {
@@ -175,6 +205,10 @@ const Register = () => {
         setRegisterError(true);
         seterror(errorUsuario(numError));
         setCargando(false)
+        if(numError === 4)
+          setValue(1)
+        else
+          setValue(0)
       }
       else{
         const token = captchaRef.current.getValue();
@@ -277,7 +311,7 @@ const Register = () => {
                     <TextField required name = "passwd" id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
                     <TextField required name = "repPasswd" id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
                     <br/>
-                    <Button className="boton" id = "siguiente1" variant="contained" onClick={() => setValue(1)}>Siguiente</Button>
+                    <Button className="boton" id = "siguiente1" variant="contained" onClick={() => siguiente(1)}>Siguiente</Button>
               </Box>
             </TabPanel>
             <TabPanel value={value} index={1}>
@@ -331,7 +365,7 @@ const Register = () => {
                   <br/>
                   {descripcion.length} / 200
                   <br/>
-                  <Button className="boton" id = "siguiente2" variant="contained" onClick={() => setValue(2)}>Siguiente</Button>
+                  <Button className="boton" id = "siguiente2" variant="contained" onClick={() => siguiente(2)}>Siguiente</Button>
               </Box>
             </TabPanel>
             <TabPanel value={value} index={2}>
