@@ -95,7 +95,7 @@ const FindUsers = () => {
             ))}
             <Divider/>
             <Box key = "buttonFilter" padding={'1em'}>
-                <Button fullWidth sx={{color: common.black}} startIcon={<Icono icono="Filtro"></Icono>} onClick={() => handleFiltro()}>
+                <Button id="btFiltros" fullWidth sx={{color: common.black}} startIcon={<Icono icono="Filtro"></Icono>} onClick={() => handleFiltro()}>
                     <ListItemText primary="Aplicar filtros" />
                 </Button>
             </Box>

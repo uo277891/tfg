@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">23.33% </span>
+                <span class="strong">28.12% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/30</span>
+                <span class='fraction'>9/32</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/25</span>
+                <span class='fraction'>6/24</span>
             </div>
         
             
@@ -109,7 +109,23 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,13 +137,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,6 +153,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -153,62 +187,76 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response } from 'express';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response } from 'express';
 &nbsp;
 var cloudinary = require('cloudinary');
 &nbsp;
 require("dotenv").config();
 &nbsp;
- cloudinary.config({
-   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-   api_key: process.env.CLOUDINARY_API_KEY,
-   api_secret: process.env.CLOUDINARY_API_SECRET
- });
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 &nbsp;
-const getSignature = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response): Promise&lt;Response&gt; =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const idUser = <span class="cstat-no" title="statement not covered" >req.params.idUser</span>
-<span class="cstat-no" title="statement not covered" >      await cloudinary.v2.uploader.destroy('perfiles/' + idUser);</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(200).json("Todo ok"); </span>
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      return res.status(500).send(error);</span>
-    }
+/**
+ * Elimina la foto de perfil de un usuario
+ * @param req Request (con el Id del usuario)
+ * @param res Response
+ * @returns 200 si ha eliminado la foto o 500 si no la ha podido eliminar
+ */
+export const getSignature = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response): Promise&lt;Response&gt; =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const idUser = <span class="cstat-no" title="statement not covered" >req.params.idUser</span>
+<span class="cstat-no" title="statement not covered" >    await cloudinary.v2.uploader.destroy('perfiles/' + idUser);</span>
+<span class="cstat-no" title="statement not covered" >    return res.status(200).json("Todo ok");</span>
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    return res.status(500).send(error);</span>
   }
+}
 &nbsp;
-const borrarPublicacion = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response): Promise&lt;Response&gt; =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const idPub = <span class="cstat-no" title="statement not covered" >req.params.idPub</span>
-<span class="cstat-no" title="statement not covered" >      await cloudinary.v2.uploader.destroy('publicaciones/' + idPub);</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(200).json("Todo ok");</span>
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      return res.status(500).send(error);</span>
-    }
+/**
+ * Elimina la multimedia asociada a una publicación
+ * @param req Request (con el Id de la publicación)
+ * @param res Response
+ * @returns 200 si ha eliminado la multimedia o 500 si no la ha podido eliminar
+ */
+export const borrarPublicacion = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response): Promise&lt;Response&gt; =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const idPub = <span class="cstat-no" title="statement not covered" >req.params.idPub</span>
+<span class="cstat-no" title="statement not covered" >    await cloudinary.v2.uploader.destroy('publicaciones/' + idPub);</span>
+<span class="cstat-no" title="statement not covered" >    return res.status(200).json("Todo ok");</span>
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    return res.status(500).send(error);</span>
   }
+}
 &nbsp;
-  const borrarPublicaciones = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response): Promise&lt;Response&gt; =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const idPubs = <span class="cstat-no" title="statement not covered" >req.params.idPubs.split(',');</span>
-      let idPubsBien: string[] = <span class="cstat-no" title="statement not covered" >[]</span>
-<span class="cstat-no" title="statement not covered" >      idPubs.map(<span class="fstat-no" title="function not covered" >(i</span>d:string) =&gt; {<span class="cstat-no" title="statement not covered" >idPubsBien.push("publicaciones/" + id)})</span></span>
-<span class="cstat-no" title="statement not covered" >      idPubsBien.map(<span class="fstat-no" title="function not covered" >async (i</span>d:string) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span></span>
-<span class="cstat-no" title="statement not covered" >        await cloudinary.v2.uploader.destroy(id);</span>
-      })
-<span class="cstat-no" title="statement not covered" >      return res.status(200).json("Todo ok");</span>
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      return res.status(500).send(error);</span>
-    }
+/**
+ * Elimina la multimedia asociada a varias publicaciones
+ * @param req Request (con la lista de Ids de las publicaciones)
+ * @param res Response
+ * @returns 200 si ha eliminado la multimedia o 500 si no la ha podido eliminar
+ */
+export const borrarPublicaciones = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response): Promise&lt;Response&gt; =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const idPubs = <span class="cstat-no" title="statement not covered" >req.params.idPubs.split(',');</span>
+    let idPubsBien: string[] = <span class="cstat-no" title="statement not covered" >[]</span>
+<span class="cstat-no" title="statement not covered" >    idPubs.map(<span class="fstat-no" title="function not covered" >(i</span>d: string) =&gt; { <span class="cstat-no" title="statement not covered" >idPubsBien.push("publicaciones/" + id) }</span>)</span>
+<span class="cstat-no" title="statement not covered" >    idPubsBien.map(<span class="fstat-no" title="function not covered" >async (i</span>d: string) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span></span>
+<span class="cstat-no" title="statement not covered" >      await cloudinary.v2.uploader.destroy(id);</span>
+    })
+<span class="cstat-no" title="statement not covered" >    return res.status(200).json("Todo ok");</span>
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    return res.status(500).send(error);</span>
   }
-&nbsp;
-module.exports = {getSignature, borrarPublicacion, borrarPublicaciones}</pre></td></tr></table></pre>
+}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-06-05T09:53:49.302Z
+                at 2023-06-06T10:31:01.686Z
             </div>
         <script src="prettify.js"></script>
         <script>

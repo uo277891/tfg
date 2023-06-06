@@ -1,11 +1,11 @@
-import {Router} from 'express';
+import express, {Router} from 'express';
 const expressPr = require('express')
 const api:Router = expressPr.Router()
 
 /**
  * En esta clase se vinculan los métodos los controladores con la ruta específica para poder ser llamada desde el frontend
  */
-const {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser, eliminarSeguimientos} = require("../controllers/seguidorController")
+import {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser, eliminarSeguimientos} from "../controllers/seguidorController"
 
 api.get(
   "/seguidores/:idUsu",

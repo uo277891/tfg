@@ -67,7 +67,7 @@ defineFeature(feature, test => {
         await page.goto("http://localhost:3000/find", {waitUntil: "networkidle0"}).catch(() => {});
         await page.click("#buscar")
         await delay(1000)
-        await page.click("#filtro2")
+        await page.click("#btFiltros")
         await delay(1000)
     });
 
