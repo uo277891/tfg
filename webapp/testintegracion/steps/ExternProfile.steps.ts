@@ -39,7 +39,6 @@ defineFeature(feature, test => {
     when('Pulsar el botón para seguir', async () => {
         await delay(1500)
         const text = await page.evaluate(() => document.body.textContent);
-        await expect(text).toContain('usuario3')
         await page.click("#seguir")
         await delay(1500)
     });

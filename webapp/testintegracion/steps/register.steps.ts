@@ -77,11 +77,9 @@ defineFeature(feature, test => {
       await page.type('input[id=password]', cont)
       await page.type('input[id=passwordConf]', repCont)
       await page.click("#siguiente1")
-      await page.click("#siguiente2")
     });
 
     then('El sistema indica que hay campos sin completar', async () => {
-      await page.click("#registrarse")
       await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
@@ -116,11 +114,9 @@ defineFeature(feature, test => {
       await page.type('input[id=password]', cont)
       await page.type('input[id=passwordConf]', repCont)
       await page.click("#siguiente1")
-      await page.click("#siguiente2")
     });
 
     then('El sistema indica que las contraseñas no coinciden', async () => {
-      await page.click("#registrarse")
       await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
@@ -155,11 +151,9 @@ defineFeature(feature, test => {
       await page.type('input[id=password]', cont)
       await page.type('input[id=passwordConf]', repCont)
       await page.click("#siguiente1")
-      await page.click("#siguiente2")
     });
 
     then('El sistema indica que el nombre no es válido', async () => {
-      await page.click("#registrarse")
       await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
@@ -194,11 +188,9 @@ defineFeature(feature, test => {
       await page.type('input[id=password]', cont)
       await page.type('input[id=passwordConf]', repCont)
       await page.click("#siguiente1")
-      await page.click("#siguiente2")
     });
 
     then('El sistema indica que la contraseña es muy corta', async () => {
-      await page.click("#registrarse")
       await delay(1000)
       const text = await page.evaluate(() => document.body.textContent);
       
