@@ -1,7 +1,11 @@
 import express, {Router} from 'express';
-const api:Router = express.Router()
+const expressPr = require('express')
+const api:Router = expressPr.Router()
 
-const {getSignature, borrarPublicacion} = require("../controllers/cloudinaryController") 
+/**
+ * En esta clase se vinculan los métodos los controladores con la ruta específica para poder ser llamada desde el frontend
+ */
+import {getSignature, borrarPublicacion, borrarPublicaciones} from "../controllers/cloudinaryController"
 
 api.get(
   "/cloudinary/signature/:idUser",
@@ -11,6 +15,11 @@ api.get(
 api.get(
   "/cloudinary/publicacion/delete/:idPub",
   borrarPublicacion
+);
+
+api.get(
+  "/cloudinary/publicaciones/delete/:idPubs",
+  borrarPublicaciones
 );
 
 module.exports = api;

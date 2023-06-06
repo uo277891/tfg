@@ -6,6 +6,11 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { parseFecha } from '../util/parseFecha';
 
+/**
+ * Devuelve un componente que renderiza un álbum 
+ * @param props álbum recibido desde la página
+ * @returns Representación del álbum
+ */
 const AlbumCard = (props: any) => {
 
     function listadoArtistas () {

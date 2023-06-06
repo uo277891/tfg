@@ -12,9 +12,12 @@ import SimboloCarga from "../components/SimboloCarga";
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import { getFollowingUsers } from "../accesoApi/apiSeguidores";
+import { getFollowingUsers, getFollowsByUser } from "../accesoApi/apiSeguidores";
 
-const FollowingUsers = () => {
+/**
+ * @returns Página para representar los usuarios que sigue el usuario identificado
+ */
+const FollowingUsers = (props: any) => {
 
     const [page, setPage] = React.useState(1);
 
@@ -26,17 +29,28 @@ const FollowingUsers = () => {
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
+    const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
+
     const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
-    const [cargando, setCargando] = useState<Boolean>(true);
+    const [cargando, setCargando] = useState<Boolean>(false);
 
     const [texto, setTexto] = useState("");
 
     const buscarUsuarios = useCallback(async () => {
-        setCargando(true)
-        const users = await getFollowingUsers(idUser)
-        setUsuarios(await getUsuarios(users))
-        setCargando(false) 
+        if(usuarioEstaAutenticado){
+            var users;
+            setCargando(true)
+            if(!props.you){
+                users = await getFollowingUsers(idUser)
+            }
+            else{
+                users = await getFollowsByUser(idUser)
+            }
+            if(users !== undefined)
+                setUsuarios(await getUsuarios(users))
+            setCargando(false)
+        }
     }, []);
  
     useEffect(() => {
@@ -46,13 +60,25 @@ const FollowingUsers = () => {
     async function HandleBuscaUsuarios () {
         if(texto.length === 0){
             setCargando(true)
-            const users = await getFollowingUsers(idUser)
+            var users;
+            if(!props.you){
+                users = await getFollowingUsers(idUser)
+            }
+            else{
+                users = await getFollowsByUser(idUser)
+            }
             setUsuarios(await getUsuarios(users))
             setCargando(false)
         }
         else{
             setCargando(true)
-            const users = await getFollowingUsers(idUser)
+            var users;
+            if(!props.you){
+                users = await getFollowingUsers(idUser)
+            }
+            else{
+                users = await getFollowsByUser(idUser)
+            }
             setUsuarios(await getUsuariosByNameAndId(users, texto))
             setCargando(false)
         }
@@ -60,7 +86,7 @@ const FollowingUsers = () => {
 
     if(cargando)
         return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
-    else{
+    else if (usuarioEstaAutenticado){
         return (
         <div id="findUsers">
             <main>
@@ -93,6 +119,9 @@ const FollowingUsers = () => {
             </main>
         </div>
         );
+    }
+    else{
+        return (<h1>Inicia sesión para ver a quien sigues.</h1>)
     }
 }
 

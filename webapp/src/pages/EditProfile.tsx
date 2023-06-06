@@ -29,6 +29,9 @@ import SimboloCarga from '../components/SimboloCarga';
 
 const paises = listaPaises()
 
+/**
+ * @returns Página para representar la edición de un perfil
+ */
 const EditProfile = () => {
       
     const handleDate = (newDate: Dayjs | null) => {
@@ -36,6 +39,10 @@ const EditProfile = () => {
     };
 
     const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+
+    const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
+
+    const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
 
@@ -61,6 +68,8 @@ const EditProfile = () => {
 
     const[generoFav, setGeneroFav] = React.useState("");
 
+    const[tipoUsu, setTipoUsu] = React.useState("");
+
     const[redesSociales, setRedesSociales] = React.useState<string[]>(["", "", ""]);
 
     const [error, seterror] = React.useState("");
@@ -76,16 +85,21 @@ const EditProfile = () => {
     }
 
     const datosIniciales = useCallback(async () => {
-      const user = await getUsuario(idUser)
-      if(user != undefined){
-        setUserName(user[0].nombre)
-        setNomSpoty(user[0].nombre_spotify)
-        setCountry(user[0].pais)
-        setLocation(user[0].localidad)
-        setDate(user[0].fecha_nac)
-        setDescripcion(user[0].descripcion)
-        setGeneroFav(user[0].genero)
-        setRedesSociales(user[0].redes)
+      if(usuarioAutenticado){
+        setCargando(true)
+        const user = await getUsuario(idUser)
+        if(user != undefined){
+          setUserName(user[0].nombre)
+          setNomSpoty(user[0].nombre_spotify)
+          setCountry(user[0].pais)
+          setLocation(user[0].localidad)
+          setDate(user[0].fecha_nac)
+          setDescripcion(user[0].descripcion)
+          setTipoUsu(user[0].tipo)
+          setGeneroFav(user[0].genero)
+          setRedesSociales(user[0].redes)
+        }
+        setCargando(false)
       }
     }, []);
   
@@ -129,7 +143,13 @@ const EditProfile = () => {
         setCargando(false)
       }
     else {
-      const actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, nomSpoty, descripcion, url_foto, generoFav, redesSociales)
+      let actualizado:Boolean = false
+      if(tipoUsu === tipoUsuario[2]){
+        actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, "", descripcion, tipoUsu, url_foto, generoFav, redesSociales)
+      }
+      else{
+        actualizado = await actualizaUsuario(userNameInicio, userName, country, location, date, nomSpoty, descripcion, tipoUsu, url_foto, generoFav, redesSociales)
+      }
       if(actualizado){
         setUsuarioAutenticado(userName);
         setCargando(false)
@@ -144,7 +164,7 @@ const EditProfile = () => {
   }
   if(cargando)
     return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
-  else
+  else if (usuarioEstaAutenticado)
     return (
       <div id="editProfile" className="forms">
         <main>
@@ -177,7 +197,7 @@ const EditProfile = () => {
               </TextField>
               <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
               <br/>
-              <TextField id="spotyName" label="ID Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>
+              {tipoUsu !== "Estándar" && <TextField id="spotyName" label="ID Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
               <br/>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopDatePicker
@@ -197,6 +217,14 @@ const EditProfile = () => {
                     ))}
               </TextField>
               <br/>
+              <TextField id="tipoUsuario" select value={tipoUsu} label="Tipo de perfil" onChange={(tipo) => setTipoUsu(tipo.target.value)}>
+                    {tipoUsuario.map((tipo) => (
+                      <MenuItem key={tipo} value={tipo}>
+                        {tipo}
+                      </MenuItem>
+                    ))}
+              </TextField>
+
               <Grid container alignItems="center" justifyContent="center">
                     <Accordion sx={{width: '50%'}}>
                       <AccordionSummary
@@ -204,11 +232,11 @@ const EditProfile = () => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography>Actualiza los enlaces a tus redes sociales!</Typography>
+                        <Typography>¡Actualiza los enlaces a tus redes sociales!</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                        id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                        id="Instrgram" label="Instagram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
                         id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
@@ -253,6 +281,8 @@ const EditProfile = () => {
         </Box>
       </div>
     );
+    else
+            return (<h1>Inicia sesión para modificar tu perfil.</h1>)
 }
 
 export default EditProfile;

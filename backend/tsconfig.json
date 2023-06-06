@@ -1,0 +1,9 @@
+{
+    "typedocOptions": {
+        "entryPoints": ["./controllers/*.ts"],
+        "out": "docs",
+    },
+    "compilerOptions": { 
+      "allowSyntheticDefaultImports": true 
+    }
+}

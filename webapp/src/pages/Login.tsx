@@ -12,6 +12,10 @@ import { useNavigate } from "react-router-dom";
 import SimboloCarga from "../components/SimboloCarga";
 
 const llamadaBase = "http://localhost:5000/usuario/"
+
+/**
+ * @returns Página para representar la identificación de un usuario
+ */
 const Login = () => {
 
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')
@@ -59,6 +63,7 @@ const Login = () => {
               setIdUser(user.usuario._id)
               setCargando(false)
               redirigir("/profile/" + user.usuario._id)
+              window.location.reload();
             }
             else{
               setLoginError(true);
@@ -93,7 +98,7 @@ const Login = () => {
               <div>
                   <TextField id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
               </div>
-              <Button className="boton" variant="contained" onClick={iniciarSesion}>Iniciar Sesión</Button>
+              <Button className="boton" id = "inicioSesion" variant="contained" onClick={iniciarSesion}>Comprobar credenciales</Button>
           </Box>
           <p>Si no tienes cuenta, ¡crea una ahora pulsando <Link href="/register" >aquí</Link>!</p>
         </main>

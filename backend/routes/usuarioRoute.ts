@@ -1,9 +1,14 @@
 import express, {Router} from 'express';
-const api:Router = express.Router()
 
-const {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, 
+const expressPr = require('express')
+const api:Router = expressPr.Router()
+
+/**
+ * En esta clase se vinculan los métodos los controladores con la ruta específica para poder ser llamada desde el frontend
+ */
+import {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, 
   getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByNameAndId,
-  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate} = require("../controllers/usuarioController")
+  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario, reCaptchaGoogle, getUsuariosByFilters} from "../controllers/usuarioController"
 
 api.post(
     "/usuario/login",
@@ -11,8 +16,18 @@ api.post(
 );
 
 api.post(
+  "/usuario/captcha",
+  reCaptchaGoogle
+);
+
+api.post(
   "/usuario/register",
   insertarUsuario
+);
+
+api.delete(
+  "/usuario/delete/",
+  eliminarUsuario
 );
 
 api.get(
@@ -38,6 +53,11 @@ api.get(
 api.get(
   "/usuario/getusuario/country/:country",
   getUsuariosByCountry
+);
+
+api.get(
+  "/usuario/getusuario/filter/:tipoUsu/:country/:fechaInicio/:fechaFin/:genero",
+  getUsuariosByFilters
 );
 
 api.get(

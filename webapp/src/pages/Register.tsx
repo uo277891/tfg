@@ -13,7 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import { registro, actualizaFoto } from '../accesoApi/apiUsuarios';
+import { registro, actualizaFoto, reCaptchaGoogle } from '../accesoApi/apiUsuarios';
 import { uploadMultimedia } from '../accesoApi/apiCloudinary';
 import {cumpleRegistro, errorUsuario} from '../util/condicionesRegistro'
 import Tabs from '@mui/material/Tabs';
@@ -30,6 +30,10 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import SimboloCarga from '../components/SimboloCarga';
+import ReCAPTCHA from "react-google-recaptcha";
+import { useRef } from 'react';
+
+const fechaInicio = require('dayjs');
 
 const paises = listaPaises()
 
@@ -66,6 +70,9 @@ function a11yProps(index: number) {
   };
 }
 
+/**
+ * @returns Página para representar el registro de un usuario
+ */
 const Register = () => {
 
   const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
@@ -94,7 +101,7 @@ const Register = () => {
 
     const[userName, setUserName] = React.useState("");
 
-    const[country, setCountry] = React.useState("");
+    const[country, setCountry] = React.useState("España");
 
     const[location, setLocation] = React.useState("");
 
@@ -106,7 +113,7 @@ const Register = () => {
 
     const[passwordConf, setPasswordConf] = React.useState("");
 
-    const [date, setDate] = React.useState<Dayjs | null>();
+    const [date, setDate] = React.useState<Dayjs | null>(fechaInicio(1900));
 
     const[tipoUsu, setTipoUsu] = React.useState("Artista");
 
@@ -120,6 +127,8 @@ const Register = () => {
 
     const [error, seterror] = React.useState("");
 
+    const captchaRef = useRef<any>()
+
     function handleRedesSociales(indice: number, valorAct: string) {
       const redesAct = redesSociales.map((valor, i) => {
         if (i === indice) return valorAct;
@@ -132,12 +141,17 @@ const Register = () => {
       if(e !== undefined)
           if (e.target.files) {
             if(e.target.files[0].type !== undefined){
-                if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png"){
+                if(e.target.files[0].size > 1000000){
+                  setRegisterError(true);
+                  seterror("La multimedia no puede ser superior a 1 MB (si no lo cambia el perfil se creará sin foto)");
+                  setArchivo(undefined);
+                } 
+                else if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png"){
                     setArchivo(e.target.files[0]);
                 }
                 else{
                     setRegisterError(true);
-                    seterror("La foto de perfil debe tener la extensión png o jpg.");
+                    seterror("La foto de perfil debe tener la extensión png o jpg (si no lo cambia el perfil se creará sin foto)");
                     setArchivo(undefined);
                 }
             }
@@ -150,16 +164,41 @@ const Register = () => {
 
     async function actualizarFoto(userName: string, userId: string) {
       if(archivo !== undefined){
-        const respuesta = await uploadMultimedia(userId, archivo, true, false)
-        if(respuesta !== ""){
-          const url_foto = respuesta
-          const fotoAct = await actualizaFoto(userName, url_foto)
-          return fotoAct
-        }else{
-          return false;
+        if(archivo.size > 3000000){
+          setRegisterError(true);
+          seterror("La multimedia no puede ser superior a 1 MB (si no lo cambia el perfil se creará sin foto)");
+          setArchivo(undefined);
+        }
+        else if(archivo.type !== "image/jpeg" && archivo.type !== "image/png" && archivo.type !== "audio/mpeg"){
+            setRegisterError(true);
+            seterror("La multimedia debe tener extensión png, jpg o mp3 (si no lo cambia el perfil se creará sin foto)");
+            setArchivo(undefined);
+        }
+        else{
+          const respuesta = await uploadMultimedia(userId, archivo, true, false)
+          if(respuesta !== ""){
+            const url_foto = respuesta
+            const fotoAct = await actualizaFoto(userName, url_foto)
+            return fotoAct
+          }else{
+            return false;
+          }
         }
       }
       return true;
+    }
+
+    function siguiente (sig: number) {
+      const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion)
+      if(numError > -1){
+        setRegisterError(true);
+        seterror(errorUsuario(numError));
+        setCargando(false)
+        if(numError === 4) setValue(1)
+        else setValue(0)
+      }
+      else
+        setValue(sig)
     }
 
     async function registrarse() {
@@ -169,35 +208,49 @@ const Register = () => {
         setRegisterError(true);
         seterror(errorUsuario(numError));
         setCargando(false)
+        if(numError === 4)
+          setValue(1)
+        else
+          setValue(0)
       }
       else{
-        const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, 
-        process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + "", descripcion, tipoUsu, generoFav, redesSociales)
-        if(usuarioRegistrado.creado){
-          const user = await usuarioRegistrado.usuario
-          setUsuarioAutenticado(userName.toLowerCase())
-          setUsuarioEstaAcutenticado(true)
-          setIdUser(user._id)
-          const foto = await actualizarFoto(userName.toLowerCase(), user._id)
-          if(foto){
-            setRegisterError(false);
+        const token = captchaRef.current.getValue();
+        const noEsRobot = await reCaptchaGoogle(token)
+        if(noEsRobot){
+          const usuarioRegistrado = await registro(userName.toLowerCase(), password, country, location, date, nomSpoty, 
+          process.env.REACT_APP_CLOUDINARY_DEFAULT_FOTO + "", descripcion, tipoUsu, generoFav, redesSociales)
+          if(usuarioRegistrado.creado){
+            const user = await usuarioRegistrado.usuario
             setUsuarioAutenticado(userName.toLowerCase())
             setUsuarioEstaAcutenticado(true)
             setIdUser(user._id)
-            setCargando(false)
-            redirigir("/profile/" + user._id)
-          }
-          else{
+            const foto = await actualizarFoto(userName.toLowerCase(), user._id)
+            if(foto){
+              setRegisterError(false);
+              setUsuarioAutenticado(userName.toLowerCase())
+              setUsuarioEstaAcutenticado(true)
+              setIdUser(user._id)
+              setCargando(false)
+              redirigir("/profile/" + user._id)
+              window.location.reload()
+            }
+            else{
+              setRegisterError(true);
+              seterror("Usuario creado, la foto no ha podido ser insertada");
+              setCargando(false)
+            }
+          }else{
             setRegisterError(true);
-            seterror("Usuario creado, la foto no ha podido ser insertada");
+            setUsuarioAutenticado("")
+            setUsuarioEstaAcutenticado(false)
+            setIdUser("")
+            seterror("El nombre ya está en uso");
             setCargando(false)
           }
-        }else{
+        }
+        else{
           setRegisterError(true);
-          setUsuarioAutenticado("")
-          setUsuarioEstaAcutenticado(false)
-          setIdUser("")
-          seterror("El nombre ya está en uso");
+          seterror("Confirme que no es un robot por favor 🤖");
           setCargando(false)
         }
       }
@@ -205,9 +258,8 @@ const Register = () => {
 
   if(cargando)
     return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
-  else
+  else {
     return (
-      
       <div id="regiter" className="forms">
         <main>
         <h1>Registro</h1>
@@ -227,39 +279,42 @@ const Register = () => {
                   }}
                   noValidate
                   autoComplete="off"
+                  name='Register'
                   >
-                  <TextField required id="userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
-                  <br/>
-                  <TextField
-                    id="country"
-                    select
-                    value={country}
-                    label="País de nacimiento"
-                    helperText="Selecciona tu país"
-                    onChange={(country) => setCountry(country.target.value)}
-                  >
-                    {paises.map((pais) => (
-                      <MenuItem key={pais} value={pais}>
-                        {pais}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
-                  <br/>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopDatePicker
-                      label="Fecha de nacimiento"
-                      inputFormat="DD/MM/YYYY"
-                      value={date}
-                      onChange={handleDate}
-                      renderInput={(params) => <TextField {...params} />}
-                      />
-                  </LocalizationProvider>
-                  <br/>
-                  <TextField required id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
-                  <TextField required id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
-                  <br/>
-                  <Button className="boton" variant="contained" onClick={() => setValue(1)}>Siguiente</Button>
+                  
+                    <TextField required id="userName" name = "userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
+                    <br/>
+                    <TextField
+                      id="country"
+                      select
+                      value={country}
+                      name='country'
+                      label="País de nacimiento"
+                      helperText="Selecciona tu país"
+                      onChange={(country) => setCountry(country.target.value)}
+                    >
+                      {paises.map((pais) => (
+                        <MenuItem key={pais} value={pais}>
+                          {pais}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    <TextField id="location" name = "location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
+                    <br/>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DesktopDatePicker
+                        label="Fecha de nacimiento"
+                        inputFormat="DD/MM/YYYY"
+                        value={date}
+                        onChange={handleDate}
+                        renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                    <br/>
+                    <TextField required name = "passwd" id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
+                    <TextField required name = "repPasswd" id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
+                    <br/>
+                    <Button className="boton" id = "siguiente1" variant="contained" onClick={() => siguiente(1)}>Siguiente</Button>
               </Box>
             </TabPanel>
             <TabPanel value={value} index={1}>
@@ -299,7 +354,7 @@ const Register = () => {
                       </AccordionSummary>
                       <AccordionDetails>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                        id="Instrgram" label="Instragram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                        id="Instrgram" label="Instagram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
                         id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
                         <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
@@ -313,7 +368,7 @@ const Register = () => {
                   <br/>
                   {descripcion.length} / 200
                   <br/>
-                  <Button className="boton" variant="contained" onClick={() => setValue(2)}>Siguiente</Button>
+                  <Button className="boton" id = "siguiente2" variant="contained" onClick={() => siguiente(2)}>Siguiente</Button>
               </Box>
             </TabPanel>
             <TabPanel value={value} index={2}>
@@ -323,10 +378,13 @@ const Register = () => {
               <br/>
                   Añade una foto de perfil (opcional): <input type="file" onChange={actualizaArchivo} />
               <br/>
-              <Button className="boton" variant="contained" onClick={registrarse}>Registrarse</Button>
+              <Grid container justifyContent="center" p={2}>
+                <ReCAPTCHA ref={captchaRef} sitekey={process.env.REACT_APP_CAPTCHA_SITE_KEY + ""}/>
+              </Grid>
+              <Button className="boton" id="registrarse" variant="contained" onClick={registrarse}>Registrarse</Button>
             </TabPanel>
             <p>¿Ya tienes cuenta?, ¡inicia sesión pulsando <Link href="/login" >aquí</Link>!</p>
-            <p>Consulta cómo obtener tu ID de Spotify <Link href="/idspotify" >aquí</Link>!</p>
+            <p>Consulta cómo obtener tu ID de Spotify <Link href="/idspotify" >aquí</Link></p>
             <Box sx={{ width: '100%' }}>
             <Collapse in={registerError}>
               <Alert
@@ -353,6 +411,7 @@ const Register = () => {
         </main>
       </div>
     );
+  }
 }
 
 export default Register;

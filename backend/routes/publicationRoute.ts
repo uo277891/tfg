@@ -1,7 +1,11 @@
 import express, {Router} from 'express';
-const api:Router = express.Router()
+const expressPr = require('express')
+const api:Router = expressPr.Router()
 
-const {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo} = require("../controllers/publicacionController")
+/**
+ * En esta clase se vinculan los métodos los controladores con la ruta específica para poder ser llamada desde el frontend
+ */
+import {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit, eliminarPublicacionesUsuario} from"../controllers/publicacionController"
 
 api.get(
   "/publicaciones/getpublicacion/:idUsu/:order",
@@ -16,6 +20,11 @@ api.get(
 api.get(
   "/publicaciones/getpublicacion/tipo/:idUsu/:tipo/:fecha",
   getPublicacionesByTipo
+);
+
+api.get(
+  "/publicaciones/getpublicacionskip/:skip",
+  getPublicacionesWithLimit
 );
 
 api.post(
@@ -36,6 +45,11 @@ api.put(
 api.delete(
   "/publicacion/delete",
   eliminarPublicacion
+);
+
+api.delete(
+  "/publicacion/delete/usuario/",
+  eliminarPublicacionesUsuario
 );
 
 module.exports = api;

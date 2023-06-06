@@ -1,8 +1,14 @@
 import idSpotify from "../images/IDSpotify.jpg"
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
 
+/**
+ * @returns Página para representar cómo se puede obtener un ID de Spotify
+ */
 const IDSpotify = () => {
+
+  const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
   return (
     <div className="idSpo">
@@ -17,7 +23,7 @@ const IDSpotify = () => {
             <li>¡Listo, ya tienes tu ID de Spotify!</li>
           </ol>
           <Link href="/register" underline="none">
-            <Button className="boton" variant="contained">Registrarse</Button>
+            {!usuarioEstaAutenticado && <Button className="boton" variant="contained">Registrarse</Button>}
           </Link>
         </main>
       </div>

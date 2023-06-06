@@ -1,5 +1,8 @@
 import {model, Schema}  from 'mongoose'
 
+/**
+ * Esquema general para un documento en la colección de publicacione
+ */
 const publicacionSchema = new Schema({
     id_usuario:{
         type: String,

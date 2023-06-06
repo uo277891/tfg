@@ -2,18 +2,47 @@ import { Signature } from "../interfaces/interfaces";
 
 const llamadaBasica = 'http://localhost:5000';
 
+/**
+ * Borrar foto de perfil del usuario de la base de Cloudinary
+ * @param idUser Id del usuario
+ * @returns Si se pudo borrar la foto de perfil
+ */
 export async function getSignature(idUser: any): Promise<Signature> {
     let res = await fetch(llamadaBasica + '/cloudinary/signature/' + idUser);
     let respuesta = await res.json()
     return respuesta
 }
 
+/**
+ * Borrar multimedia de una publicación de la base de Cloudinary
+ * @param idPub Id de la publicación
+ * @returns Si se pudo borrar la multimedia
+ */
 export async function borrarPublicacion(idPub: any): Promise<Signature> {
     let res = await fetch(llamadaBasica + '/cloudinary/publicacion/delete/' + idPub);
     let respuesta = await res.json()
     return respuesta
 }
 
+/**
+ * Borrar multimedia de varias publicaciones de la base de Cloudinary
+ * @param idPubs Ids de las publicaciones
+ * @returns Si se pudo borrar la multimedia
+ */
+export async function borrarPublicaciones(idPubs: any): Promise<Signature> {
+    let res = await fetch(llamadaBasica + '/cloudinary/publicaciones/delete/' + idPubs);
+    let respuesta = await res.json()
+    return respuesta
+}
+
+/**
+ * Subir multimedia a la base de Cloudinary
+ * @param idUser Id del usuario o de la publicación
+ * @param archivo Archivo multimedia a subir
+ * @param perfiles Indica si el archivo debe ir a la carpeta de perfiles o de publicaciones
+ * @param eliminarFoto Indica si es necesario eliminar la foto asociada al ID antes de subir la nueva
+ * @returns Si se pudo insertar la multimedia
+ */
 export async function uploadMultimedia(idUser: string, archivo: File, perfiles:boolean, eliminarFoto: boolean): Promise<string>{
     let data = new FormData();
     var url_foto = ""

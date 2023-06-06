@@ -1,13 +1,15 @@
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import listaPaises from "../util/listaPaises";
 
-const paises = listaPaises()
+/**
+ * Devuelve los filtros a aplicar para las publicaciones
+ * @param props Atributos que se deben modificar en la página si cambian su estado en este componente
+ * @returns Filtros disponibles
+ */
+function FiltrosPublicaciones(props: any) {
 
-function FiltrosUsuario(props: any) {
-
-    const tipoPublicacion: string[] = [ "Todos", "Solo texto", "Imágenes", "Audios",]
+    const tipoPublicacion: string[] = [ "Todos", "Solo texto", "Imágenes", "Audios"]
 
     const tiposOrdenacion: string[] = ["Fecha", "Número de me gustas"]
 
@@ -42,10 +44,11 @@ function FiltrosUsuario(props: any) {
                 select
                 value={tipoPub}
                 fullWidth
+                role="publicaciones"
                 onChange={(tipo: any) => handleChangePublicacion(tipo.target.value)}
               >
                 {tipoPublicacion.map((tipo) => (
-                  <MenuItem key={tipo} value={tipo}>
+                  <MenuItem role="tipoPub" key={tipo} value={tipo}>
                     {tipo}
                   </MenuItem>
                 ))}
@@ -73,4 +76,4 @@ function FiltrosUsuario(props: any) {
     }
 }
 
-export default FiltrosUsuario;
+export default FiltrosPublicaciones;

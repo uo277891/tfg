@@ -1,7 +1,12 @@
 import express, {Router} from 'express';
-const api:Router = express.Router()
 
-const {getArtista, getAlbumesArtista, getMejoresCancionesArtista, getArtistasSimilares} = require("../controllers/spotifyController")
+const expressPr = require('express')
+const api:Router = expressPr.Router()
+
+/**
+ * En esta clase se vinculan los métodos los controladores con la ruta específica para poder ser llamada desde el frontend
+ */
+import {getArtista, getAlbumesArtista, getMejoresCancionesArtista, getArtistasSimilares} from "../controllers/spotifyController"
 
 api.get(
   "/spotify/artista/:idArtist",

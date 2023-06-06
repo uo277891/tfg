@@ -2,6 +2,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
+/**
+ * Devuelve un resumen de los datos introducidos por el usuario en un registro
+ * @param props datos recibidos desde la página
+ * @returns Representación del resumen de datos
+ */
 function RegisterCard (props: any) {
   return (
         <Card sx={{ margin: "auto", maxWidth: 400, minHeight:200 }} id="profileCard">

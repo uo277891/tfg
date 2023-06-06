@@ -16,6 +16,11 @@ import { getSignature } from '../accesoApi/apiCloudinary';
 import { actualizaFoto } from '../accesoApi/apiUsuarios';
 import {parseFecha} from '../util/parseFecha';
 
+/**
+ * Devuelve un componente que renderiza un perfil de usuario 
+ * @param props usuario recibido desde la página
+ * @returns Representación del usuario
+ */
 function CardProfile (props: any) {
 
     const [open, setOpen] = React.useState(false);
@@ -30,9 +35,12 @@ function CardProfile (props: any) {
       setOpen(false);
     };
 
+    /**
+     * Permite eliminar la foto de perfil del usuario
+     */
     async function handleEliminar() {
         await getSignature(idUser)
-        await actualizaFoto(props.usuario.nombre, "https://res.cloudinary.com/ddtcz5fqr/image/upload/v1679309731/perfiles/default_user_image_a8y5kc")
+        await actualizaFoto(props.usuario.nombre, "https://res.cloudinary.com/ddtcz5fqr/image/upload/v1685798226/default_olkdoe.jpg")
         setOpen(false);
     }
 
@@ -50,13 +58,9 @@ function CardProfile (props: any) {
                     <Typography gutterBottom variant="h6" component="div">
                     Fecha de nacimiento: {parseFecha(props.usuario.fecha_nac.replace(/T/, ' ').replace(/\..+/, ''))}
                     </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                    Nacionalidad: {props.usuario.pais}
-                    <br/>
-                    Localidad: {props.usuario.localidad}
-                    <br/>
-                    Perfil de Spotify: {props.usuario.nombre_spotify}
-                    </Typography>
+                    <Typography variant="body1" color="text.secondary"> Nacionalidad: {props.usuario.pais} </Typography>
+                    <Typography variant="body1" color="text.secondary"> Localidad: {props.usuario.localidad} </Typography>
+                    <Typography variant="body1" color="text.secondary"> Perfil de Spotify: {props.usuario.nombre_spotify} </Typography>
                 </CardContent>
                 <CardActions sx={{justifyContent: "space-between"}}>
                     <Link href="/profile/edit" underline="none"><Button size="large" variant="contained">Editar</Button></Link>

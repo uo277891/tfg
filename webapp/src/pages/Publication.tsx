@@ -30,10 +30,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {parseFecha, parseHora} from '../util/parseFecha';
 import SimboloCarga from '../components/SimboloCarga';
+import { Link } from '@mui/material';
 
-const Publication = () => {
+/**
+ * @returns Página para representar una publicación y sus comentarios
+ */
+const Publication = (props: any) => {
 
-    const {id} = useParams();
+    var {id} = useParams();
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
@@ -47,7 +51,7 @@ const Publication = () => {
 
     const [comentarios, setComentarios] = useState<Comentario[]>([]);
 
-    const [cargando, setCargando] = useState<Boolean>(true);
+    const [cargando, setCargando] = useState<Boolean>(false);
 
     const [colorCorazon, setColorCorazon] = useState<string>("");
 
@@ -84,17 +88,22 @@ const Publication = () => {
     };
 
     const datosIniciales = useCallback(async () => {
-        setCargando(true)
-        const pub = await getPublicacion(id)
-        if(pub !== undefined){
-            setPublicacion(pub)
-            const user = await getUsuario(pub.id_usuario)
-            if(user !== undefined)
-                setUsuarioPublicacion(user[0])
-            setColorCorazon(pub.likes.indexOf(idUser) === -1 ? "grey" : "red");
-            setComentarios(await getComentarios(pub._id))
-        }
-        setCargando(false)
+      if(usuarioEstaAutenticado){
+          if(id === undefined)
+            id = props.id_publicacion
+          setCargando(true)
+          const pub = await getPublicacion(id)
+          if(pub !== undefined){
+              setPublicacion(pub)
+              const user = await getUsuario(pub.id_usuario)
+              if(user !== undefined)
+                  setUsuarioPublicacion(user[0])
+              setColorCorazon(pub.likes.indexOf(idUser) === -1 ? "grey" : "red");
+              setComentarios(await getComentarios(pub._id))
+          }
+          setCargando(false)
+      }
+      setCargando(false)
     }, []);
 
     useEffect(() => {
@@ -125,7 +134,7 @@ const Publication = () => {
           setText("");
           await datosIniciales();
       }
-  }
+    }
 
   if(cargando)
     return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
@@ -134,16 +143,17 @@ const Publication = () => {
     return (
       <div id="profile">
         <Card sx={{ margin: "auto", maxWidth: 600, minHeight:200 }}>
-        <CardHeader
+        <Link href = {"/profile/" + publicacion.id_usuario} underline="none" color="inherit"><CardHeader
           avatar={
-            <Avatar alt="Foto de perfil"
-            src={usuarioPublicacion.enlace_foto}/>
+            <Button><Avatar alt="Foto de perfil"
+            src={usuarioPublicacion.enlace_foto}/></Button>
           }
           title={usuarioPublicacion.nombre}
           subheader={parseFecha(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) +
         ", " + parseHora(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) }
-        />
-        {(publicacion.tipo_multimedia === "img" || publicacion.tipo_multimedia === "iframe")  &&
+        /></Link>
+        {publicacion.tipo_multimedia === "iframe" && <audio controls src={publicacion.enlace_multimedia}></audio>}
+        {publicacion.tipo_multimedia === "img" &&
         <CardMedia
             component= {publicacion.tipo_multimedia}
             image={publicacion.enlace_multimedia}
@@ -155,16 +165,16 @@ const Publication = () => {
         </CardContent>
         <CardActions disableSpacing>
         <Tooltip title="Me gusta">
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon style={{color: colorCorazon}} onClick={handleLike}/>
+            <IconButton onClick={handleLike} id="meGusta" aria-label="add to favorites">
+              <FavoriteIcon style={{color: colorCorazon}} />
             </IconButton>
           </Tooltip>
           <Typography variant="body1" color="text.primary" fontSize={20}>
             {publicacion.likes.length}
           </Typography>
           <Tooltip title="Añadir comentario">
-            <IconButton aria-label="add comment">
-              <AddCommentIcon style={{color: "blue"}} onClick={handleClickOpen}/>
+            <IconButton onClick={handleClickOpen} aria-label="add comment">
+              <AddCommentIcon style={{color: "blue"}}/>
             </IconButton>
           </Tooltip>
           <Dialog open={open} onClose={handleClose}>
@@ -196,8 +206,8 @@ const Publication = () => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
             Comentarios:
-            {comentarios.map((comentario: Comentario) => 
-              <CommentCard comentario = {comentario}></CommentCard>
+            {comentarios.map((comentario: Comentario, index: number) => 
+              <CommentCard key={"com" + index} comentario = {comentario} idUsuPub={usuarioPublicacion._id}></CommentCard>
             )}
           </CardContent>
         </Collapse>
