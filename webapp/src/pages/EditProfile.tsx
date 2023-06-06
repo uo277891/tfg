@@ -29,6 +29,9 @@ import SimboloCarga from '../components/SimboloCarga';
 
 const paises = listaPaises()
 
+/**
+ * @returns Página para representar la edición de un perfil
+ */
 const EditProfile = () => {
       
     const handleDate = (newDate: Dayjs | null) => {

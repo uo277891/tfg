@@ -12,6 +12,10 @@ import { useNavigate } from "react-router-dom";
 import SimboloCarga from "../components/SimboloCarga";
 
 const llamadaBase = "http://localhost:5000/usuario/"
+
+/**
+ * @returns Página para representar la identificación de un usuario
+ */
 const Login = () => {
 
     const [usuarioAutenticado, setUsuarioAutenticado] = useLocalStorage('user', '')

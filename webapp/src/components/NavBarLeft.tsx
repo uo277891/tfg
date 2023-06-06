@@ -52,7 +52,11 @@ function agregarPaginas(){
     return hashmap.get(pagina)
   }
 
-export default function NestedList(props: any) {
+  /**
+   * Renderiza la barra de navegación
+   * @returns Barra de navegación
+   */
+export default function BarraDeNavegacion() {
 
     const [open, setOpen] = React.useState(true);
 
@@ -92,6 +96,9 @@ export default function NestedList(props: any) {
         window.addEventListener("resize", handleResize);
     }, []);
 
+    /**
+     * Carga el usuario en caso de que esté identificado
+     */
     const datosIniciales = useCallback(async () => {
         if(usuarioEstaAutenticado){
             const user = await getUsuario(idUser)
@@ -104,6 +111,9 @@ export default function NestedList(props: any) {
         datosIniciales();
     }, [])
 
+    /**
+     * Cierra la sesión del usuario
+     */
     const handleCerrarSesion = () => {
         setAnchorElUser(null);
         setUsuarioAutenticado("");
@@ -113,6 +123,9 @@ export default function NestedList(props: any) {
 
     const redirigir = useNavigate();
 
+    /**
+     * Elimina al usuario de la base de datos junto a todo el contenido relacionado con este
+     */
     const handleEliminarCuenta = async () => {
         if(usuarioEstaAutenticado){
             setCargando(true)
@@ -129,6 +142,9 @@ export default function NestedList(props: any) {
         }
     };
 
+    /**
+     * Elimina la multimedia asociada al usuario
+     */
     const handleEliminarMultimedia = async () => {
         const publicaciones = await getPublicaciones(idUser, "fecha")
         let idPubs: string[] = []

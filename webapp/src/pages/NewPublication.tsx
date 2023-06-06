@@ -12,6 +12,9 @@ import { actualizaPublicacion, añadirPublicacion } from "../accesoApi/apiPublic
 import {uploadMultimedia} from "../accesoApi/apiCloudinary"
 import SimboloCarga from "../components/SimboloCarga";
 
+/**
+ * @returns Página para representar la creación de una nueva publicación
+ */
 const NewPublication = (props: any) => {
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)

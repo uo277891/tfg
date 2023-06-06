@@ -6,6 +6,9 @@ import Grid from "@mui/material/Grid";
 import Publication from "./Publication";
 import { Box, Button } from "@mui/material";
 
+/**
+ * @returns Página para representar el inicio de un usuario identificado
+ */
 const HomeWithLogin = () => {
 
     const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);

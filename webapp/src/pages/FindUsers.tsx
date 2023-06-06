@@ -13,7 +13,6 @@ import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
@@ -25,6 +24,9 @@ import SimboloCarga from '../components/SimboloCarga';
 
 type Anchor = 'left';
 
+/**
+ * @returns Página para representar la búsqueda de usuarios
+ */
 const FindUsers = () => {
 
     const [page, setPage] = React.useState(1);

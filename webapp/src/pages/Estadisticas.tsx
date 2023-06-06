@@ -31,6 +31,9 @@ ChartJS.register(ArcElement);
 ChartJS.register(Tooltip);
 ChartJS.register(Legend);
 
+/**
+ * @returns Página para representar las estadísticas de los seguidores de un usuario identificado
+ */
 const Estadisticas = () => {
 
   var listadoGeneros: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]

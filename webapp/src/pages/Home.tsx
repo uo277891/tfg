@@ -5,6 +5,9 @@ import logo from '../images/logo.png';
 import { useLocalStorage } from '../localStorage/useLocalStorage';
 import HomeWithLogin from './HomeWithLogin';
 
+/**
+ * @returns Página para representar el inicio de un usuario sin identificar
+ */
 const Home = () => {
 
   const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)

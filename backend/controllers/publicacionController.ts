@@ -4,7 +4,13 @@ const publicacionModel = require('../models/publicacionModel');
 
 const comentarioModel = require('../models/comentariosModel');
 
-const getPublicaciones = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve las publicaciones de un usuario en un orden específico
+ * @param req Request (con el Id del usuario y la ordenación a seguir (por fecha de publicación o por número de me gustas))
+ * @param res Response
+ * @returns Lista de publicaciones
+ */
+export const getPublicaciones = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id_usuario = req.params.idUsu;
       const orden = req.params.order;
@@ -26,7 +32,13 @@ const getPublicaciones = async (req: Request, res: Response): Promise<Response> 
     }
 }
 
-const getPublicacionesByTipo = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve las publicaciones de un usuario en un orden y de con un tipo específico (publicaciones de texto, audio o imagen)
+ * @param req Request (con el Id del usuario y la ordenación a seguir (por fecha de publicación o por número de me gustas) y tipo de publicación)
+ * @param res Response
+ * @returns Lista de publicaciones
+ */
+export const getPublicacionesByTipo = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.params.idUsu;
     const tipo = req.params.tipo;
@@ -47,7 +59,13 @@ const getPublicacionesByTipo = async (req: Request, res: Response): Promise<Resp
   }
 }
 
-const getPublicacion = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve la publicación asociada a un Id
+ * @param req Request (con el Id de la publicación)
+ * @param res Response
+ * @returns Publicación asociada
+ */
+export const getPublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_publicacion = req.params.idPub;
     const publicacion = await publicacionModel.findOne({_id: id_publicacion});
@@ -57,7 +75,13 @@ const getPublicacion = async (req: Request, res: Response): Promise<Response> =>
   }
 }
 
-const insertarPublicacion = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Inserta una publicación en la base de datos
+ * @param req Request (con los datos de la publicación (texto, Id del usuario, enlace a la multimedia y tipo de publicación))
+ * @param res Response
+ * @returns Publicación creada
+ */
+export const insertarPublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {texto, id_usuario, enlace_multimedia, tipo_multimedia} = req.body;
     const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
@@ -70,7 +94,13 @@ const insertarPublicacion = async (req: Request, res: Response): Promise<Respons
   }
 }
 
-const actualizarLikes = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Actualiza los me gusta de una publicación en la base de datos
+ * @param req Request (con el Id de la publicación y los me gusta actualizados)
+ * @param res Response
+ * @returns Código 200 en caso de que se hayan actualizado los me gustas
+ */
+export const actualizarLikes = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_pub = req.body.id_publication;
     const publicacionAsociada = await publicacionModel.findOne({_id: id_pub});
@@ -88,7 +118,13 @@ const actualizarLikes = async (req: Request, res: Response): Promise<Response> =
   }
 }
 
-const eliminarPublicacion = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Elimina una publicación (junto con los comentarios de esta) en la base de datos
+ * @param req Request (con el Id de la publicación y el Id del usuario)
+ * @param res Response
+ * @returns True si se ha podido eliminar o False en caso contrario
+ */
+export const eliminarPublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usu = req.body.idUser;
     const id_pub = req.body.idPub;
@@ -108,7 +144,13 @@ const eliminarPublicacion = async (req: Request, res: Response): Promise<Respons
   }
 }
 
-const eliminarPublicacionesUsuario = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Elimina todas las publicaciones de un usuario en la base de datos
+ * @param req Request (con el Id del usuario)
+ * @param res Response
+ * @returns True si se ha podidos eliminar las publicaciones
+ */
+export const eliminarPublicacionesUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usu = req.body.idUser;
     await publicacionModel.deleteMany({id_usuario: id_usu});
@@ -118,7 +160,13 @@ const eliminarPublicacionesUsuario = async (req: Request, res: Response): Promis
   }
 }
 
-const updatePublicacion = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Actualiza los datos de una publicación en la base de datos
+ * @param req Request (con el Id de la publicación y los datos que se deben actualizar)
+ * @param res Response
+ * @returns True si se ha podido actualizar o False en caso contrario
+ */
+export const updatePublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_publicacion = req.params.idPub;
     const datosNuevos = req.body;
@@ -136,7 +184,13 @@ const updatePublicacion = async (req: Request, res: Response): Promise<Response>
   }
 }
 
-const getPublicacionesWithLimit = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve 10 publicaciones y se salta las especificadas en el parámetro
+ * @param req Request (con el número de publicaciones a saltar)
+ * @param res Response
+ * @returns Lista de publicaciones
+ */
+export const getPublicacionesWithLimit = async (req: Request, res: Response): Promise<Response> => {
   try {
     
     const skip = req.params.skip;
@@ -153,5 +207,3 @@ const getPublicacionesWithLimit = async (req: Request, res: Response): Promise<R
     return res.status(500).send(error);
   }
 }
-
-module.exports = {getPublicaciones, insertarPublicacion, getPublicacion, actualizarLikes, eliminarPublicacion, updatePublicacion, getPublicacionesByTipo, getPublicacionesWithLimit, eliminarPublicacionesUsuario}

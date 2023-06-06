@@ -14,6 +14,9 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { getFollowingUsers, getFollowsByUser } from "../accesoApi/apiSeguidores";
 
+/**
+ * @returns Página para representar los usuarios que sigue el usuario identificado
+ */
 const FollowingUsers = (props: any) => {
 
     const [page, setPage] = React.useState(1);

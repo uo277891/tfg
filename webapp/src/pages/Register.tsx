@@ -70,6 +70,9 @@ function a11yProps(index: number) {
   };
 }
 
+/**
+ * @returns Página para representar el registro de un usuario
+ */
 const Register = () => {
 
   const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]

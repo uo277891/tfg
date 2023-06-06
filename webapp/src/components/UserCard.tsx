@@ -7,6 +7,11 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import { Typography } from '@mui/material';
 
+/**
+ * Devuelve un componente que renderiza una represetnación de los datos del usuario
+ * @param props usuario recibido desde la página
+ * @returns Representación del usuario
+ */
 function UserCard (props: any) {
 
     return (

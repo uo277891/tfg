@@ -4,6 +4,17 @@ const errores: string[] = ["Algún campo está vacío", "Las contraseñas no coi
 "Debes tener más de 16 años y menos de 150", "La descripción debe ser de máximo 200 caracteres", "El nombre de usuario no puede ser mayor de 15 caracteres ni tener espacios",
 "La localidad no puede ser mayor de 25 caracteres"]
 
+/**
+ * Comprueba si los datos introducidos por el usuario son válidos
+ * @param userName Nombre del usuario
+ * @param password Contraseña
+ * @param passwordConf Contraseña repetida
+ * @param country País de nacimiento
+ * @param location Localización 
+ * @param date Fecha de nacimiento
+ * @param descripcion Descripción
+ * @returns -1 si no hay fallos o un número entre 0 y 6 en caso contrario
+ */
 export function cumpleRegistro(userName:string, password: string, passwordConf: string, country:string, location:string, date: any, descripcion: string){
     const dateNow = Dayjs()
     if(date === undefined)
@@ -29,6 +40,11 @@ export function cumpleRegistro(userName:string, password: string, passwordConf: 
     return -1;
 }
 
+/**
+ * Devuelve el mensaje de error asociado al código
+ * @param codigoError Código de error
+ * @returns Mensaje asociado
+ */
 export function errorUsuario(codigoError: number){
     return errores[codigoError];
 }

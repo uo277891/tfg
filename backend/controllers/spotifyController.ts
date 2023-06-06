@@ -9,7 +9,10 @@ var spotify = new SpotifyAPI({
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET
 });
 
-const getToken = async () => {
+/**
+ * Añade un Token para poder realizar llamadas a la API de Spotify
+ */
+export const getToken = async () => {
     spotify.clientCredentialsGrant().then(
         function(data: any) {
             spotify.setAccessToken(data.body['access_token']);
@@ -20,7 +23,13 @@ const getToken = async () => {
     )
 }
 
-const getArtista = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve los datos del artista asociados al Id
+ * @param req Request (con el Id del artista de Spotify)
+ * @param res Response
+ * @returns Datos del artista
+ */
+export const getArtista = async (req: Request, res: Response): Promise<Response> => {
     try {
         await getToken()
         const idArtist = req.params.idArtist
@@ -31,9 +40,15 @@ const getArtista = async (req: Request, res: Response): Promise<Response> => {
     }
 }
 
-const getAlbumesArtista = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve los datos de los 6 mejores álbumes asociados al Id
+ * @param req Request (con el Id del artista de Spotify)
+ * @param res Response
+ * @returns Datos de los álbumes
+ */
+export const getAlbumesArtista = async (req: Request, res: Response): Promise<Response> => {
     try {
-        //await getToken()
+        await getToken()
         const idArtist = req.params.idArtist
         const albumes = await spotify.getArtistAlbums(idArtist, { limit: 6, offset: 0 })
         return res.status(200).json({albumes: albumes.body.items});
@@ -42,9 +57,15 @@ const getAlbumesArtista = async (req: Request, res: Response): Promise<Response>
     }
 }
 
-const getMejoresCancionesArtista = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve los datos de las 6 mejores canciones asociados al Id
+ * @param req Request (con el Id del artista de Spotify)
+ * @param res Response
+ * @returns Datos de las canciones
+ */
+export const getMejoresCancionesArtista = async (req: Request, res: Response): Promise<Response> => {
     try {
-        //await getToken()
+        await getToken()
         const idArtist = req.params.idArtist
         const pais = req.params.pais
         const canciones = await spotify.getArtistTopTracks(idArtist, pais)
@@ -54,9 +75,15 @@ const getMejoresCancionesArtista = async (req: Request, res: Response): Promise<
     }
 }
 
-const getArtistasSimilares = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve los datos de los 12 artistas más similares asociados al Id
+ * @param req Request (con el Id del artista de Spotify)
+ * @param res Response
+ * @returns Datos de los artistas similares
+ */
+export const getArtistasSimilares = async (req: Request, res: Response): Promise<Response> => {
     try {
-        //await getToken()
+        await getToken()
         const idArtist = req.params.idArtist
         const artSimilares = await spotify.getArtistRelatedArtists(idArtist)
         return res.status(200).json({artSimilares: artSimilares.body.artists});
@@ -66,5 +93,3 @@ const getArtistasSimilares = async (req: Request, res: Response): Promise<Respon
 }
 
 getToken();
-
-module.exports = {getArtista, getAlbumesArtista, getMejoresCancionesArtista, getArtistasSimilares}

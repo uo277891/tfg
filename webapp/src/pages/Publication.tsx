@@ -32,6 +32,9 @@ import {parseFecha, parseHora} from '../util/parseFecha';
 import SimboloCarga from '../components/SimboloCarga';
 import { Link } from '@mui/material';
 
+/**
+ * @returns Página para representar una publicación y sus comentarios
+ */
 const Publication = (props: any) => {
 
     var {id} = useParams();

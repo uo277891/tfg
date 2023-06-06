@@ -6,6 +6,11 @@ import Slider from "@mui/material/Slider";
 
 const paises = listaPaises()
 
+/**
+ * Devuelve los filtros a aplicar para los usuarios
+ * @param props Atributos que se deben modificar en la página si cambian su estado en este componente
+ * @returns Filtros disponibles
+ */
 function FiltrosUsuario(props: any) {
 
     const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]

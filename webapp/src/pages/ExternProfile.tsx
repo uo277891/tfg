@@ -34,6 +34,9 @@ import { getFollowingUsers } from "../accesoApi/apiSeguidores";
 
 type Anchor = 'left';
 
+/**
+ * @returns Página para representar un perfil público
+ */
 const ExternProfile = () => {
 
     const {id} = useParams();

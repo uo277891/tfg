@@ -1,5 +1,8 @@
 import logoSpo from "../images/SpotifyLogo.png"
 
+/**
+ * @returns Página para representar los datos que se expondrán en caso de proporcionar un ID de Spotify válido
+ */
 const ExplicacionSpotify = () => {
 
   return (

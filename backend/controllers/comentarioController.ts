@@ -2,7 +2,13 @@ import { Request, Response } from 'express';
 
 const comentarioModel = require('../models/comentariosModel');
 
-const insertarComentario = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Inserta un comentario en la base de datos
+ * @param req Request (con los datos del comentario (texto, Id de la publicación, Id del usuario))
+ * @param res Response
+ * @returns True si se ha podido insertar o False en caso contrario
+ */
+export const insertarComentario = async (req: Request, res: Response): Promise<Response> => {
     try {
       const {id_publicacion, id_usu_coment, texto} = req.body;
       const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
@@ -14,7 +20,13 @@ const insertarComentario = async (req: Request, res: Response): Promise<Response
     }
 }
 
-const insertarRespuestaComentario = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Inserta una respuesta en la base de datos
+ * @param req Request (con los datos de la respuesta (texto, Id de la publicación, Id del usuario, Id del comentario al que se responde e Id del usuario al que se le responde))
+ * @param res Response
+ * @returns True si se ha podido insertar o False en caso contrario
+ */
+export const insertarRespuestaComentario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {id_comment, id_publicacion, id_usu_coment, id_usu_respond, texto} = req.body;
     const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
@@ -26,7 +38,13 @@ const insertarRespuestaComentario = async (req: Request, res: Response): Promise
   }
 }
 
-const getComentarios = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve los comentarios de una publicación
+ * @param req Request (con el Id de la publicación)
+ * @param res Response
+ * @returns Lista de comentarios
+ */
+export const getComentarios = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_publicacion = req.params.idPub;
     const comentarios = await comentarioModel.find({id_publicacion: id_publicacion, id_usu_respond:{ "$exists" : false }}).sort({fecha: -1});
@@ -36,7 +54,13 @@ const getComentarios = async (req: Request, res: Response): Promise<Response> =>
   }
 }
 
-const getRespuestaComentario = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve las respuestas de un comentario
+ * @param req Request (con el Id del comentario)
+ * @param res Response
+ * @returns Lista de respuestas
+ */
+export const getRespuestaComentario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_comment = req.params.idCom;
     const comentarios = await comentarioModel.find({id_comment: id_comment}).sort({fecha: -1});
@@ -46,7 +70,13 @@ const getRespuestaComentario = async (req: Request, res: Response): Promise<Resp
   }
 }
 
-const eliminarComentariosPublicacion = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Elimina los comentarios y respuestas de una publicación de la base de datos
+ * @param req Request (con el Id de la publicación)
+ * @param res Response
+ * @returns Código 200 si se han podido eliminar los comentarios y respuestas
+ */
+export const eliminarComentariosPublicacion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_publicacion = req.params.idPub;
     await comentarioModel.deleteMany({id_publicacion: id_publicacion});
@@ -56,7 +86,13 @@ const eliminarComentariosPublicacion = async (req: Request, res: Response): Prom
   }
 }
 
-const eliminarComentariosUsuario = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Elimina los comentarios y respuestas de un usuario de la base de datos
+ * @param req Request (con el Id del usuario)
+ * @param res Response
+ * @returns True si se han podido eliminar los comentarios y respuestas
+ */
+export const eliminarComentariosUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.body.idUser;
     const comentarios = await comentarioModel.find({id_usu_coment: id_usuario});
@@ -70,7 +106,13 @@ const eliminarComentariosUsuario = async (req: Request, res: Response): Promise<
   }
 }
 
-const eliminarComentario = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Elimina un comentario de la base de datos
+ * @param req Request (con el Id del comentario)
+ * @param res Response
+ * @returns True si se han podido eliminar los comentarios y respuestas
+ */
+export const eliminarComentario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_com = req.body.idCom;
     await comentarioModel.deleteOne({_id: id_com});
@@ -80,5 +122,3 @@ const eliminarComentario = async (req: Request, res: Response): Promise<Response
     return res.status(500).send(error);
   }
 }
-
-module.exports = {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion, eliminarComentariosUsuario, eliminarComentario}
