@@ -1,5 +1,8 @@
 import { Dayjs } from "dayjs"
 
+/**
+ * Estructura de un Usuario para conocer sus atributos esperados
+ */
 export type Usuario ={
     _id: string,
     nombre: string,
@@ -15,6 +18,9 @@ export type Usuario ={
     redes: Array<string>
 }
 
+/**
+ * Estructura de una Publicación para conocer sus atributos esperados
+ */
 export type Publicacion ={
     _id: string,
     id_usuario: string,
@@ -26,6 +32,9 @@ export type Publicacion ={
     likes: Array<string>
 }
 
+/**
+ * Estructura de un Comentario para conocer sus atributos esperados
+ */
 export type Comentario ={
     _id: string,
     id_publicacion: string,
@@ -34,12 +43,18 @@ export type Comentario ={
     texto: String
 }
 
+/**
+ * Estructura de un Seguidor para conocer sus atributos esperados
+ */
 export type Seguidor ={
     id_usuario: string,
     id_seguidor: string,
     fecha: Date
 }
 
+/**
+ * Estructura de una marca de tiempo para la base de datos de Cloudinary
+ */
 export type Signature ={
     signature: string,
     timestamp: string

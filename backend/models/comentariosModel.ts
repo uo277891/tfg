@@ -1,5 +1,8 @@
 import {model, Schema}  from 'mongoose'
 
+/**
+ * Esquema general para un documento en la colección de comentarios
+ */
 const comentarioSchema = new Schema({
     id_publicacion:{
         type: String

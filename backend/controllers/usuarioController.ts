@@ -6,6 +6,12 @@ const axios = require("axios");
 
 require("dotenv").config();
 
+/**
+ * Inicio de sesión propocionando usuario y contraseña (la constraseña debe ser encriptada)
+ * @param req Request (con el usuario y la contraseña)
+ * @param res Response
+ * @returns Usuario asociado a ese nombre
+ */
 export const inicioSesion = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {nombre, contraseña} = req.body;
@@ -27,6 +33,12 @@ export const inicioSesion = async (req: Request, res: Response): Promise<Respons
   }
 }
 
+/**
+ * Inserta un nuevo usuario en la base de datos
+ * @param req Request (con todos los datos necesarios para el registro)
+ * @param res Response
+ * @returns True si se ha podifo insertar (junto con el usuario) o false en caso contrario
+ */
 export const insertarUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const {nombre, contraseña, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo, genero, redes} = req.body;
@@ -47,6 +59,12 @@ export const insertarUsuario = async (req: Request, res: Response): Promise<Resp
   }
 }
 
+/**
+ * Devuelve el usuario que coincide con el Id
+ * @param req Request (con el Id del usuario)
+ * @param res Response
+ * @returns Usuario asociado al Id
+ */
 export const getUsuario = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id_user = req.params.id_user;
@@ -62,6 +80,12 @@ export const getUsuario = async (req: Request, res: Response): Promise<Response>
     }
 }
 
+/**
+ * Devuelve los usuarios que coinciden con los Ids
+ * @param req Request (con los Ids de los usuarios)
+ * @param res Response
+ * @returns Lista de Usuarios asociados
+ */
 export const getUsuarios = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_user = req.params.id_user.split(',');
@@ -77,6 +101,12 @@ export const getUsuarios = async (req: Request, res: Response): Promise<Response
   }
 }
 
+/**
+ * Devuelve los usuarios que coinciden con los Ids y ha nacido entre dos años proporcionados
+ * @param req Request (con los Ids de los usuarios y los años de comienzo y fin)
+ * @param res Response
+ * @returns Lista de Usuarios asociados
+ */
 export const getUsuariosByIdInDate = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_user = req.params.idUser.split(',');
@@ -94,6 +124,12 @@ export const getUsuariosByIdInDate = async (req: Request, res: Response): Promis
   }
 }
 
+/**
+ * Devuelve el usuario cuyo nombre es igual al de la cadena pasada por parámetro
+ * @param req Request (con la cadena a comprobar)
+ * @param res Response
+ * @returns Usuario asociado
+ */
 export const getUsuarioByName = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
@@ -109,6 +145,12 @@ export const getUsuarioByName = async (req: Request, res: Response): Promise<Res
   }
 }
 
+/**
+ * Devuelve los usuarios que contienen en su nombre la cadena pasada por parámetro
+ * @param req Request (con la subcadena a comprobar)
+ * @param res Response
+ * @returns Lista de Usuarios asociados
+ */
 export const getUsuariosByName = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
@@ -124,6 +166,12 @@ export const getUsuariosByName = async (req: Request, res: Response): Promise<Re
   }
 }
 
+/**
+ * Devuelve los usuarios que contienen en su nombre la cadena pasada por parámetro y su Id está en la lista de Ids
+ * @param req Request (con la subcadena a comprobar y la lista de Ids)
+ * @param res Response
+ * @returns Lista de Usuarios asociados
+ */
 export const getUsuariosByNameAndId = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.name;
@@ -140,6 +188,12 @@ export const getUsuariosByNameAndId = async (req: Request, res: Response): Promi
   }
 }
 
+/**
+ * Devuelve los usuarios cuyo pais de nacimiento es igual al pasado por parámetro
+ * @param req Request (con el país a comprobar)
+ * @param res Response
+ * @returns Lista de Usuarios asociados
+ */
 export const getUsuariosByCountry = async (req: Request, res: Response): Promise<Response> => {
   try {
     const pais = req.params.country;
@@ -155,6 +209,12 @@ export const getUsuariosByCountry = async (req: Request, res: Response): Promise
   }
 }
 
+/**
+ * Devuelve los usuarios cuyo tipo de usuario es igual al pasado por parámetro
+ * @param req Request (con el tipo de usuario a comprobar)
+ * @param res Response
+ * @returns Lista de Usuarios asociados
+ */
 export const getUsuariosByTipoUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const tipo = req.params.tipoUsu;
@@ -170,6 +230,12 @@ export const getUsuariosByTipoUsuario = async (req: Request, res: Response): Pro
   }
 }
 
+/**
+ * Devuelve los usuarios cuyo género favorito es igual al pasado por parámetro
+ * @param req Request (con el género favorito a comprobar)
+ * @param res Response
+ * @returns Lista de Usuarios asociados
+ */
 export const getUsuariosByGenero = async (req: Request, res: Response): Promise<Response> => {
   try {
     const genero = req.params.genero;
@@ -185,6 +251,12 @@ export const getUsuariosByGenero = async (req: Request, res: Response): Promise<
   }
 }
 
+/**
+ * Devuelve los usuarios cuya fecha de nacimiento está comprendida entre los años pasados por parámetro
+ * @param req Request (con el año de inicio y el año de fin (ejemplo, [1987 - 2005]))
+ * @param res Response
+ * @returns Lista de Usuarios asociados
+ */
 export const getUsuariosByFecha = async (req: Request, res: Response): Promise<Response> => {
   try {
     const fechaInicio = new Date(parseInt(req.params.fechaInicio), 0);
@@ -201,6 +273,12 @@ export const getUsuariosByFecha = async (req: Request, res: Response): Promise<R
   }
 }
 
+/**
+ * Actualiza los datos de un usuario en la base de datos
+ * @param req Request (con el nombre anterior del usuario y los datos que se deben actualizar)
+ * @param res Response
+ * @returns True si se ha podido actualizar o False en caso contrario
+ */
 export const updateUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombreAnterior = req.params.nombreAnterior;
@@ -220,6 +298,12 @@ export const updateUsuario = async (req: Request, res: Response): Promise<Respon
   }
 }
 
+/**
+ * Actualiza la foto de perfil de un usuario
+ * @param req Request (con el nombre del usuario y los datos que se deben actualizar)
+ * @param res Response
+ * @returns True si se ha podido actualizar o False en caso contrario
+ */
 export const updateFoto = async (req: Request, res: Response): Promise<Response> => {
   try {
     const nombre = req.params.nombre;
@@ -238,6 +322,12 @@ export const updateFoto = async (req: Request, res: Response): Promise<Response>
   }
 }
 
+/**
+ * Elimina un usuario de la base de datos
+ * @param req Request (con el Id del usuario que se debe eliminar)
+ * @param res Response
+ * @returns True si se ha podido eliminar
+ */
 export const eliminarUsuario = async (req: Request, res: Response) => {
   try{
     await usuarioSquema.findByIdAndDelete(req.body.idUser)
@@ -247,6 +337,12 @@ export const eliminarUsuario = async (req: Request, res: Response) => {
   }
 }
 
+/**
+ * Comprueba si un token es válido para detectar robots en el sistema
+ * @param req Request (con el token a validar)
+ * @param res Response
+ * @returns True si no es un humano o False en caso contrario
+ */
 export const reCaptchaGoogle = async (req: Request, res: Response) => {
   const token = req.body.token
   const respuesta = await axios.post("https://www.google.com/recaptcha/api/siteverify?secret=" + process.env.CAPTCHA_SECRET_KEY + "&response=" + token + "");
@@ -255,6 +351,12 @@ export const reCaptchaGoogle = async (req: Request, res: Response) => {
   return res.status(200).json({robot: robot});
 }
 
+/**
+ * Devuelve los usuario que coinciden con los filtros pasados por parámetro
+ * @param req Request (con el país, año de inicio y fin para la fecha de nacimiento, tipo de usuario y género favorito)
+ * @param res Response
+ * @returns Lista de usuarios
+ */
 export const getUsuariosByFilters = async (req: Request, res: Response): Promise<Response> => {
   try {
     let tipoUsu = [req.params.tipoUsu];

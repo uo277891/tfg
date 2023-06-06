@@ -12,6 +12,11 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { common } from '@mui/material/colors';
 
+/**
+ * Devuelve el icono asociado a un nombre
+ * @param props Nombre referido al icono
+ * @returns Icono asociado
+ */
 function Icono(props: any) {
 	if(props.icono === "Siguiendo")
         return (<SupervisedUserCircleIcon sx={{color: common.white}}></SupervisedUserCircleIcon>)

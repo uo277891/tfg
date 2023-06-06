@@ -2,6 +2,9 @@ import {Router} from 'express';
 const expressPr = require('express')
 const api:Router = expressPr.Router()
 
+/**
+ * En esta clase se vinculan los métodos los controladores con la ruta específica para poder ser llamada desde el frontend
+ */
 const {insertarComentario, getComentarios, insertarRespuestaComentario, getRespuestaComentario, eliminarComentariosPublicacion, eliminarComentariosUsuario, eliminarComentario} = require("../controllers/comentarioController")
 
 api.post(

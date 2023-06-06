@@ -3,6 +3,9 @@ import express, {Router} from 'express';
 const expressPr = require('express')
 const api:Router = expressPr.Router()
 
+/**
+ * En esta clase se vinculan los métodos los controladores con la ruta específica para poder ser llamada desde el frontend
+ */
 import {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, 
   getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByNameAndId,
   getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario, reCaptchaGoogle, getUsuariosByFilters} from "../controllers/usuarioController"

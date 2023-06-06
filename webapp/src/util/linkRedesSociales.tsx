@@ -4,6 +4,11 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
+/**
+ * Devuelve los iconos de las redes sociales
+ * @param props Redes sociales
+ * @returns Lista de iconos
+ */
 function RedesSociales(props: any) {
 	return(
         props.redes.map((red: string, index: number) => 

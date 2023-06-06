@@ -2,7 +2,13 @@ import { Request, Response } from 'express';
 
 const seguidorModel = require('../models/seguidoresModel');
 
-const getSeguidores = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve los seguidores de un usuario
+ * @param req Request (con el Id del usuario)
+ * @param res Response
+ * @returns Lista de seguidores
+ */
+export const getSeguidores = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id_usuario = req.params.idUsu;
       const seguidores = await seguidorModel.find({id_usuario: id_usuario});
@@ -17,7 +23,13 @@ const getSeguidores = async (req: Request, res: Response): Promise<Response> => 
     }
 }
 
-const isSeguidor = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Indica si un usuario sigue a otro
+ * @param req Request (con el Id del usuario y el Id de seguidor)
+ * @param res Response
+ * @returns True si hay seguimiento o False en caso contrario
+ */
+export const isSeguidor = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.params.idUsu;
     const id_seguidor = req.params.idSeg;
@@ -33,7 +45,13 @@ const isSeguidor = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const seguir = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Inserta un seguimiento en la base de datos
+ * @param req Request (con el Id del usuario y el Id de seguidor)
+ * @param res Response
+ * @returns True si se ha podido insertar
+ */
+export const seguir = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.body.idUser;
     const id_seguidor = req.body.idSeg;
@@ -46,7 +64,13 @@ const seguir = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const dejarDeSeguir = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Elimina un seguimiento en la base de datos
+ * @param req Request (con el Id del usuario y el Id de seguidor)
+ * @param res Response
+ * @returns True si se ha podido eliminar
+ */
+export const dejarDeSeguir = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.body.idUser;
     const id_seguidor = req.body.idSeg;
@@ -62,7 +86,13 @@ const dejarDeSeguir = async (req: Request, res: Response): Promise<Response> => 
   }
 }
 
-const getFollowingUsers = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve los Ids de los usuarios seguidos de un usuario
+ * @param req Request (con el Id del usuario)
+ * @param res Response
+ * @returns Lista de Ids de los usuario seguidos
+ */
+export const getFollowingUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.params.idUser;
     const users = await seguidorModel.find({id_seguidor: id_usuario});
@@ -76,7 +106,13 @@ const getFollowingUsers = async (req: Request, res: Response): Promise<Response>
   }
 }
 
-const getFollowsByUser = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Devuelve los Ids de los seguidores de un usuario
+ * @param req Request (con el Id del usuario)
+ * @param res Response
+ * @returns Lista de Ids de los seguidores
+ */
+export const getFollowsByUser = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.params.idUser;
     const users = await seguidorModel.find({id_usuario: id_usuario});
@@ -90,7 +126,13 @@ const getFollowsByUser = async (req: Request, res: Response): Promise<Response> 
   }
 }
 
-const eliminarSeguimientos = async (req: Request, res: Response): Promise<Response> => {
+/**
+ * Elimina todos los seguimientos de un usuario
+ * @param req Request (con el Id del usuario)
+ * @param res Response
+ * @returns True si se ha podido eliminar
+ */
+export const eliminarSeguimientos = async (req: Request, res: Response): Promise<Response> => {
   try {
     const id_usuario = req.body.idUser;
     await seguidorModel.deleteMany({id_usuario: id_usuario});
@@ -101,5 +143,3 @@ const eliminarSeguimientos = async (req: Request, res: Response): Promise<Respon
     return res.status(500).send(error);
   }
 }
-
-module.exports = {getSeguidores, isSeguidor, dejarDeSeguir, seguir, getFollowingUsers, getFollowsByUser, eliminarSeguimientos}
