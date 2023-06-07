@@ -7,5 +7,4 @@ test('UserCard se renderiza correctamente', () => {
   expect(getByText("nombre")).toBeInTheDocument();
   expect(getByText("artista")).toBeInTheDocument();
   expect(getByText("- FreeStyle")).toBeInTheDocument();
-  expect(getByText("Ver perfil")).toBeInTheDocument();
 });

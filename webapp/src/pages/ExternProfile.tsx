@@ -65,10 +65,25 @@ const ExternProfile = () => {
 
     const [ordenadoFecha, setOrdenadoFecha] = useState("fecha");
 
+    const [tamañoLetra, setTamañoLetra] = useState<number>(20);
+
+    const [tamañoImagen, setTamañoImagen] = useState<number[]>([50,60]);
+
     const numElementos = 9
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
+    };
+
+    const handleResize = () => {
+        if(window.innerWidth < 900){
+            setTamañoLetra(12)
+            setTamañoImagen([25,35])
+        }else{
+            setTamañoLetra(20)
+            setTamañoImagen([50,60])
+        }
+
     };
 
     const datosIniciales = useCallback(async () => {
@@ -88,6 +103,7 @@ const ExternProfile = () => {
 
     useEffect(() => {
         datosIniciales();
+        window.addEventListener("resize", handleResize);
     }, [])
 
     async function handleDejarDeSeguir() {
@@ -156,14 +172,14 @@ const ExternProfile = () => {
         <div id="externProfile">
             <main>
                 <TableContainer>
-                    <Table sx={{ maxWidth: 800, minWidth: 200 }}>
+                    <Table>
                         <TableHead>
                         <TableRow>
                         <TableCell align="center"></TableCell>
-                            <TableCell sx={{fontSize: 20}} align="center">Publicaciones</TableCell>
-                            <TableCell sx={{fontSize: 20}} align="center">Seguidores</TableCell>
-                            <TableCell sx={{fontSize: 20}} align="center">Seguidos</TableCell>
-                            <TableCell sx={{fontSize: 20}} align="center">Genero Favorito</TableCell>
+                            <TableCell sx={{fontSize: tamañoLetra}} align="center">Publicaciones</TableCell>
+                            <TableCell sx={{fontSize: tamañoLetra}} align="center">Seguidores</TableCell>
+                            <TableCell sx={{fontSize: tamañoLetra}} align="center">Seguidos</TableCell>
+                            {tamañoLetra === 20 && <TableCell sx={{fontSize: tamañoLetra}} align="center">Genero Favorito</TableCell>}
                             <TableCell align="center"></TableCell>
                         </TableRow>
                         </TableHead>
@@ -173,29 +189,29 @@ const ExternProfile = () => {
                             <Avatar
                                 alt="Foto de perfil"
                                 src={usuario.enlace_foto}
-                                sx={{ width: 50, height: 60 }}
+                                sx={{ width: tamañoImagen[0], height: tamañoImagen[1] }}
                             />
                             </TableCell>
-                            <TableCell sx={{fontSize: 40}} align="center">{publicaciones.length}</TableCell>
-                            <TableCell sx={{fontSize: 40}} align="center">{seguidores.length}</TableCell>
-                            <TableCell sx={{fontSize: 40}} align="center">{seguidos}</TableCell>
-                            <TableCell sx={{fontSize: 40}} align="center">{usuario.genero}</TableCell>
-                            {usuario.nombre_spotify !== "" && <TableCell sx={{fontSize: 20}} align="center">
-                                <Link href={"/spotify/data/" + usuario.nombre_spotify} underline="none">
-                                    <Button color="success" className="boton" variant="contained">Estadísticas Spotify</Button>
-                                </Link>
-                            </TableCell>}
-                            {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: 40}} align="center"><Button id="seguir" size="large" variant="contained" color="info" onClick={handleSeguir}>Seguir</Button></TableCell>}
-                            {usuario._id === idUser && <TableCell sx={{fontSize: 20}} align="center">
-                                <Link href="/profile" underline="none">
-                                    <Button id="editarPerfil" className="boton" variant="contained">Editar perfil</Button>
-                                </Link>
-                            </TableCell>}
-                            {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button id="dejarSeguir" size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
+                            <TableCell sx={{fontSize: tamañoLetra * 2 - 5}} align="center">{publicaciones.length}</TableCell>
+                            <TableCell sx={{fontSize: tamañoLetra * 2 - 5}} align="center">{seguidores.length}</TableCell>
+                            <TableCell sx={{fontSize: tamañoLetra * 2 - 5}} align="center">{seguidos}</TableCell>
+                            {tamañoLetra === 20 && <TableCell sx={{fontSize: tamañoLetra * 2 - 5}} align="center">{usuario.genero}</TableCell>}
                             </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
+                {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: tamañoLetra}} align="center"><Button id="seguir" size="large" variant="contained" color="info" startIcon={<Icono icono={"Seguir"}/>} onClick={handleSeguir}>Seguir</Button></TableCell>}
+                {usuario._id === idUser && <TableCell sx={{fontSize: tamañoLetra}} align="center">
+                    <Link href="/profile" underline="none">
+                        <Button id="editarPerfil" className="boton" variant="contained" size="large" startIcon={<Icono icono={"Perfil"}/>}>Editar perfil</Button>
+                    </Link>
+                </TableCell>}
+                {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button startIcon={<Icono icono={"Dejar de seguir"}/>} id="dejarSeguir" size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
+                {usuario.nombre_spotify !== "" && usuario.tipo !== "Estándar" && <TableCell sx={{fontSize: tamañoLetra}} align="center">
+                    <Link href={"/spotify/data/" + usuario.nombre_spotify} underline="none">
+                        <Button color="success" className="boton" variant="contained" size="large" startIcon={<Icono icono={"Obtener ID Spotify"}/>}>Estadísticas Spotify</Button>
+                    </Link>
+                </TableCell>}
                 <h2>{usuario.nombre}</h2>
                 <p>{usuario.descripcion}</p>
                 <Typography variant="h4"><AutoAwesomeIcon id ="redes"></AutoAwesomeIcon>  Otras redes sociales</Typography>

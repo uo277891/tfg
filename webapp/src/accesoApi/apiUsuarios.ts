@@ -1,6 +1,6 @@
 import { Usuario } from "../interfaces/interfaces";
 
-const llamadaBasica = 'http://localhost:5000';
+const llamadaBasica = process.env.REACT_APP_DIRECCION || 'http://localhost:5000';
 /**
  * Devuelve un usuario asociado al ID
  * @param id_usuario ID del usuario

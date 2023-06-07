@@ -34,7 +34,6 @@ defineFeature(feature, test => {
 
     when('Pulsar el botón para cerrar sesión', async () => {
         await delay(1500)
-        await page.click("#editarPerfil")
         await delay(1500)
         await page.click("#cerrarSesion")
     });

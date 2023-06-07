@@ -1,6 +1,6 @@
 import { Publicacion } from "../interfaces/interfaces";
 
-const llamadaBasica = 'http://localhost:5000';
+const llamadaBasica = process.env.REACT_APP_DIRECCION || 'http://localhost:5000';
 
 /**
  * Devuelve las publicaciones de un usuario
