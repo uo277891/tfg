@@ -264,11 +264,11 @@ const Register = () => {
         <main>
         <h1>Registro</h1>
         <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Información personal" {...a11yProps(0)} />
+        <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs style={{ width: 'auto' }} value={value} onChange={handleChange}>
+            <Tab label="Datos" {...a11yProps(0)} />
             <Tab label="Sobre ti" {...a11yProps(1)} />
-            <Tab label="Resultado final" {...a11yProps(2)} />
+            <Tab label="Resumen" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
@@ -344,7 +344,7 @@ const Register = () => {
                   {tipoUsu !== "Estándar" && <TextField id="spotyName" label="ID Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
                   <br/>
                   <Grid container alignItems="center" justifyContent="center">
-                    <Accordion sx={{width: '50%'}}>
+                    <Accordion style={{ width: 'auto' }}>
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -353,18 +353,20 @@ const Register = () => {
                         <Typography>¡Añade enlaces a tus redes sociales!</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                        id="Instrgram" label="Instagram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
-                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
+                        <TextField style={{ width: 'auto' }} InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
+                        id="Instagram" label="Instagram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                        <TextField style={{ width: 'auto' }} InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
                         id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
-                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
+                        <TextField style={{ width: 'auto' }} InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
                         id="YouTube" label="YouTube" variant="outlined" value={redesSociales[2]} onChange={(yt) => handleRedesSociales(2, yt.target.value)}/>
                       </AccordionDetails>
                     </Accordion>
                   </Grid>
                   <br/>
-                  <Textarea color="neutral" style={{ width: 600, fontSize:'1em' }} minRows={10} placeholder="Introduce una pequeña descripción sobre ti (máximo 200 caracteres)" 
+                  
+                  <Textarea color="neutral" style={{ width: '50%', fontSize:'1em' }} minRows={10} placeholder="Introduce una pequeña descripción sobre ti (máximo 200 caracteres)" 
                           id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
+                  
                   <br/>
                   {descripcion.length} / 200
                   <br/>

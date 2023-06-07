@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { getFollowingUsers, getFollowsByUser } from "../accesoApi/apiSeguidores";
+import Divider from "@mui/material/Divider";
 
 /**
  * @returns Página para representar los usuarios que sigue el usuario identificado
@@ -91,8 +92,8 @@ const FollowingUsers = (props: any) => {
         <div id="findUsers">
             <main>
                 <h1>Usuarios a los que sigues:</h1>
-                <Grid container spacing={5}>
-                    <Grid item xs={11}>
+                <Grid container spacing={3}>
+                    <Grid item xs={10.5}>
                         <TextField fullWidth label="Buscar usuarios"  value={texto}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 setTexto(event.target.value);
@@ -105,9 +106,9 @@ const FollowingUsers = (props: any) => {
                     </Grid>
                 </Grid>
                 <Grid>
-                    <List >
+                    <List>
                         {usuarios.slice((page - 1) * numElementos, numElementos * page).map((usuario: Usuario) =>
-                            <UserCard key = {usuario._id} usuario = {usuario}></UserCard>
+                            <><UserCard key={usuario._id} usuario={usuario}></UserCard><Divider></Divider></>
                         )}
                     </List>
                 </Grid>

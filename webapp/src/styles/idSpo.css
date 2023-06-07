@@ -5,7 +5,7 @@
 }
 
 .idSpo h1 {
-    font-size: 4em;
+    font-size: 2.5em;
 }
 
 .idSpo p {
@@ -13,7 +13,7 @@
 }
 
 .idSpo li{
-    font-size: 2em;
+    font-size: 1.75em;
     padding: 0.5em;
 }
 
@@ -23,8 +23,6 @@
 
 .expSpo {
     align-items: center;
-    padding: 0.5em;
-    margin: 0.5em;
 }
 
 .expSpo h1 {
@@ -40,14 +38,13 @@
     display: grid;
     grid-template-columns: repeat(3, auto);
     grid-template-rows: repeat(3, auto);
-    gap: 1em;
     align-items: center;
     color: black;
 }
 
 .expSpo main {
-    padding: 1.5em;
-    margin: 1.5em;
+    padding: 0.5em;
+    margin: 0.5em;
     grid-column-start: 1;
     grid-column-end: 4;
     grid-row-start: 1;
@@ -55,7 +52,7 @@
 }
 
 .expSpo li{
-    font-size: 1em;
+    font-size: 1.5em;
     padding: 0.3em;
 }
 
@@ -75,4 +72,9 @@ background-color: rgb(133, 39, 39);
 
 .expSpo aside {
   margin-top: 3em;
+}
+
+.expSpo img {
+	max-width: 100%;
+  	height: auto;
 }

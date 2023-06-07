@@ -1,6 +1,6 @@
 import { Comentario } from "../interfaces/interfaces";
 
-const llamadaBasica = 'http://localhost:5000';
+const llamadaBasica = process.env.REACT_APP_DIRECCION || 'http://localhost:5000';
 
 /**
  * Añade un comentario a la base de datos

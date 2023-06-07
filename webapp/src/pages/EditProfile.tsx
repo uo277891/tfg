@@ -226,7 +226,7 @@ const EditProfile = () => {
               </TextField>
 
               <Grid container alignItems="center" justifyContent="center">
-                    <Accordion sx={{width: '50%'}}>
+                    <Accordion style={{ width: 'auto' }}>
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -235,17 +235,17 @@ const EditProfile = () => {
                         <Typography>¡Actualiza los enlaces a tus redes sociales!</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
-                        id="Instrgram" label="Instagram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
-                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
+                        <TextField style={{ width: 'auto' }} InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
+                        id="Instagram" label="Instagram" variant="outlined" value={redesSociales[0]} onChange={(ins) => {handleRedesSociales(0, ins.target.value)}}/>
+                        <TextField style={{ width: 'auto' }} InputProps={{startAdornment: (<InputAdornment position="start"><TwitterIcon /></InputAdornment>),}}
                         id="Twitter" label="Twitter" variant="outlined" value={redesSociales[1]} onChange={(tw) => handleRedesSociales(1, tw.target.value)}/>
-                        <TextField InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
+                        <TextField style={{ width: 'auto' }} InputProps={{startAdornment: (<InputAdornment position="start"><YouTubeIcon /></InputAdornment>),}}
                         id="YouTube" label="YouTube" variant="outlined" value={redesSociales[2]} onChange={(yt) => handleRedesSociales(2, yt.target.value)}/>
                       </AccordionDetails>
                     </Accordion>
                   </Grid>
               <Typography>Descripción</Typography>
-              <Textarea color="neutral" style={{ width: 600, fontSize:'1em' }} minRows={10} 
+              <Textarea color="neutral" style={{ width: '50%', fontSize:'1em' }} minRows={10} 
                   id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
               <br/>
                 {descripcion.length} / 200
@@ -257,7 +257,13 @@ const EditProfile = () => {
           </Box>
           <p>¿No quieres actualizar tu perfil?, vuelve atrás pulsando <Link href="/profile" >aquí</Link></p>
         </main>
-        <Box sx={{ width: '100%' }}>
+        <Box component="form"
+              sx={{
+                  '& .MuiTextField-root': { m: 3, width: '40ch' },
+              }}
+              noValidate
+              autoComplete="off"
+              >
         <Collapse in={registerError}>
           <Alert
               severity="error"

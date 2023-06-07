@@ -1,4 +1,4 @@
-const llamadaBasica = 'http://localhost:5000';
+const llamadaBasica = process.env.REACT_APP_DIRECCION || 'http://localhost:5000';
 
 /**
  * Devuelve datos del artista

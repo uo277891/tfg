@@ -15,32 +15,28 @@ import { Typography } from '@mui/material';
 function UserCard (props: any) {
 
     return (
-            <ListItem
-                secondaryAction={
-                    <Link href={'/profile/' + props.usuario._id} underline="none">
-                        <Button className="boton" variant="contained">Ver perfil</Button>
-                    </Link>
-                }
-                >
+        <Link href={'/profile/' + props.usuario._id} underline="none" color={"black"}>
+            <ListItem>
                 <ListItemAvatar>
                     <Avatar src= {props.usuario.enlace_foto}></Avatar>
                 </ListItemAvatar>
-                <ListItemText primary = {props.usuario.nombre} 
-                    secondary={
-                        <React.Fragment>
-                        <Typography
-                            sx={{ display: 'inline' }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                        >
-                            {props.usuario.tipo} 
-                        </Typography>
-                        {" - " + props.usuario.genero}
-                        </React.Fragment>
-                        }>
-                </ListItemText>
+                    <ListItemText primary = {props.usuario.nombre} 
+                        secondary={
+                            <React.Fragment>
+                            <Typography
+                                sx={{ display: 'inline' }}
+                                component="span"
+                                variant="body1"
+                                color="text.primary"
+                            >
+                                {props.usuario.tipo} 
+                            </Typography>
+                            {" - " + props.usuario.genero}
+                            </React.Fragment>
+                            }>
+                    </ListItemText>
             </ListItem>
+            </Link>
         );
 }
 
