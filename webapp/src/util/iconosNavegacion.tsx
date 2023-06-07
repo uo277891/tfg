@@ -11,6 +11,8 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { common } from '@mui/material/colors';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 /**
  * Devuelve el icono asociado a un nombre
@@ -42,6 +44,10 @@ function Icono(props: any) {
         return (<FilterAltIcon></FilterAltIcon>)
     else if(props.icono === "Eliminar Cuenta")
         return (<HighlightOffIcon sx={{color: common.white}}></HighlightOffIcon>)
+    else if(props.icono === "Dejar de seguir")
+        return (<PersonOffIcon sx={{color: common.white}}></PersonOffIcon>)
+    else if(props.icono === "Seguir")
+        return (<PersonAddIcon sx={{color: common.white}}></PersonAddIcon>)
     
     return <p></p>
 }

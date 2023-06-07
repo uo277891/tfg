@@ -65,7 +65,7 @@ export default function BarraDeNavegacion() {
     const [cargando, setCargando] = React.useState(false);
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setOpen(!open);
     };
 
     const handleClose = () => {
@@ -170,13 +170,13 @@ export default function BarraDeNavegacion() {
     else
         return (
             <List id = "navBar" sx={{ width: '100%', height: '100%' }} component="nav" aria-labelledby="nested-list-subheader">
-                    <Link key="home"
-                        href="/"
-                        variant="h6"
-                        noWrap
-                        sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
-                        <img src={iconlogo} alt="Icono logo"></img>
-                    </Link>
+                        <Link key="home"
+                            href="/"
+                            variant="h6"
+                            noWrap
+                            >
+                            <Tooltip title={"Página de inicio"}><img src={iconlogo} alt="Icono logo"></img></Tooltip>
+                        </Link>
                 {usuarioEstaAutenticado && paginasInicioSesion.map((nombre) => (
                     <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}>
                         <ListItemButton>
@@ -201,7 +201,7 @@ export default function BarraDeNavegacion() {
                         </ListItemButton>
                     </Link>
                     ))}
-                {usuario !== undefined && <ListItemButton key="perfil" onClick={handleClick}>
+                {usuario !== undefined && <ListItemButton key="perfil" onClick={handleClickOpen}>
                     <ListItemIcon>
                     <Tooltip title="Cuenta">
                         <IconButton key = "person" sx={{ p: 0 }}>

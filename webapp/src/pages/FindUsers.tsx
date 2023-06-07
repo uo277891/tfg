@@ -110,15 +110,15 @@ const FindUsers = () => {
         return (
         <div id="findUsers">
             <main>
-                <Grid container spacing={5}>
-                    <Grid item xs={11}>
+                <Grid container spacing={3}>
+                    <Grid item xs={10.5}>
                         <TextField fullWidth label="Buscar usuarios" id="searchName" value={texto}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 setTexto(event.target.value);
                         }}/>
                     </Grid>
                     <Grid item xs={1}>
-                        <IconButton onClick = {HandleBuscaUsuarios}>
+                        <IconButton onClick = {HandleBuscaUsuarios} >
                             <SearchIcon  id="search" fontSize="large"></SearchIcon>
                         </IconButton>
                     </Grid>
@@ -137,7 +137,7 @@ const FindUsers = () => {
                     </Typography>
                     <List>
                         {usuarios.slice((page - 1) * numElementos, numElementos * page).map((usuario: Usuario) =>
-                            <UserCard key = {usuario._id} usuario = {usuario}></UserCard>
+                            <><UserCard key={usuario._id} usuario={usuario}></UserCard><Divider></Divider></>
                         )}
                     </List>
                 </Grid>

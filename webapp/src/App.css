@@ -43,6 +43,11 @@
 	margin-top: 3em;
 }
 
+.estiloBase img {
+	max-width: 100%;
+  	height: auto;
+}
+
 #aboutFS{
 	text-align: center;
 	align-items: center;

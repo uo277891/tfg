@@ -27,9 +27,9 @@ const Home = () => {
             </Link>
           </Stack>
         </main>
-        <aside>
-          <img src={logo} alt="logo"></img>
-        </aside>
+          <aside>
+            <img src={logo} alt="logo"></img>
+          </aside>
       </div>
     );
     else
