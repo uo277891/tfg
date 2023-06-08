@@ -16,10 +16,10 @@ const Home = () => {
     return (
       <div className="estiloBase">
         <main>
-          <h1>SocialFS</h1>
+          <h1>SocialFS.</h1>
           <p>¡Bienvenido a <strong>SocialFS</strong>, la red social enfocada al mundo del freestyle!</p>
               <Button href="/login" className="boton" variant="contained">Iniciar Sesión</Button>
-              <Button href="/register" className="boton" id = "registrarse" variant="contained">Registro</Button>
+              <Button href="/register" className="boton" id = "registrarse" variant="contained">Registrarse</Button>
         </main>
           <aside>
             <img src={logo} alt="logo"></img>

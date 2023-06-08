@@ -30,7 +30,7 @@ const AboutSocialFS = () => {
         
           <Button href="/" className="boton" variant="contained">Página de inicio</Button>
           {!usuarioEstaAutenticado && <Button href="/login" className="boton" variant="contained">Iniciar Sesión</Button>}
-          {!usuarioEstaAutenticado && <Button href="/register" className="boton" variant="contained">Registro</Button>}
+          {!usuarioEstaAutenticado && <Button href="/register" className="boton" variant="contained">Registrarse</Button>}
       </main>
     </div>
   );
