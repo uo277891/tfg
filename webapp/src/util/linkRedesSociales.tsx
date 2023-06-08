@@ -1,4 +1,3 @@
-import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -13,13 +12,11 @@ import Tooltip from '@mui/material/Tooltip';
 function RedesSociales(props: any) {
 	return(
         props.redes.map((red: string, index: number) => 
-            <Link href={red} underline='none'>
-                <IconButton>
-                    {index === 0 && <Tooltip title="Enlace Instagram"><InstagramIcon sx={{ fontSize: 40 }} color = "secondary"/></Tooltip>}
-                    {index === 1 && <Tooltip title="Enlace Twitter"><TwitterIcon sx={{ fontSize: 40 }} color = "info"/></Tooltip>}
-                    {index === 2 && <Tooltip title="Enlace YouTube"><YouTubeIcon sx={{ fontSize: 40 }} color = "error"/></Tooltip>}
-                </IconButton>
-            </Link>
+            {red !== "" && <IconButton href={red}>
+                {index === 0 && red !== "" && <Tooltip title="Enlace Instagram"><InstagramIcon sx={{ fontSize: 40 }} color = "secondary"/></Tooltip>}
+                {index === 1 && red !== "" && <Tooltip title="Enlace Twitter"><TwitterIcon sx={{ fontSize: 40 }} color = "info"/></Tooltip>}
+                {index === 2 && red !== "" && <Tooltip title="Enlace YouTube"><YouTubeIcon sx={{ fontSize: 40 }} color = "error"/></Tooltip>}
+            </IconButton>}
         )
     )
 }

@@ -145,7 +145,7 @@ const Publication = (props: any) => {
         <Card sx={{ margin: "auto", maxWidth: 600, minHeight:200 }}>
         <Link href = {"/profile/" + publicacion.id_usuario} underline="none" color="inherit"><CardHeader
           avatar={
-            <Button><Avatar alt="Foto de perfil"
+            <Button><Avatar alt= {"Foto de perfil de " + usuarioPublicacion.nombre}
             src={usuarioPublicacion.enlace_foto}/></Button>
           }
           title={usuarioPublicacion.nombre}
@@ -159,7 +159,7 @@ const Publication = (props: any) => {
             image={publicacion.enlace_multimedia}
         />}
         <CardContent>
-          <Typography variant="body1" fontSize={22}>
+          <Typography variant="h5">
             {publicacion.texto}
           </Typography>
         </CardContent>
@@ -169,7 +169,7 @@ const Publication = (props: any) => {
               <FavoriteIcon style={{color: colorCorazon}} />
             </IconButton>
           </Tooltip>
-          <Typography variant="body1" color="text.primary" fontSize={20}>
+          <Typography variant="h5" color="text.primary">
             {publicacion.likes.length}
           </Typography>
           <Tooltip title="Añadir comentario">

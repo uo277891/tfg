@@ -123,7 +123,7 @@ const NewPublication = (props: any) => {
                     autoComplete="off"
                     >
                     <h1>Nueva publicación</h1>
-                    <Textarea color="neutral" style={{ width: 665, fontSize:'1.4em' }} minRows={10} placeholder="Introduce el texto de la publicación (máximo 200 caracteres)" 
+                    <Textarea color="neutral" style={{ width: '50%', fontSize:'1.4em' }} minRows={10} placeholder="Introduce el texto de la publicación (máximo 200 caracteres)" 
                         id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
                     <br/>
                         {text.length} / 200

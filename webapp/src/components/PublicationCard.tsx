@@ -49,9 +49,9 @@ function PublicationCard (props: any) {
 
     return (
         <Card className='dataSpo'>
-            {props.publication.tipo_multimedia === "iframe" && <audio controls src={props.publication.enlace_multimedia}></audio>}
+            {props.publication.tipo_multimedia === "iframe" && <audio title='Audio publicación' controls src={props.publication.enlace_multimedia}></audio>}
             {(props.publication.tipo_multimedia === "img") &&
-            <CardMedia component= {props.publication.tipo_multimedia} image={props.publication.enlace_multimedia}/>}
+            <CardMedia alt="Imagen publicacion" title="Imagen publicacion" component= {props.publication.tipo_multimedia} image={props.publication.enlace_multimedia}/>}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                 {props.publication.texto}
@@ -64,7 +64,7 @@ function PublicationCard (props: any) {
                 </Typography>
             </CardContent>
             <CardActions sx={{justifyContent: "space-between"}}>
-                <Link href={"/publication/" + props.publication._id} underline="none"><Button id = {"pub" + props.numeroPub} size="small" variant="contained">Detalles</Button></Link>
+                <Button href={"/publication/" + props.publication._id} id = {"pub" + props.numeroPub} size="small" variant="contained">Detalles</Button>
                 {props.propiaPublicacion && <Button id = {"elim" + props.numeroPub} color = 'error' size="small" variant="contained" onClick={handleClickOpen}>Eliminar</Button>}
             </CardActions>
             <Dialog open={open} onClose={handleClose}>

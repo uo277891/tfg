@@ -35,7 +35,7 @@ const AlbumCard = (props: any) => {
             <Typography variant='h4'>Artistas que participan: <Typography variant='h5' display={'inline'}>{listadoArtistas()}</Typography></Typography>
         </CardContent>
         <CardActions>
-            <Link sx={{ margin: "auto" }} href={props.album.external_urls.spotify} underline="none"><Button className="boton" size="large" variant="contained">Ver álbum en Spotify</Button></Link>
+            <Button href={props.album.external_urls.spotify} className="boton" size="large" variant="contained">Ver álbum en Spotify</Button>
         </CardActions>
     </Card>
   );

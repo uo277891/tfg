@@ -18,13 +18,11 @@ const IDSpotify = () => {
             <li>Entra en tu perfil de spotify</li>
             <li>Copia el código que aparece en la URL de la página</li>
             <aside>
-              <img src={idSpotify} alt="Imágen que muestra un ID de Spotify"></img>
+              <img src={idSpotify} alt="Imagen que muestra un ID de Spotify"></img>
             </aside>
             <li>¡Listo, ya tienes tu ID de Spotify!</li>
           </ol>
-          <Link href="/register" underline="none">
-            {!usuarioEstaAutenticado && <Button className="boton" variant="contained">Registrarse</Button>}
-          </Link>
+            {!usuarioEstaAutenticado && <Button href="/register" className="boton" variant="contained">Registrarse</Button>}
         </main>
       </div>
   );

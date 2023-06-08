@@ -63,7 +63,7 @@ function CardProfile (props: any) {
                     <Typography variant="body1" color="text.secondary"> Perfil de Spotify: {props.usuario.nombre_spotify} </Typography>
                 </CardContent>
                 <CardActions sx={{justifyContent: "space-between"}}>
-                    <Link href="/profile/edit" underline="none"><Button size="large" variant="contained">Editar</Button></Link>
+                    <Button href="/profile/edit" size="large" variant="contained">Editar</Button>
                     <Button size="large" variant="contained" color='error' onClick={handleClickOpen}>Eliminar foto de perfil</Button>
                 </CardActions>
                 <Dialog open={open} onClose={handleClose}>

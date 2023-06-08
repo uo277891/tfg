@@ -18,7 +18,7 @@ function UserCard (props: any) {
         <Link href={'/profile/' + props.usuario._id} underline="none" color={"black"}>
             <ListItem>
                 <ListItemAvatar>
-                    <Avatar src= {props.usuario.enlace_foto}></Avatar>
+                    <Avatar alt= {"Foto de perfil de " + props.usuario.nombre} src= {props.usuario.enlace_foto}></Avatar>
                 </ListItemAvatar>
                     <ListItemText primary = {props.usuario.nombre} 
                         secondary={
