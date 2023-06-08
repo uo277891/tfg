@@ -102,11 +102,11 @@ const CommentCard = (props: any) => {
             <Typography variant="h5">{props.comentario.texto}</Typography>
           </Typography>}
           {!props.respuesta && <Typography variant="h5">{props.comentario.texto}</Typography>}
-          <Textarea color="neutral" minRows={5} style={{ width: '100%', fontSize:'1em' }} placeholder="Responder" id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
+          <Textarea color="neutral" minRows={5} style={{ width: '100%', fontSize:'1em' }} aria-label="Texto del comentario" placeholder="Responder" id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
         </CardContent>
         <CardActions sx={{justifyContent: "space-between"}}>
           {(usuarioPublicacion._id === idUser || props.idUsuPub === idUser) && <Button variant="contained" color="error" onClick={handleClickOpen}>Eliminar comentario</Button>}
-          {text.length > 0 && <Button className="boton" variant="contained" onClick={comentar}>Comentar</Button>}
+          {text.length > 0 && <Button aria-label="Comentar" className="boton" variant="contained" onClick={comentar}>Comentar</Button>}
         </CardActions>
         {comentariosRespuesta.map((comentario: Comentario) => 
               <CommentCard key = {comentario._id} respuesta = {true} comentario = {comentario} idUsuPub = {props.idUsuPub}></CommentCard>

@@ -152,11 +152,12 @@ const Publication = (props: any) => {
           subheader={parseFecha(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) +
         ", " + parseHora(publicacion.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')) }
         /></Link>
-        {publicacion.tipo_multimedia === "iframe" && <audio controls src={publicacion.enlace_multimedia}></audio>}
+        {publicacion.tipo_multimedia === "iframe" && <audio title={"Audio de la publicación con texto " + publicacion.texto} controls src={publicacion.enlace_multimedia}></audio>}
         {publicacion.tipo_multimedia === "img" &&
         <CardMedia
             component= {publicacion.tipo_multimedia}
             image={publicacion.enlace_multimedia}
+            alt={"Imagen de la publicación con texto " + publicacion.texto}
         />}
         <CardContent>
           <Typography variant="h5">
@@ -183,13 +184,13 @@ const Publication = (props: any) => {
               <DialogContentText>
                 Atención: El comentario será público para todas las personas que puedan visualizar la publicación.
               </DialogContentText>
-              <Textarea color="neutral" style={{ width: 550, fontSize:'1.4em' }} minRows={10} placeholder="Introducir comentario (máximo 200 caracteres)" 
+              <Textarea aria-label="Texto para comentar" color="neutral" style={{ width: '100%', fontSize:'1.4em' }} minRows={10} placeholder="Introducir comentario (máximo 200 caracteres)" 
                     id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
                 {text.length} / 200
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancelar</Button>
-              {text.length > 0 && text.length < 200 && <Button onClick={enviarComentario}>Publicar</Button>}
+              {text.length > 0 && text.length < 200 && <Button aria-label="Botón para comentar" onClick={enviarComentario}>Publicar</Button>}
             </DialogActions>
           </Dialog>
             <ExpandMore
