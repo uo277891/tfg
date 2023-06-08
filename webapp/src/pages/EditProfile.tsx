@@ -74,7 +74,17 @@ const EditProfile = () => {
 
     const [error, seterror] = React.useState("");
 
+    const[porcentajeAncho, setPorcentajeAncho] = React.useState("40%");
+
     const redirigir = useNavigate();
+
+    const handleResize = () => {
+      if(window.innerWidth < 900){
+        setPorcentajeAncho("90%")
+      }else{
+        setPorcentajeAncho("40%")
+      }
+    };
 
     function handleRedesSociales(indice: number, valorAct: string) {
       const redesAct = redesSociales.map((valor, i) => {
@@ -105,6 +115,7 @@ const EditProfile = () => {
   
     useEffect(() => {
       datosIniciales();
+      handleResize();
     }, [])
 
   const [archivo, setArchivo] = useState<File>();
@@ -171,7 +182,7 @@ const EditProfile = () => {
           <Box
               component="form"
               sx={{
-                  '& .MuiTextField-root': { m: 3, width: '40ch' },
+                  '& .MuiTextField-root': { m: 3, width: porcentajeAncho },
               }}
               noValidate
               autoComplete="off"

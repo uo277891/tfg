@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -33,6 +33,22 @@ const Login = () => {
     const [loginError, setLoginError] = React.useState(false);
 
     const [error, seterror] = React.useState("");
+
+    const[porcentajeAncho, setPorcentajeAncho] = React.useState("40%");
+
+    const handleResize = () => {
+      if(window.innerWidth < 900){
+        setPorcentajeAncho("90%")
+      }else{
+        setPorcentajeAncho("40%")
+      }
+    };
+
+    useEffect(() => {
+      setCargando(true)
+      window.addEventListener("resize", handleResize);
+      setCargando(false)
+  }, [])
 
     const redirigir = useNavigate();
 
@@ -88,7 +104,7 @@ const Login = () => {
           <Box
               component="form"
               sx={{
-                  '& .MuiTextField-root': { m: 3, width: '40ch' },
+                  '& .MuiTextField-root': { m: 3, width: porcentajeAncho },
               }}
               noValidate
               autoComplete="off"

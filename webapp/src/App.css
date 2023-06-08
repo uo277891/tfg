@@ -33,6 +33,7 @@
 
 .estiloBase .boton{
   background-color: rgb(133, 39, 39);
+  margin: 0.5em;
 }
 
 .boton{
@@ -57,6 +58,7 @@
 
 #aboutFS .boton{
 	background-color: rgb(133, 39, 39);
+	margin: 0.5em;
 }
 
 #aboutFS main h1{

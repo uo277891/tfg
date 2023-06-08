@@ -20,7 +20,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Textarea from '@mui/base/TextareaAutosize';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import RegisterCard from '../components/RegisterCard';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useNavigate } from "react-router-dom";
@@ -127,6 +127,8 @@ const Register = () => {
 
     const [error, seterror] = React.useState("");
 
+    const[porcentajeAncho, setPorcentajeAncho] = React.useState("40%");
+
     const captchaRef = useRef<any>()
 
     function handleRedesSociales(indice: number, valorAct: string) {
@@ -136,6 +138,20 @@ const Register = () => {
       });
       setRedesSociales(redesAct);
     }
+
+    const handleResize = () => {
+      if(window.innerWidth < 900){
+        setPorcentajeAncho("90%")
+      }else{
+        setPorcentajeAncho("50%")
+      }
+    };
+
+    useEffect(() => {
+      setCargando(true)
+      window.addEventListener("resize", handleResize);
+      setCargando(false)
+  }, [])
 
     const actualizaArchivo = (e: ChangeEvent<HTMLInputElement>) => {
       if(e !== undefined)
@@ -275,7 +291,7 @@ const Register = () => {
             <Box
                   component="form"
                   sx={{
-                      '& .MuiTextField-root': { m: 3, width: '40ch' },
+                      '& .MuiTextField-root': { m: 3, width: porcentajeAncho },
                   }}
                   noValidate
                   autoComplete="off"
@@ -321,7 +337,7 @@ const Register = () => {
             <Box
                   component="form"
                   sx={{
-                      '& .MuiTextField-root': { m: 3, width: '40ch' },
+                      '& .MuiTextField-root': { m: 3, width: porcentajeAncho },
                   }}
                   noValidate
                   autoComplete="off"
