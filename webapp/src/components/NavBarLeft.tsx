@@ -12,7 +12,7 @@ import iconlogo from "../images/iconLogoBlanco.png";
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useState, useCallback, useEffect } from "react";
 import { eliminarUsuario, getUsuario } from "../accesoApi/apiUsuarios";
-import { Publicacion, Usuario } from "../interfaces/interfaces";
+import { Usuario } from "../interfaces/interfaces";
 import Avatar from '@mui/material/Avatar';
 import Icono from '../util/iconosNavegacion';
 import Tooltip from '@mui/material/Tooltip';
@@ -94,6 +94,7 @@ export default function BarraDeNavegacion() {
 
     useEffect(() => {
         window.addEventListener("resize", handleResize);
+        
     }, []);
 
     /**
@@ -119,6 +120,7 @@ export default function BarraDeNavegacion() {
         setUsuarioAutenticado("");
         setUsuarioEstaAcutenticado(false);
         setIdUser("")
+        redirigir("/logout")
     };
 
     const redirigir = useNavigate();
@@ -169,7 +171,7 @@ export default function BarraDeNavegacion() {
         return (<SimboloCarga open={cargando} close={!cargando}></SimboloCarga>)
     else
         return (
-            <List id = "navBar" sx={{ width: '100%', height: '100%' }} component="nav" aria-labelledby="nested-list-subheader">
+            <List id = "navBar" sx={{ width: '100%', height: '100%' }} component="nav">
                         <Link key="home"
                             href="/"
                             variant="h6"
@@ -178,8 +180,7 @@ export default function BarraDeNavegacion() {
                             <Tooltip title={"Página de inicio"}><img src={iconlogo} alt="Icono logo"></img></Tooltip>
                         </Link>
                 {usuarioEstaAutenticado && paginasInicioSesion.map((nombre) => (
-                    <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}>
-                        <ListItemButton>
+                        <ListItemButton href={"/" + linkAsociado(nombre)}>
                             <Tooltip title={nombre}>
                                 <ListItemIcon>
                                     <Icono icono={nombre}></Icono>
@@ -187,11 +188,9 @@ export default function BarraDeNavegacion() {
                             </Tooltip>
                             {width > 1200 && <ListItemText primary={nombre} />}
                         </ListItemButton>
-                    </Link>
                 ))}
                 {nombrePagina.map((nombre) => (
-                    <Link key={nombre} id={nombre} underline='none' color="inherit" href={"/" + linkAsociado(nombre)}> 
-                        <ListItemButton>
+                        <ListItemButton href={"/" + linkAsociado(nombre)}>
                             <Tooltip title={nombre}>
                                 <ListItemIcon>
                                     <Icono icono={nombre}></Icono>
@@ -199,13 +198,12 @@ export default function BarraDeNavegacion() {
                             </Tooltip>
                                 {width > 1200 && <ListItemText primary={nombre} />}
                         </ListItemButton>
-                    </Link>
                     ))}
                 {usuario !== undefined && <ListItemButton key="perfil" onClick={handleClickOpen}>
                     <ListItemIcon>
                     <Tooltip title="Cuenta">
                         <IconButton key = "person" sx={{ p: 0 }}>
-                            <Avatar sx={{ width: 30, height: 30 }} src= {usuario.enlace_foto}></Avatar>
+                            <Avatar sx={{ width: 30, height: 30 }} alt= {"Foto de perfil de " + usuario.nombre} src= {usuario.enlace_foto}></Avatar>
                         </IconButton>
                     </Tooltip> 
                     </ListItemIcon>
@@ -214,8 +212,7 @@ export default function BarraDeNavegacion() {
                 </ListItemButton>}
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     {usuario !== undefined && <List component="div" disablePadding>
-                    <Link id="publicProfile" href={"/profile/" + idUser} underline='none' color="inherit"> 
-                            <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemButton sx={{ pl: 4 }} href={"/profile/" + idUser}>
                             <Tooltip title="Perfil">
                                 <ListItemIcon>
                                     <Icono icono="Perfil"></Icono>
@@ -223,9 +220,7 @@ export default function BarraDeNavegacion() {
                             </Tooltip>
                             {width > 1200 && <ListItemText primary="Perfil" />}
                             </ListItemButton>
-                        </Link>
-                        <Link id="stats" href={"/stats/"} underline='none' color="inherit"> 
-                            <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemButton sx={{ pl: 4 }} href={"/stats/"}>
                             <Tooltip title="Estadísticas">
                                 <ListItemIcon>
                                     <Icono icono="Estadísticas"></Icono>
@@ -233,8 +228,6 @@ export default function BarraDeNavegacion() {
                             </Tooltip>
                             {width > 1200 && <ListItemText primary="Estadísticas" />}
                             </ListItemButton>
-                        </Link>
-                        <Link id="cerrarSesion" href={"/logout"} onClick={handleCerrarSesion} underline='none' color="inherit"> 
                             <ListItemButton sx={{ pl: 4 }} onClick={handleCerrarSesion}>
                             <Tooltip title="Cerrar sesión">
                                 <ListItemIcon onClick={handleCerrarSesion}>
@@ -243,7 +236,6 @@ export default function BarraDeNavegacion() {
                             </Tooltip>
                             {width > 1200 && <ListItemText primary="Cerrar Sesión" />}
                             </ListItemButton>
-                        </Link>
                         <ListItemButton sx={{ pl: 4 }} onClick={handleClick}>
                         <Tooltip title="Eliminar cuenta">
                             <ListItemIcon onClick={handleClick}>
@@ -257,8 +249,6 @@ export default function BarraDeNavegacion() {
             <Dialog
             open={dialog}
             onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title">
             {"Eliminación de cuenta"}

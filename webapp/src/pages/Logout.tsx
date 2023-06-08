@@ -1,4 +1,3 @@
-import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import logo from '../images/logo.png';
 
@@ -12,9 +11,7 @@ const Logout = () => {
       <main>
         <h1>Sesión finalizada</h1>
         <p>Gracias por usar nuestra red social. ¡Te esperamos de vuelta pronto!</p>
-          <Link href="/" underline="none">
-            <Button className="boton" variant="contained">Página de inicio</Button>
-          </Link>
+            <Button href="/" className="boton" variant="contained">Página de inicio</Button>
       </main>
       <aside>
         <img src={logo} alt="logo"></img>

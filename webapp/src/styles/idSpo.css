@@ -21,6 +21,11 @@
     background-color: rgb(133, 39, 39);
 }
 
+.idSpo img {
+	max-width: 100%;
+  	height: auto;
+}
+
 .expSpo {
     align-items: center;
 }

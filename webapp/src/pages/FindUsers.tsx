@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Grid from "@mui/material/Grid";
-import { getUsuarioByCountry, getUsuarioByFecha, getUsuarioByGenero, getUsuarioByTipoUsuario, getUsuariosByFilters, getUsuariosByName } from "../accesoApi/apiUsuarios";
+import { getUsuariosByFilters, getUsuariosByName } from "../accesoApi/apiUsuarios";
 import { Usuario } from "../interfaces/interfaces";
 import UserCard from "../components/UserCard";
 import Typography from '@mui/material/Typography';
@@ -21,6 +21,7 @@ import  Dayjs  from "dayjs";
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import SimboloCarga from '../components/SimboloCarga';
+import { Tooltip } from '@mui/material';
 
 type Anchor = 'left';
 
@@ -118,9 +119,11 @@ const FindUsers = () => {
                         }}/>
                     </Grid>
                     <Grid item xs={1}>
-                        <IconButton onClick = {HandleBuscaUsuarios} >
-                            <SearchIcon  id="search" fontSize="large"></SearchIcon>
-                        </IconButton>
+                        <Tooltip title="Buscar">
+                            <IconButton onClick = {HandleBuscaUsuarios} >
+                                <SearchIcon  id="search" fontSize="large"></SearchIcon>
+                            </IconButton>
+                        </Tooltip>
                     </Grid>
                 </Grid>
                 <div className='estiloBase'>
