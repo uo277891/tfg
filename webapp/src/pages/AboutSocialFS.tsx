@@ -28,15 +28,9 @@ const AboutSocialFS = () => {
            El autor es Hugo Gutiérrez Tomás, realizado, como antes se ha dicho, como trabajo fin de grado en la carrera Ingeniería del Software en la Universidad de Oviedo.
         </p>
         <Stack spacing={4} direction="row">
-          <Link href="/" underline="none">
-            <Button className="boton" variant="contained">Página de inicio</Button>
-          </Link>
-          <Link href="/login" underline="none">
-            {!usuarioEstaAutenticado && <Button className="boton" variant="contained">Iniciar Sesión</Button>}
-          </Link>
-          <Link href="/register" underline="none">
-            {!usuarioEstaAutenticado && <Button className="boton" variant="contained">Registrarse</Button>}
-          </Link>
+          <Button href="/" className="boton" variant="contained">Página de inicio</Button>
+          {!usuarioEstaAutenticado && <Button href="/login" className="boton" variant="contained">Iniciar Sesión</Button>}
+          {!usuarioEstaAutenticado && <Button href="/register" className="boton" variant="contained">Registrarse</Button>}
         </Stack>
       </main>
     </div>

@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { getFollowingUsers, getFollowsByUser } from "../accesoApi/apiSeguidores";
 import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
 
 /**
  * @returns Página para representar los usuarios que sigue el usuario identificado
@@ -100,9 +101,11 @@ const FollowingUsers = (props: any) => {
                         }}/>
                     </Grid>
                     <Grid item xs={1}>
-                        <IconButton onClick = {HandleBuscaUsuarios}>
-                            <SearchIcon  id="questionIcon" fontSize="large"></SearchIcon>
-                        </IconButton>
+                        <Tooltip title="Buscar">
+                            <IconButton onClick = {HandleBuscaUsuarios}>
+                                <SearchIcon  id="questionIcon" fontSize="large"></SearchIcon>
+                            </IconButton>
+                        </Tooltip>
                     </Grid>
                 </Grid>
                 <Grid>

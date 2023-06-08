@@ -15,7 +15,6 @@ import { getPublicaciones, getPublicacionesByTipo } from "../accesoApi/apiPublic
 import { getSeguidores, isSeguidor, dejarDeSeguir, seguir } from "../accesoApi/apiSeguidores"
 import { useParams } from 'react-router-dom';
 import { Publicacion, Seguidor, Usuario } from "../interfaces/interfaces";
-import Link from '@mui/material/Link';
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import React from "react";
@@ -175,19 +174,18 @@ const ExternProfile = () => {
                     <Table>
                         <TableHead>
                         <TableRow>
-                        <TableCell align="center"></TableCell>
+                        <TableCell align="left" sx={{fontSize: tamañoLetra}}>Foto</TableCell>
                             <TableCell sx={{fontSize: tamañoLetra}} align="center">Publicaciones</TableCell>
                             <TableCell sx={{fontSize: tamañoLetra}} align="center">Seguidores</TableCell>
                             <TableCell sx={{fontSize: tamañoLetra}} align="center">Seguidos</TableCell>
                             {tamañoLetra === 20 && <TableCell sx={{fontSize: tamañoLetra}} align="center">Genero Favorito</TableCell>}
-                            <TableCell align="center"></TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell align="center">
                             <Avatar
-                                alt="Foto de perfil"
+                                alt= {"Foto de perfil de " + usuario.nombre}
                                 src={usuario.enlace_foto}
                                 sx={{ width: tamañoImagen[0], height: tamañoImagen[1] }}
                             />
@@ -202,19 +200,15 @@ const ExternProfile = () => {
                 </TableContainer>
                 {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: tamañoLetra}} align="center"><Button id="seguir" size="large" variant="contained" color="info" startIcon={<Icono icono={"Seguir"}/>} onClick={handleSeguir}>Seguir</Button></TableCell>}
                 {usuario._id === idUser && <TableCell sx={{fontSize: tamañoLetra}} align="center">
-                    <Link href="/profile" underline="none">
-                        <Button id="editarPerfil" className="boton" variant="contained" size="large" startIcon={<Icono icono={"Perfil"}/>}>Editar perfil</Button>
-                    </Link>
+                        <Button href="/profile" id="editarPerfil" className="boton" variant="contained" size="large" startIcon={<Icono icono={"Perfil"}/>}>Editar perfil</Button>
                 </TableCell>}
                 {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button startIcon={<Icono icono={"Dejar de seguir"}/>} id="dejarSeguir" size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
                 {usuario.nombre_spotify !== "" && usuario.tipo !== "Estándar" && <TableCell sx={{fontSize: tamañoLetra}} align="center">
-                    <Link href={"/spotify/data/" + usuario.nombre_spotify} underline="none">
-                        <Button color="success" className="boton" variant="contained" size="large" startIcon={<Icono icono={"Obtener ID Spotify"}/>}>Estadísticas Spotify</Button>
-                    </Link>
+                    <Button href={"/spotify/data/" + usuario.nombre_spotify} color="success" className="boton" variant="contained" size="large" startIcon={<Icono icono={"Obtener ID Spotify"}/>}>Estadísticas Spotify</Button>
                 </TableCell>}
                 <h2>{usuario.nombre}</h2>
                 <p>{usuario.descripcion}</p>
-                <Typography variant="h4"><AutoAwesomeIcon id ="redes"></AutoAwesomeIcon>  Otras redes sociales</Typography>
+                {(usuario.redes[0] !== "" || usuario.redes[1] !== "" || usuario.redes[2] !== "") && <Typography variant="h4"><AutoAwesomeIcon id ="redes"></AutoAwesomeIcon>  Otras redes sociales</Typography>}
                 <RedesSociales redes = {usuario.redes}></RedesSociales>
                 <h1>Publicaciones:</h1>
                 <div className='estiloBase'>

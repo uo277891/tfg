@@ -33,13 +33,13 @@
 }
 
 #externArtistCard{
-    background-color: #b3b3b3
+    background-color: #cacaca
 }
 
 #externArtistCard h4 {
     font-size: 1.2em;
     text-align: left;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
 }
 
 #externArtistCard h5 {

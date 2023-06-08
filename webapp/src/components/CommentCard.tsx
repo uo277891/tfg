@@ -97,11 +97,11 @@ const CommentCard = (props: any) => {
                 subheader={props.comentario.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')}
         /></Link>
         <CardContent>
-          {props.respuesta && usuarioRespuesta !== undefined && <Typography variant="body1" fontSize={13}> En respuesta a
-            <Typography display={'inline'} fontSize={14} color="blue" fontStyle="italic" variant="overline"> {usuarioRespuesta.nombre}: </Typography>
-            <Typography variant="body1" fontSize={17}>{props.comentario.texto}</Typography>
+          {props.respuesta && usuarioRespuesta !== undefined && <Typography variant="h6"> En respuesta a
+            <Typography display={'inline'} color="blue" fontStyle="italic" variant="h6"> {usuarioRespuesta.nombre}: </Typography>
+            <Typography variant="h5">{props.comentario.texto}</Typography>
           </Typography>}
-          {!props.respuesta && <Typography variant="body1" fontSize={17}>{props.comentario.texto}</Typography>}
+          {!props.respuesta && <Typography variant="h5">{props.comentario.texto}</Typography>}
           <Textarea color="neutral" minRows={5} style={{ width: '100%', fontSize:'1em' }} placeholder="Responder" id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
         </CardContent>
         <CardActions sx={{justifyContent: "space-between"}}>

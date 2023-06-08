@@ -19,12 +19,8 @@ const Home = () => {
           <h1>Red social de FreeStyle</h1>
           <p>¡Bienvenido a <strong>SocialFS</strong>, la red social enfocada al mundo del freestyle!</p>
           <Stack spacing={4} direction="row">
-            <Link href="/login" underline="none">
-              <Button className="boton" variant="contained">Iniciar Sesión</Button>
-            </Link>
-            <Link href="/register" id = "registrarse" underline="none">
-              <Button className="boton" id = "registrarse" variant="contained">Registrarse</Button>
-            </Link>
+              <Button href="/login" className="boton" variant="contained">Iniciar Sesión</Button>
+              <Button href="/register" className="boton" id = "registrarse" variant="contained">Registrarse</Button>
           </Stack>
         </main>
           <aside>
