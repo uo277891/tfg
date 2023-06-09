@@ -3,11 +3,10 @@ import { Application } from "express"
 const cors = require('cors')
 const express = require('express')
 const base = require('./config/db')
+const copia = require('./config/backup')
 const bodyParser = require('body-parser')
 
 const app:Application = express()
-
-const port = 5000
 
 const usuarioRoute = require('./routes/usuarioRoute')
 const publicacionRoute = require('./routes/publicationRoute')
@@ -27,13 +26,18 @@ const conexion = () => {
     app.use(comentarioRoute)
     app.use(spotifyRoute)
 
-    app.listen(port, () => {
+    app.listen(5000, () => {
         console.log("Aplicación en línea")
     })
 
     base.connect()
 }
 
+const copiaSeguridad = async () => {
+    await copia.backup()
+}
+
+//copiaSeguridad()
 conexion()
 
 module.exports = app;

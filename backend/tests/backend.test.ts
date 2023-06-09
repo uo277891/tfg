@@ -21,7 +21,6 @@ require('dotenv');
 
 beforeAll(async () => {
     app = express();
-    const port: number = 5000;
 
     app.use(cors());
     app.use(bodyParser.json());
@@ -33,7 +32,7 @@ beforeAll(async () => {
     app.use(comentarioRoute);
     app.use(spotifyRoute);
 
-    server = app.listen(port, (): void => {
+    server = app.listen(5000, (): void => {
     }).on("error", (error: Error) => {
         console.error('Error occured: ' + error.message);
     });
