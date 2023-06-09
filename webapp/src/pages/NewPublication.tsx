@@ -53,12 +53,12 @@ const NewPublication = (props: any) => {
       };
 
     async function crearPublicacion(){
+        const textoFinal = DOMPurify.sanitize(text)
         if(text === "") {
             setPublicationError(true);
             setError("Se debe escribir algo en el texto para crear la publicación.");
         }
-        const textoFinal = DOMPurify.sanitize(text)
-        if(textoFinal === "") {
+        else if(textoFinal === "") {
             setPublicationError(true);
             setError("Se ha detectado texto inválido, modifíquelo por favor.");
         }
