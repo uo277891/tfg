@@ -7,8 +7,6 @@ const bodyParser = require('body-parser')
 
 const app:Application = express()
 
-const port = 5000
-
 const usuarioRoute = require('./routes/usuarioRoute')
 const publicacionRoute = require('./routes/publicationRoute')
 const seguidorRoute = require('./routes/seguidorRoute')
@@ -27,7 +25,7 @@ const conexion = () => {
     app.use(comentarioRoute)
     app.use(spotifyRoute)
 
-    app.listen(port, () => {
+    app.listen(5000, () => {
         console.log("Aplicación en línea")
     })
 
