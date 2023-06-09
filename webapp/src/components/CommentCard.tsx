@@ -17,6 +17,7 @@ import { CardActions, Grid, Link } from '@mui/material';
 import Button from '@mui/material/Button';
 import Textarea from '@mui/base/TextareaAutosize';
 import { añadirRespuestaComentario, eliminarComentarioYRespuestas, getRespuestaComentario } from "../accesoApi/apiComentarios";
+import DOMPurify from 'dompurify';
 
 /**
  * Devuelve un componente que renderiza un comentario o una respuesta 
@@ -70,8 +71,11 @@ const CommentCard = (props: any) => {
    * Permite añadir una respuesta al comentario
    */
   async function comentar() {
-    await añadirRespuestaComentario(props.comentario._id, props.comentario.id_publicacion, idUser, props.comentario.id_usu_coment, text)
-    await datosIniciales();
+    const textLimpio = DOMPurify.sanitize(text)
+    if(textLimpio === text){
+      await añadirRespuestaComentario(props.comentario._id, props.comentario.id_publicacion, idUser, props.comentario.id_usu_coment, text)
+      await datosIniciales();
+    }
   }
 
   /**
