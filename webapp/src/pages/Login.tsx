@@ -11,6 +11,7 @@ import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import SimboloCarga from "../components/SimboloCarga";
 import  Dayjs  from "dayjs";
+import DOMPurify from 'dompurify';
 
 const llamadaBase = "http://localhost:5000/usuario/"
 
@@ -58,7 +59,26 @@ const Login = () => {
     const redirigir = useNavigate();
 
     async function iniciarSesion() {
-      if(isBaneado()){
+      const contraseñaLimpia = DOMPurify.sanitize(password)
+      const nombreLimpio = DOMPurify.sanitize(userName)
+      if(contraseñaLimpia !== password || nombreLimpio !== userName){
+        setUserName("");
+        setPassword("");
+        setUsuarioAutenticado("")
+        setUsuarioEstaAcutenticado(false)
+        setIdUser("")
+        setCargando(false)
+        const num = numIntentos + 1
+        setNumIntentos(num);
+        setLoginError(true);
+        if(num >= 10){
+          seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
+          setFechaEspera(Dayjs())
+        }
+        else
+          seterror("La contraseña o el usuario incluye algún caractér no permitido")
+      }
+      else if(isBaneado()){
           setLoginError(true);
           setUsuarioAutenticado("")
           setUsuarioEstaAcutenticado(false)

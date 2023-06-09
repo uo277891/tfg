@@ -31,6 +31,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {parseFecha, parseHora} from '../util/parseFecha';
 import SimboloCarga from '../components/SimboloCarga';
 import { Link } from '@mui/material';
+import DOMPurify from 'dompurify';
 
 /**
  * @returns Página para representar una publicación y sus comentarios
@@ -128,7 +129,8 @@ const Publication = (props: any) => {
     }
 
     async function enviarComentario(){
-      if(publicacion !== undefined && usuarioEstaAutenticado && text.length > 0){
+      const textLimpio = DOMPurify.sanitize(text)
+      if(publicacion !== undefined && usuarioEstaAutenticado && text.length > 0 && textLimpio === text){
           await añadirComentario(publicacion._id, idUser, text)
           setOpen(false);
           setText("");

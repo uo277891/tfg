@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { actualizaPublicacion, añadirPublicacion } from "../accesoApi/apiPublicaciones";
 import {uploadMultimedia} from "../accesoApi/apiCloudinary"
 import SimboloCarga from "../components/SimboloCarga";
+import DOMPurify from 'dompurify';
 
 /**
  * @returns Página para representar la creación de una nueva publicación
@@ -52,13 +53,19 @@ const NewPublication = (props: any) => {
       };
 
     async function crearPublicacion(){
+        const textoFinal = DOMPurify.sanitize(text)
         if(text === "") {
             setPublicationError(true);
             setError("Se debe escribir algo en el texto para crear la publicación.");
         }
+        else if(textoFinal === "") {
+            setPublicationError(true);
+            setError("Se ha detectado texto inválido, modifíquelo por favor.");
+        }
         else {
+            const textoFinal =DOMPurify.sanitize(text)
             setCargando(true)
-            const pub = await añadirPublicacion(idUser, text, "", "txt")
+            const pub = await añadirPublicacion(idUser, textoFinal, "", "txt")
             if(archivo !== undefined){
                 if(archivo.size > 3000000){
                     setPublicationError(true);

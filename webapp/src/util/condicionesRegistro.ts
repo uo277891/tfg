@@ -1,8 +1,10 @@
 import  Dayjs  from "dayjs";
+import DOMPurify from 'dompurify';
 
 const errores: string[] = ["Algún campo está vacío", "Las contraseñas no coinciden", "La contraseña debe tener un mínimo de 8 caracteres", 
 "Debes tener más de 16 años y menos de 150", "La descripción debe ser de máximo 200 caracteres", "El nombre de usuario no puede ser mayor de 15 caracteres ni tener espacios",
-"La localidad no puede ser mayor de 25 caracteres"]
+"La localidad no puede ser mayor de 25 caracteres", "La contraseña incluye algún caractér no permitido", "La descripción incluye algún caractér no permitido",
+"La localidad incluye algún caractér no permitido", "El nombre incluye algún caractér no permitido"]
 
 /**
  * Comprueba si los datos introducidos por el usuario son válidos
@@ -17,6 +19,16 @@ const errores: string[] = ["Algún campo está vacío", "Las contraseñas no coi
  */
 export function cumpleRegistro(userName:string, password: string, passwordConf: string, country:string, location:string, date: any, descripcion: string){
     const dateNow = Dayjs()
+    const contLimpia= DOMPurify.sanitize(password), descripcionLimpia = DOMPurify.sanitize(descripcion), 
+    localidadLimpia = DOMPurify.sanitize(location), nombreLimpio = DOMPurify.sanitize(userName)
+    if(contLimpia !== password)
+        return 7
+    if(descripcionLimpia !== descripcion)
+        return 8
+    if(localidadLimpia !== location)
+        return 9
+    if(nombreLimpio !== userName)
+        return 10
     if(date === undefined)
         return 3;
     else if(userName === "" || password === "" || passwordConf === "" || country === ""){
