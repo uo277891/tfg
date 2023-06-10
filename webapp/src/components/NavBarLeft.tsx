@@ -228,7 +228,7 @@ export default function BarraDeNavegacion() {
                             </Tooltip>
                             {width > 1200 && <ListItemText primary="Estadísticas" />}
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} onClick={handleCerrarSesion}>
+                            <ListItemButton sx={{ pl: 4 }} onClick={handleCerrarSesion} id="cerrarSesion">
                             <Tooltip title="Cerrar sesión">
                                 <ListItemIcon onClick={handleCerrarSesion}>
                                     <Icono icono="Cerrar Sesión"></Icono>

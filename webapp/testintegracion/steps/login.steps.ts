@@ -36,7 +36,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema indica que faltan datos', async () => {
-      await delay(1000)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       await expect(text).toContain('Algún campo está vacío')
     });
@@ -61,7 +61,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema indica que no coinciden los datos', async () => {
-      await delay(1000)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       await expect(text).toContain('Las credenciales no son correctas')
     });
@@ -86,7 +86,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema inicia sesión', async () => {
-      await delay(1000)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       await expect(text).toContain('usuario1')
     });

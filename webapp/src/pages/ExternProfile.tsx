@@ -75,9 +75,12 @@ const ExternProfile = () => {
     };
 
     const handleResize = () => {
-        if(window.innerWidth < 900){
+        if(window.innerWidth < 500){
             setTamañoLetra(12)
             setTamañoImagen([25,35])
+        }else if(window.innerWidth < 900){
+            setTamañoLetra(14)
+            setTamañoImagen([35,45])
         }else{
             setTamañoLetra(20)
             setTamañoImagen([50,60])
