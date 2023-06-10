@@ -164,12 +164,14 @@ describe('Pruebas para los usuarios ', () => {
         //Nombre que no existe
         let usuario = { "nombre": "usuarioInvalido", "contraseña": "contrasenaPrueba"}
         let response = await request(app).post('/usuario/login').send(usuario).set('Accept', 'application/json');
-        expect(response.statusCode).toBe(400);
+        expect(response.text).toEqual('{"usuario":null}')
+        expect(response.statusCode).toBe(200);
 
         //Dupla nombre y contraseña incorrectas
         usuario = { "nombre": "usuario5", "contraseña": "contrasenaIncorrecta"}
         response = await request(app).post('/usuario/login').send(usuario).set('Accept', 'application/json');
-        expect(response.statusCode).toBe(400);
+        expect(response.text).toEqual('{"usuario":null}')
+        expect(response.statusCode).toBe(200);
 
         //Inicio de sesión correcto
         usuario = { "nombre": "usuario5", "contraseña": "contrasenaPrueba"}

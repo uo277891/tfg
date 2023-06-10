@@ -148,6 +148,23 @@ export async function registro(nombre: string, contraseña: string, pais: string
 }
 
 /**
+ * Comprueba que la dupla suministrada es igual a la guardada en la base de datos
+ * @param nombre Nombre del usuario
+ * @param contraseña Contraseña del usuario
+ * @returns Si la dupla es correcta
+ */
+export async function inicioSesion(nombre: string, contraseña: string): Promise<any> {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: nombre, contraseña: contraseña })
+    };
+    let res = await fetch(llamadaBasica + '/usuario/login/', requestOptions);
+    let usuario = await res.json()
+    return usuario.usuario
+}
+
+/**
  * Actualiza el enlace a la foto de perfil del usuario
  * @param nombre Nombre del usuario
  * @param enlace_foto Nuevo enlace a la foto de perfil
