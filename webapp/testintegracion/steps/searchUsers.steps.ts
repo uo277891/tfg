@@ -63,12 +63,12 @@ defineFeature(feature, test => {
     });
 
     when('Aplicar el filtro de edad', async () => {
-        await delay(1000)
+        await delay(2000)
         await page.goto("http://localhost:3000/find", {waitUntil: "networkidle0"}).catch(() => {});
         await page.click("#buscar")
-        await delay(1000)
+        await delay(2000)
         await page.click("#btFiltros")
-        await delay(1000)
+        await delay(2000)
     });
 
     then('El sistema muestra todos las usuario que estén en el rango de edad', async () => {

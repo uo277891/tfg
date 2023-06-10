@@ -33,13 +33,12 @@ defineFeature(feature, test => {
     });
 
     when('Pulsar el botón para cerrar sesión', async () => {
-        await delay(1500)
-        await delay(1500)
+        await delay(2000)
         await page.click("#cerrarSesion")
     });
 
     then('El sistema cerrará sesión', async () => {
-      await delay(1500)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       await expect(text).toContain('Sesión finalizada')
     });

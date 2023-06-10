@@ -46,7 +46,7 @@ defineFeature(feature, test => {
 
     then('El sistema indica que confirmes que no eres un robot', async () => {
       await page.click("#registrarse")
-      await delay(1000)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('Confirme que no es un robot por favor 🤖')
@@ -80,7 +80,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema indica que hay campos sin completar', async () => {
-      await delay(1000)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('Algún campo está vacío')
@@ -117,7 +117,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema indica que las contraseñas no coinciden', async () => {
-      await delay(1000)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('Las contraseñas no coinciden')
@@ -154,7 +154,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema indica que el nombre no es válido', async () => {
-      await delay(1000)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('El nombre de usuario no puede ser mayor de 15 caracteres ni tener espacios')
@@ -191,7 +191,7 @@ defineFeature(feature, test => {
     });
 
     then('El sistema indica que la contraseña es muy corta', async () => {
-      await delay(1000)
+      await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       
       await expect(text).toContain('La contraseña debe tener un mínimo de 8 caracteres')
