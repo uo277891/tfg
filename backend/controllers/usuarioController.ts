@@ -17,7 +17,7 @@ export const inicioSesion = async (req: Request, res: Response): Promise<Respons
     const {nombre, contraseña} = req.body;
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
     if(usuarioAsociado === null){
-      return res.status(400).json("No hay usuario con ese nombre");
+      return res.status(200).json({usuario: null});
     }
     else{
       const contraseñasIguales = await comparaContraseñas(contraseña, usuarioAsociado.contrasena)
@@ -25,7 +25,7 @@ export const inicioSesion = async (req: Request, res: Response): Promise<Respons
         return res.status(200).json({usuario: usuarioAsociado});
       }
       else{
-        return res.status(400).json("Credenciales incorrectas");
+        return res.status(200).json({usuario: null});
       }
     }
   } catch (error) {

@@ -35,7 +35,7 @@ const ArtistCard = (props: any) => {
             <Typography variant='h4'>Géneros: <Typography variant='h5' display={'inline'}>{listadoGeneros()}</Typography></Typography>
         </CardContent>
         <CardActions sx={{justifyContent: "space-between"}}>
-            <Link sx={{ margin: "auto" }} href={props.artista.external_urls.spotify} underline="none"><Button className="boton" size="large" variant="contained">Ver perfil en Spotify</Button></Link>
+            <Button sx={{ margin: "auto" }} href={props.artista.external_urls.spotify} className="boton" size="large" variant="contained">Ver perfil en Spotify</Button>
         </CardActions>
     </Card>
   );
