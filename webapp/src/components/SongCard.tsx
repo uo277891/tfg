@@ -38,7 +38,7 @@ const SongCard = (props: any) => {
             <Typography variant='h4'>Extracto de la canción:</Typography> <audio controls src={props.cancion.preview_url}></audio>
         </CardContent>
         <CardActions>
-            <Button href={props.cancion.external_urls.spotify} className="boton" size="large" variant="contained">Ver canción en Spotify</Button>
+            <Button sx={{ margin: "auto" }} href={props.cancion.external_urls.spotify} className="boton" size="large" variant="contained">Ver canción en Spotify</Button>
         </CardActions>
     </Card>
   );

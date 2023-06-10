@@ -28,6 +28,8 @@ const SpotifyData = () => {
 
     const [artistasSimilares, setArtistasSimilaes] = React.useState<any>();
 
+    const [primeraVez, setPrimeraVez] = React.useState<any>(true);
+
     const datosIniciales = useCallback(async () => {
         if(usuarioEstaAutenticado){
             setCargando(true)
@@ -46,6 +48,10 @@ const SpotifyData = () => {
             const artSim = await getArtistasSimilares(idSpo)
             if(artSim !== undefined){
                 setArtistasSimilaes(artSim)
+            }
+            if(artist === undefined && primeraVez){
+                setPrimeraVez(false)
+                datosIniciales()
             }
             setCargando(false)
         }

@@ -90,17 +90,27 @@ const Publication = (props: any) => {
 
     const datosIniciales = useCallback(async () => {
       if(usuarioEstaAutenticado){
-          if(id === undefined)
-            id = props.id_publicacion
-          setCargando(true)
-          const pub = await getPublicacion(id)
-          if(pub !== undefined){
-              setPublicacion(pub)
-              const user = await getUsuario(pub.id_usuario)
+          if(id === undefined){
+            setPublicacion(props.publicacion)
+            if(props.publicacion !== undefined){
+              const user = await getUsuario(props.publicacion.id_usuario)
               if(user !== undefined)
                   setUsuarioPublicacion(user[0])
-              setColorCorazon(pub.likes.indexOf(idUser) === -1 ? "grey" : "red");
-              setComentarios(await getComentarios(pub._id))
+              setColorCorazon(props.publicacion.likes.indexOf(idUser) === -1 ? "grey" : "red");
+              setComentarios(await getComentarios(props.publicacion._id))
+            }
+          }
+          else{
+            setCargando(true)
+            const pub = await getPublicacion(id)
+            if(pub !== undefined){
+                setPublicacion(pub)
+                const user = await getUsuario(pub.id_usuario)
+                if(user !== undefined)
+                    setUsuarioPublicacion(user[0])
+                setColorCorazon(pub.likes.indexOf(idUser) === -1 ? "grey" : "red");
+                setComentarios(await getComentarios(pub._id))
+            }
           }
           setCargando(false)
       }
@@ -226,7 +236,7 @@ const Publication = (props: any) => {
     </div>
     )
   }
-  else{
+  else if(props.publicacion === undefined){
       return(
       <div id="externProfile">
           <main>
@@ -234,6 +244,9 @@ const Publication = (props: any) => {
           </main>
       </div>
       )
+  }
+  else{
+    return (<h1>Cargando publicación...</h1>)
   }
 }
 

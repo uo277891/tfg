@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import SimboloCarga from "../components/SimboloCarga";
 import  Dayjs  from "dayjs";
 import DOMPurify from 'dompurify';
+import { inicioSesion } from "../accesoApi/apiUsuarios";
 
 const llamadaBase = "http://localhost:5000/usuario/"
 
@@ -25,12 +26,12 @@ const Login = () => {
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
     const [fechaEspera, setFechaEspera] = useLocalStorage('fechaEspera', Dayjs("2023-06-08T06:36:00+00:00"))
+
+    const [numIntentos, setNumIntentos] = useLocalStorage('numIntentos', 0)
     
     const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
     const [cargando, setCargando] = React.useState(false);
-
-    const [numIntentos, setNumIntentos] = React.useState(0);
 
     const[userName, setUserName] = React.useState("");
 
@@ -61,7 +62,15 @@ const Login = () => {
     async function iniciarSesion() {
       const contraseñaLimpia = DOMPurify.sanitize(password)
       const nombreLimpio = DOMPurify.sanitize(userName)
-      if(contraseñaLimpia !== password || nombreLimpio !== userName){
+      if(isBaneado()){
+        setLoginError(true);
+        setUsuarioAutenticado("")
+        setUsuarioEstaAcutenticado(false)
+        setIdUser("")
+        seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
+        setNumIntentos(0)
+      }
+      else if(contraseñaLimpia !== password || nombreLimpio !== userName){
         setUserName("");
         setPassword("");
         setUsuarioAutenticado("")
@@ -77,13 +86,6 @@ const Login = () => {
         }
         else
           seterror("La contraseña o el usuario incluye algún caractér no permitido")
-      }
-      else if(isBaneado()){
-          setLoginError(true);
-          setUsuarioAutenticado("")
-          setUsuarioEstaAcutenticado(false)
-          setIdUser("")
-          seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
       }
       else{
         setCargando(true)
@@ -103,42 +105,33 @@ const Login = () => {
               seterror("Algún campo está vacío");
         }
         else{
-          const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: userName.toLowerCase(), contraseña: password })
-        };
-          fetch(llamadaBase + "login", requestOptions)
-            .then(async (response) => 
-            {
-              if(response.ok){
-                const user = await response.json()
-                setLoginError(false);
-                setUsuarioAutenticado(userName.toLowerCase())
-                setUsuarioEstaAcutenticado(true)
-                setIdUser(user.usuario._id)
-                setCargando(false)
-                redirigir("/profile/" + user.usuario._id)
-                window.location.reload();
-              }
-              else{
-                setUserName("");
-                setPassword("");
-                setUsuarioAutenticado("")
-                setUsuarioEstaAcutenticado(false)
-                setIdUser("")
-                setCargando(false)
-                const num = numIntentos + 1
-                setNumIntentos(num);
-                setLoginError(true);
-                if(num >= 10){
-                  seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
-                  setFechaEspera(Dayjs())
-                }
-                else
-                  seterror("Las credenciales no son correctas")
-              }
-            })
+          const usuario = await inicioSesion(userName.toLowerCase(), password)
+          if(usuario !== null){
+            setLoginError(false);
+            setUsuarioAutenticado(userName.toLowerCase())
+            setUsuarioEstaAcutenticado(true)
+            setIdUser(usuario._id)
+            setCargando(false)
+            redirigir("/profile/" + usuario._id)
+            window.location.reload();
+          }
+          else{
+            setUserName("");
+            setPassword("");
+            setUsuarioAutenticado("")
+            setUsuarioEstaAcutenticado(false)
+            setIdUser("")
+            setCargando(false)
+            const num = numIntentos + 1
+            setNumIntentos(num);
+            setLoginError(true);
+            if(num >= 10){
+              seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
+              setFechaEspera(Dayjs())
+            }
+            else
+              seterror("Las credenciales no son correctas")
+          }
         }
       }
     }
