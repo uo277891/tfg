@@ -30,24 +30,24 @@ defineFeature(feature, test => {
         await page.type('input[id=userName]', nombre)
         await page.type('input[id=password]', contraseña)
         await page.click("#inicioSesion")
-        await delay(1000)
+        await delay(2000)
         await page
         .goto("http://localhost:3000/profile/646a47415e73d6bf56559584", {
         waitUntil: "networkidle0"}).catch(() => {});
     });
 
     when('Pulsar el botón para seguir', async () => {
-        await delay(1500)
+        await delay(2000)
         const text = await page.evaluate(() => document.body.textContent);
         await page.click("#seguir")
-        await delay(1500)
+        await delay(2000)
     });
 
     then('El sistema seguirá al usuario', async () => {
         const text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('Dejar de seguir')
         await page.click("#dejarSeguir")
-        await delay(1500)
+        await delay(2000)
     });
   })
 

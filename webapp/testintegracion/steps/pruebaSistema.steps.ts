@@ -31,26 +31,26 @@ defineFeature(feature, test => {
         await page.type('input[id=userName]', nombre)
         await page.type('input[id=password]', contraseña)
         await page.click("#inicioSesion")
-        await delay(1000)
+        await delay(2000)
         await page.goto("http://localhost:3000/publication/new", {waitUntil: "networkidle0"}).catch(() => {});
     });
 
     when('Se crea la publicacion', async () => {
-        await delay(1500)
+        await delay(2000)
         const text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('Nueva publicación')
         await page.type('textarea[id=texto]', texto)
         await page.click("#crearPub")
-        await delay(1500)
+        await delay(2000)
     });
 
     then('El sistema la muestra en el perfil del usuario (después se elimina)', async () => {
-        await delay(1500)
+        await delay(2000)
         let text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('publicacion de prueba')
         await page.click("#elim0")
         await page.click("#confirmar")
-        await delay(1500)
+        await delay(2000)
         await page.goto("http://localhost:3000/profile/646a47025e73d6bf56559576", {waitUntil: "networkidle0"}).catch(() => {});
         text = await page.evaluate(() => document.body.textContent);
         await expect(text).not.toContain('publicacion de prueba')

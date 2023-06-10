@@ -33,9 +33,9 @@ defineFeature(feature, test => {
     });
 
     when('Dar me gusta a la publicación', async () => {
-        await delay(1000)
+        await delay(2000)
         await page.click("#pub0")
-        await delay(1000)
+        await delay(2000)
         let text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('0')
         await page.click("#meGusta")

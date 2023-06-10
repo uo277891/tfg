@@ -62,17 +62,18 @@
 }
 
 #aboutFS main h1{
-	font-size: 4em;
+	font-size: 3em;
 }
   
 #aboutFS main h2 {
 	margin-left: 0.7em;
 	text-align: left;
-	font-size: 3em;
+	font-size: 2em;
+	color: rgb(107, 23, 23);
 }
 
 #aboutFS main p {
-	margin-left: 1em;
+	margin-left: 0.7em;
 	text-align: left;
 	font-size: 1em;
 }
