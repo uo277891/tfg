@@ -81,7 +81,7 @@ const FollowingUsers = (props: any) => {
             else{
                 users = await getFollowsByUser(idUser)
             }
-            setUsuarios(await getUsuariosByNameAndId(users, texto))
+            setUsuarios(await getUsuariosByNameAndId(users, texto.toLowerCase()))
             setCargando(false)
         }
     }

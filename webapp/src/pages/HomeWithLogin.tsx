@@ -51,7 +51,7 @@ const HomeWithLogin = () => {
         masPublicaciones.map((publicacion: Publicacion) => {publicacionesActuales.push(publicacion)})
         setPublicaciones(publicacionesActuales)
         setCargando(false)
-        await delay(2000)
+        await delay(700)
         window.scrollTo(width, posicion)
     }
 
