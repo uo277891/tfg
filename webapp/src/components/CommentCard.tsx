@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState, useCallback, useEffect } from "react";
-import { getUsuario } from "../accesoApi/apiUsuarios";
+import { getUsuario } from "../conector/apiUsuarios";
 import { Comentario, Usuario } from "../interfaces/interfaces";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -16,7 +16,7 @@ import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { CardActions, Grid, Link } from '@mui/material';
 import Button from '@mui/material/Button';
 import Textarea from '@mui/base/TextareaAutosize';
-import { añadirRespuestaComentario, eliminarComentarioYRespuestas, getRespuestaComentario } from "../accesoApi/apiComentarios";
+import { añadirRespuestaComentario, eliminarComentarioYRespuestas, getRespuestaComentario } from "../conector/apiComentarios";
 import DOMPurify from 'dompurify';
 
 /**

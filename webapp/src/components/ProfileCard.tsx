@@ -12,8 +12,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { getSignature } from '../accesoApi/apiCloudinary';
-import { actualizaFoto } from '../accesoApi/apiUsuarios';
+import { getSignature } from '../conector/apiCloudinary';
+import { actualizaFoto } from '../conector/apiUsuarios';
 import {parseFecha} from '../util/parseFecha';
 
 /**

@@ -10,9 +10,9 @@ import TableRow from '@mui/material/TableRow';
 import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 import PublicationCard from "../components/PublicationCard";
-import { getUsuario } from "../accesoApi/apiUsuarios";
-import { getPublicaciones, getPublicacionesByTipo } from "../accesoApi/apiPublicaciones";
-import { getSeguidores, isSeguidor, dejarDeSeguir, seguir } from "../accesoApi/apiSeguidores"
+import { getUsuario } from "../conector/apiUsuarios";
+import { getPublicaciones, getPublicacionesByTipo } from "../conector/apiPublicaciones";
+import { getSeguidores, isSeguidor, dejarDeSeguir, seguir } from "../conector/apiSeguidores"
 import { useParams } from 'react-router-dom';
 import { Publicacion, Seguidor, Usuario } from "../interfaces/interfaces";
 import Stack from "@mui/material/Stack";
@@ -29,7 +29,7 @@ import Icono from '../util/iconosNavegacion';
 import { common } from '@mui/material/colors';
 import Filtro from '../components/FiltrosPublicaciones';
 import SimboloCarga from "../components/SimboloCarga";
-import { getFollowingUsers } from "../accesoApi/apiSeguidores";
+import { getFollowingUsers } from "../conector/apiSeguidores";
 
 type Anchor = 'left';
 

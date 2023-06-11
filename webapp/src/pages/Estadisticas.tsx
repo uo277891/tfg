@@ -11,10 +11,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useCallback, useEffect } from 'react';
-import { getUsuarios, getUsuario, getUsuarioByIdInDate } from '../accesoApi/apiUsuarios';
+import { getUsuarios, getUsuario, getUsuarioByIdInDate } from '../conector/apiUsuarios';
 import { useLocalStorage } from '../localStorage/useLocalStorage';
 import  Dayjs from 'dayjs';
-import { getFollowsByUser } from '../accesoApi/apiSeguidores';
+import { getFollowsByUser } from '../conector/apiSeguidores';
 import { Usuario } from '../interfaces/interfaces';
 import SimboloCarga from '../components/SimboloCarga';
 import {Bar} from 'react-chartjs-2'

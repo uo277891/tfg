@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Publicacion } from "../interfaces/interfaces";
 import SimboloCarga from "../components/SimboloCarga";
-import { getPublicacionWithLimit } from "../accesoApi/apiPublicaciones";
+import { getPublicacionWithLimit } from "../conector/apiPublicaciones";
 import Grid from "@mui/material/Grid";
 import Publication from "./Publication";
 import { Box, Button } from "@mui/material";

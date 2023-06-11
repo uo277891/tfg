@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 import { useLocalStorage } from '../localStorage/useLocalStorage';
 import SimboloCarga from '../components/SimboloCarga';
 import { useParams } from 'react-router-dom';
-import { getAlbumes, getArtista, getArtistasSimilares, getCanciones } from '../accesoApi/apiSpotify';
+import { getAlbumes, getArtista, getArtistasSimilares, getCanciones } from '../conector/apiSpotify';
 import ArtistCard from '../components/ArtistCard';
 import Grid from '@mui/material/Grid';
 import AlbumCard from '../components/AlbumCard';

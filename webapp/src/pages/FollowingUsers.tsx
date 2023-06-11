@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import { getUsuariosByNameAndId, getUsuarios } from "../accesoApi/apiUsuarios";
+import { getUsuariosByNameAndId, getUsuarios } from "../conector/apiUsuarios";
 import { Usuario } from "../interfaces/interfaces";
 import UserCard from "../components/UserCard";
 import List from '@mui/material/List';
@@ -12,7 +12,7 @@ import SimboloCarga from "../components/SimboloCarga";
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import { getFollowingUsers, getFollowsByUser } from "../accesoApi/apiSeguidores";
+import { getFollowingUsers, getFollowsByUser } from "../conector/apiSeguidores";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 

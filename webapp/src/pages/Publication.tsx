@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect } from "react";
 import { useLocalStorage } from "../localStorage/useLocalStorage";
-import { añadirComentario, getComentarios } from "../accesoApi/apiComentarios";
-import { actualizarLikes, getPublicacion } from "../accesoApi/apiPublicaciones";
-import { getUsuario } from "../accesoApi/apiUsuarios";
+import { añadirComentario, getComentarios } from "../conector/apiComentarios";
+import { actualizarLikes, getPublicacion } from "../conector/apiPublicaciones";
+import { getUsuario } from "../conector/apiUsuarios";
 import { useParams } from 'react-router-dom';
 import { Comentario, Publicacion, Usuario } from "../interfaces/interfaces";
 import { styled } from '@mui/material/styles';

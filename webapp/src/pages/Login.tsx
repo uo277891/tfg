@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import SimboloCarga from "../components/SimboloCarga";
 import  Dayjs  from "dayjs";
 import DOMPurify from 'dompurify';
-import { inicioSesion } from "../accesoApi/apiUsuarios";
+import { inicioSesion } from "../conector/apiUsuarios";
 
 const llamadaBase = "http://localhost:5000/usuario/"
 

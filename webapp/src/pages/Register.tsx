@@ -13,8 +13,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
-import { registro, actualizaFoto, reCaptchaGoogle } from '../accesoApi/apiUsuarios';
-import { uploadMultimedia } from '../accesoApi/apiCloudinary';
+import { registro, actualizaFoto, reCaptchaGoogle } from '../conector/apiUsuarios';
+import { uploadMultimedia } from '../conector/apiCloudinary';
 import {cumpleRegistro, errorUsuario} from '../util/condicionesRegistro'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';

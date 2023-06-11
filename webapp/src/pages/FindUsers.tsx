@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Grid from "@mui/material/Grid";
-import { getUsuariosByFilters, getUsuariosByName } from "../accesoApi/apiUsuarios";
+import { getUsuariosByFilters, getUsuariosByName } from "../conector/apiUsuarios";
 import { Usuario } from "../interfaces/interfaces";
 import UserCard from "../components/UserCard";
 import Typography from '@mui/material/Typography';
