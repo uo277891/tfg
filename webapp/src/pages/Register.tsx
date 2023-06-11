@@ -32,6 +32,9 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import SimboloCarga from '../components/SimboloCarga';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef } from 'react';
+import RGPDConditions from '../components/RGPDConditions';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 const fechaInicio = require('dayjs');
 
@@ -96,6 +99,8 @@ const Register = () => {
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
     const [cargando, setCargando] = React.useState(false);
+
+    const [RGPDCond, setRGPDCond] = React.useState(false);
     
     const [idUser, setIdUser] = useLocalStorage('idUser', '');
 
@@ -205,7 +210,7 @@ const Register = () => {
     }
 
     function siguiente (sig: number) {
-      const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion)
+      const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion, RGPDCond)
       if(numError > -1){
         setRegisterError(true);
         seterror(errorUsuario(numError));
@@ -219,7 +224,7 @@ const Register = () => {
 
     async function registrarse() {
       setCargando(true)
-      const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion)
+      const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion, RGPDCond)
       if(numError > -1){
         setRegisterError(true);
         seterror(errorUsuario(numError));
@@ -330,6 +335,7 @@ const Register = () => {
                     <TextField required name = "passwd" id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
                     <TextField required name = "repPasswd" id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
                     <br/>
+                    <RGPDConditions setRGPDCond={setRGPDCond}/>
                     <Button className="boton" id = "siguiente1" variant="contained" onClick={() => siguiente(1)}>Siguiente</Button>
               </Box>
             </TabPanel>

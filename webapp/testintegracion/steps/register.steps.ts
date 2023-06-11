@@ -40,6 +40,7 @@ defineFeature(feature, test => {
       await page.type('input[id=location]', localidad)
       await page.type('input[id=password]', cont)
       await page.type('input[id=passwordConf]', repCont)
+      await page.click("#condCheck")
       await page.click("#siguiente1")
       await page.click("#siguiente2")
     });
@@ -132,7 +133,7 @@ defineFeature(feature, test => {
     let repCont:string;
 
     given('Datos con nombre con espacios', () => { 
-        nombre = "usuario31383838  ";
+        nombre = "usuario313  ";
         localidad = "Gijon"
         cont = "12345678"
         repCont = "12345678"
@@ -157,7 +158,7 @@ defineFeature(feature, test => {
       await delay(2000)
       const text = await page.evaluate(() => document.body.textContent);
       
-      await expect(text).toContain('El nombre de usuario no puede ser mayor de 15 caracteres ni tener espacios')
+      await expect(text).toContain("El nombre solo puede contener números letras minúsculas y '_' y debe comenzar con una letra")
     });
   })
 
