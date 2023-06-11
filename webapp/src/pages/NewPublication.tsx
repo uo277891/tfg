@@ -8,8 +8,8 @@ import Textarea from '@mui/base/TextareaAutosize';
 import Collapse from '@mui/material/Collapse';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-import { actualizaPublicacion, añadirPublicacion } from "../accesoApi/apiPublicaciones";
-import {uploadMultimedia} from "../accesoApi/apiCloudinary"
+import { actualizaPublicacion, añadirPublicacion } from "../conector/apiPublicaciones";
+import {uploadMultimedia} from "../conector/apiCloudinary"
 import SimboloCarga from "../components/SimboloCarga";
 import DOMPurify from 'dompurify';
 
