@@ -12,7 +12,7 @@ El autor de este proyecto es Hugo Gutiérrez Tomás, y su correo corporativo es 
 
 ## Instalación
 
-Para proceder a la instalación del sistema, se deberán tener instalados *Node.js* y *npm*. El sistema está cumpuesto de dos carpetas principales, webapp y backend. La primera se encargará de ejecutar las vistas del usuario (en el puerto 3000). Para ejecutar esta carpeta se deberán realizar las siguientes acciones:
+Para proceder a la instalación del sistema, se deberán tener instalados *Node.js* y *npm*. El sistema está compuesto de dos carpetas principales, webapp y backend. La primera se encargará de ejecutar las vistas del usuario (en el puerto 3000). Para ejecutar esta carpeta se deberán realizar las siguientes acciones:
 
 ```shell
 npm install
