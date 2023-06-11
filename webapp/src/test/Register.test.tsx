@@ -16,6 +16,7 @@ test('Renderiza primera página de Register correctamente', () => {
   expect(screen.getByLabelText("Fecha de nacimiento")).toBeInTheDocument();
   expect(screen.getByLabelText("Contraseña *")).toBeInTheDocument();
   expect(screen.getByLabelText("Repetir Contraseña *")).toBeInTheDocument();
+  expect(screen.getByLabelText("Aceptar condiciones para tratamiento de datos")).toBeInTheDocument();
   fireEvent.click(getByText('Siguiente'));
   expect(getByText('Algún campo está vacío')).toBeInTheDocument();
 });

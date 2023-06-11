@@ -147,7 +147,7 @@ const EditProfile = () => {
       }
     }
 
-    const numError = cumpleRegistro(userName, "contraseñaQuePasa", "contraseñaQuePasa", country, location, date, descripcion)
+    const numError = cumpleRegistro(userName, "contraseñaQuePasa", "contraseñaQuePasa", country, location, date, descripcion, true)
       if(numError > -1){
         setRegisterError(true);
         seterror(errorUsuario(numError));

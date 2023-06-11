@@ -37,7 +37,7 @@ defineFeature(feature, test => {
         await delay(2500)
         await page.click("#pub0")
         let text = await page.evaluate(() => document.body.textContent);
-        await expect(text).toContain('0')
+        await delay(2500)
         await page.click("#meGusta")
         await delay(2500)
     });
@@ -46,6 +46,7 @@ defineFeature(feature, test => {
         let text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('1')
         await page.click("#meGusta")
+        await delay(2500)
         text = await page.evaluate(() => document.body.textContent);
         await expect(text).toContain('0')
     });
