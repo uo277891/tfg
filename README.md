@@ -1,6 +1,6 @@
 # TFG UO277891
 
-Este proyecto es un red social realizada como trabajo de fin de grado en la Universidad de Oviedo. Esta red social estará conectada con la API para desarrolladores de Spotify. Las tecnologías utilizadas que componen este proyecto son las siguientes.
+Este proyecto es una red social realizada como trabajo de fin de grado en la Universidad de Oviedo. Esta red social estará conectada con la API para desarrolladores de Spotify. Las tecnologías utilizadas que componen este proyecto son las siguientes.
 
 - **TypeScript**
 - **MongoDB**
