@@ -104,11 +104,11 @@ const Estadisticas = () => {
         objUsers.map((user: any) => {generos.push(user.genero)})
         listadoGeneros.map((genero: string) => calculoGeneroFavorito(genero, generos))
         const usuariosJovenes = await getUsuarioByIdInDate(users, 2023 - 16, 2023 - 30)
-        porcentajesEdad[0] = Number((usuariosJovenes.length / users.length).toFixed(2)) * 100
+        porcentajesEdad[0] = Number((usuariosJovenes.length / users.length).toFixed(4)) * 100
         const usuariosAdultos = await getUsuarioByIdInDate(users, 2023 - 31, 2023 - 65)
-        porcentajesEdad[1] = Number((usuariosAdultos.length / users.length).toFixed(2)) * 100
+        porcentajesEdad[1] = Number((usuariosAdultos.length / users.length).toFixed(4)) * 100
         const usuariosMayores = await getUsuarioByIdInDate(users, 2023 - 65, 2023 - 150)
-        porcentajesEdad[2] = Number((usuariosMayores.length / users.length).toFixed(2)) * 100
+        porcentajesEdad[2] = Number((usuariosMayores.length / users.length).toFixed(4)) * 100
         setCargando(false)
     }
       setSinSeguidores(users.length > 0)

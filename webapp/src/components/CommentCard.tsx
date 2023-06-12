@@ -72,7 +72,7 @@ const CommentCard = (props: any) => {
    */
   async function comentar() {
     const textLimpio = DOMPurify.sanitize(text)
-    if(textLimpio === text){
+    if(textLimpio === text && textLimpio.length > 0 && textLimpio.length < 201){
       await añadirRespuestaComentario(props.comentario._id, props.comentario.id_publicacion, idUser, props.comentario.id_usu_coment, text)
       await datosIniciales();
     }
@@ -107,10 +107,11 @@ const CommentCard = (props: any) => {
           </Typography>}
           {!props.respuesta && <Typography variant="h5">{props.comentario.texto}</Typography>}
           <Textarea color="neutral" minRows={5} style={{ width: '100%', fontSize:'1em' }} aria-label="Texto del comentario" placeholder="Responder" id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
+                {text.length + " / 200"}
         </CardContent>
         <CardActions sx={{justifyContent: "space-between"}}>
           {(usuarioPublicacion._id === idUser || props.idUsuPub === idUser) && <Button variant="contained" color="error" onClick={handleClickOpen}>Eliminar comentario</Button>}
-          {text.length > 0 && <Button aria-label="Comentar" className="boton" variant="contained" onClick={comentar}>Comentar</Button>}
+          {text.length > 0 && text.length < 201 &&<Button aria-label="Comentar" className="boton" variant="contained" onClick={comentar}>Comentar</Button>}
         </CardActions>
         {comentariosRespuesta.map((comentario: Comentario) => 
               <CommentCard key = {comentario._id} respuesta = {true} comentario = {comentario} idUsuPub = {props.idUsuPub}></CommentCard>
