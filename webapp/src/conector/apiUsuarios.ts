@@ -261,10 +261,22 @@ export async function eliminarUsuario(idUser: any): Promise<boolean> {
  * @returns Lista de usuarios
  */
 export async function getUsuariosByFilters(tipoUsu: string, pais: string, fechaInicio: any, fechaFin: any, genero: string): Promise<Usuario[]> {
-    console.log(tipoUsu)
-    console.log(pais)
-    console.log(genero)
     let res = await fetch(llamadaBasica + '/usuario/getusuario/filter/' + tipoUsu + '/' + pais + '/' + fechaInicio + '/' + fechaFin + '/' + genero);
     let usuario = await res.json()
     return usuario.users
+}
+
+/**
+ * Devuelve qué usuarios cumplen todos los filtros
+ * @param tipoUsu Tipo del usuario
+ * @param pais País del usuario
+ * @param fechaInicio Año de inicio para la búsqueda
+ * @param fechaFin Año de fin para la búsqueda
+ * @param genero Género favorito del usuario
+ * @returns Lista de usuarios
+ */
+export async function getLoginError(): Promise<Usuario[]> {
+    let res = await fetch(llamadaBasica + '/usuario/error/login/');
+    let nada = await res.json()
+    return nada
 }

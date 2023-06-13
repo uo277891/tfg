@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import SimboloCarga from "../components/SimboloCarga";
 import  Dayjs  from "dayjs";
 import DOMPurify from 'dompurify';
-import { inicioSesion } from "../conector/apiUsuarios";
+import { getLoginError, inicioSesion } from "../conector/apiUsuarios";
 
 const llamadaBase = "http://localhost:5000/usuario/"
 
@@ -69,6 +69,7 @@ const Login = () => {
         setIdUser("")
         seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
         setNumIntentos(0)
+        await getLoginError()
       }
       else if(contraseñaLimpia !== password || nombreLimpio !== userName){
         setUserName("");
@@ -83,6 +84,7 @@ const Login = () => {
         if(num >= 10){
           seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
           setFechaEspera(Dayjs())
+          await getLoginError()
         }
         else
           seterror("La contraseña o el usuario incluye algún caractér no permitido")
@@ -100,6 +102,7 @@ const Login = () => {
             if(num >= 10){
               setFechaEspera(Dayjs())
               seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
+              await getLoginError()
             }
             else
               seterror("Algún campo está vacío");
@@ -128,6 +131,7 @@ const Login = () => {
             if(num >= 10){
               seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
               setFechaEspera(Dayjs())
+              await getLoginError()
             }
             else
               seterror("Las credenciales no son correctas")

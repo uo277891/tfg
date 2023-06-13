@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 const comentarioModel = require('../models/comentariosModel');
 
+const log = require("../config/logger")
+
 /**
  * Inserta un comentario en la base de datos
  * @param req Request (con los datos del comentario (texto, Id de la publicación, Id del usuario))
@@ -13,9 +15,11 @@ export const insertarComentario = async (req: Request, res: Response): Promise<R
       const {id_publicacion, id_usu_coment, texto} = req.body;
       const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
       const comentarioAInsertar = new comentarioModel({id_publicacion, id_usu_coment, texto, fecha})
-      comentarioAInsertar.save();
+      await comentarioAInsertar.save();
+      log.info("Código: 200 -" + " Mensaje: Comentario insertado" + " - IP: " + req.socket.remoteAddress + " - IDPub: " + id_publicacion + " - IDUsu: " + id_usu_coment)
       return res.status(200).json({insertado: true});
     } catch (error) {
+      log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
       return res.status(500).json({insertado: false});
     }
 }
@@ -32,8 +36,10 @@ export const insertarRespuestaComentario = async (req: Request, res: Response): 
     const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
     const comentarioAInsertar = new comentarioModel({id_publicacion, id_usu_coment, texto, fecha, id_comment, id_usu_respond})
     comentarioAInsertar.save();
+    log.info("Código: 200 -" + " Mensaje: Respuesta insertada" + " - IP: " + req.socket.remoteAddress + " - IDPub: " + id_publicacion + " - IDUsu: " + id_usu_coment)
     return res.status(200).json({insertado: true});
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).json({insertado: false});
   }
 }
@@ -66,6 +72,7 @@ export const getRespuestaComentario = async (req: Request, res: Response): Promi
     const comentarios = await comentarioModel.find({id_comment: id_comment}).sort({fecha: -1});
     return res.status(200).json({ comentarios: comentarios });
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -80,8 +87,10 @@ export const eliminarComentariosPublicacion = async (req: Request, res: Response
   try {
     const id_publicacion = req.params.idPub;
     await comentarioModel.deleteMany({id_publicacion: id_publicacion});
+    log.info("Código: 200 -" + " Mensaje: Comentarios eliminados" + " - IP: " + req.socket.remoteAddress + " - IDPub: " + id_publicacion)
     return res.status(200).json();
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -100,8 +109,10 @@ export const eliminarComentariosUsuario = async (req: Request, res: Response): P
     let id_comentarios: string[] = [];
     comentarios.map((comentario:any) => id_comentarios.push(comentario._id))
     await comentarioModel.deleteMany({id_comment: {$in: id_comentarios}});
+    log.info("Código: 200 -" + " Mensaje: Comentarios de un usuario eliminados" + " - IP: " + req.socket.remoteAddress + "- IDUsu: " + id_usuario)
     return res.status(200).json({borrado: true});
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -117,8 +128,10 @@ export const eliminarComentario = async (req: Request, res: Response): Promise<R
     const id_com = req.body.idCom;
     await comentarioModel.deleteOne({_id: id_com});
     await comentarioModel.deleteMany({id_comment: id_com});
+    log.info("Código: 200 -" + " Mensaje: Comentario eliminado" + " - IP: " + req.socket.remoteAddress + "- IDCom: " + id_com)
     return res.status(200).json({borrado: true});
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }

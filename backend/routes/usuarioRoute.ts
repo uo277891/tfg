@@ -8,7 +8,7 @@ const api:Router = expressPr.Router()
  */
 import {inicioSesion, insertarUsuario, getUsuario, getUsuarioByName, updateUsuario, getUsuariosByName, 
   getUsuarios, updateFoto, getUsuariosByCountry, getUsuariosByTipoUsuario, getUsuariosByNameAndId,
-  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario, reCaptchaGoogle, getUsuariosByFilters} from "../controllers/usuarioController"
+  getUsuariosByGenero, getUsuariosByFecha, getUsuariosByIdInDate, eliminarUsuario, reCaptchaGoogle, getUsuariosByFilters, getErrorLogin} from "../controllers/usuarioController"
 
 api.post(
     "/usuario/login",
@@ -93,6 +93,11 @@ api.put(
 api.put(
   "/usuario/edit/:nombre",
   updateFoto
+);
+
+api.get(
+  "/usuario/error/login",
+  getErrorLogin
 );
 
 module.exports = api;
