@@ -6,6 +6,8 @@ const axios = require("axios");
 
 require("dotenv").config();
 
+const log = require("../config/logger")
+
 /**
  * Inicio de sesión propocionando usuario y contraseña (la constraseña debe ser encriptada)
  * @param req Request (con el usuario y la contraseña)
@@ -17,18 +19,22 @@ export const inicioSesion = async (req: Request, res: Response): Promise<Respons
     const {nombre, contraseña} = req.body;
     const usuarioAsociado = await usuarioSquema.findOne({nombre: nombre});
     if(usuarioAsociado === null){
+      log.warn("Código: 200 -" + " Mensaje: (Login) No existe ese nombre en la base de datos" + " - IP: " + req.socket.remoteAddress)
       return res.status(200).json({usuario: null});
     }
     else{
       const contraseñasIguales = await comparaContraseñas(contraseña, usuarioAsociado.contrasena)
       if(contraseñasIguales) {
+        log.info("Código: 200 -" + " Mensaje: Usuario identificado" + " - IP: " + req.socket.remoteAddress + " - IDUsu: " + usuarioAsociado._id)
         return res.status(200).json({usuario: usuarioAsociado});
       }
       else{
+        log.warn("Código: 200 -" + " Mensaje: (Login) La contraseña era incorrecta" + " - IP: " + req.socket.remoteAddress)
         return res.status(200).json({usuario: null});
       }
     }
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -52,9 +58,11 @@ export const insertarUsuario = async (req: Request, res: Response): Promise<Resp
       const usuarioAInsertar = new usuarioSquema({nombre, contrasena, pais, localidad, fecha_nac, nombre_spotify, enlace_foto, descripcion, tipo, genero, redes})
       await usuarioAInsertar.save();
       const user = await usuarioSquema.findOne({nombre: nombre});
+      log.info("Código: 200 -" + " Mensaje: Usuario insertado" + " - IP: " + req.socket.remoteAddress + " - IDUsu: " + user._id)
       return res.status(200).json({creado: true, usuario: user});
     }
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -76,6 +84,7 @@ export const getUsuario = async (req: Request, res: Response): Promise<Response>
         return res.status(200).json({ user: usuarioAsociado });
       } 
     } catch (error) {
+      log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
       return res.status(500).send(error);
     }
 }
@@ -97,6 +106,7 @@ export const getUsuarios = async (req: Request, res: Response): Promise<Response
       return res.status(200).json({ users: usuarios });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -120,6 +130,7 @@ export const getUsuariosByIdInDate = async (req: Request, res: Response): Promis
       return res.status(200).json({ users: usuarios });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -141,6 +152,7 @@ export const getUsuarioByName = async (req: Request, res: Response): Promise<Res
       return res.status(200).json({ user: usuarioAsociado });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -162,6 +174,7 @@ export const getUsuariosByName = async (req: Request, res: Response): Promise<Re
       return res.status(200).json({ users: usuarioAsociado });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -184,6 +197,7 @@ export const getUsuariosByNameAndId = async (req: Request, res: Response): Promi
       return res.status(200).json({ users: usuarioAsociado });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -205,6 +219,7 @@ export const getUsuariosByCountry = async (req: Request, res: Response): Promise
       return res.status(200).json({ users: usuarioAsociado });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -226,6 +241,7 @@ export const getUsuariosByTipoUsuario = async (req: Request, res: Response): Pro
       return res.status(200).json({ users: usuarioAsociado });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -247,6 +263,7 @@ export const getUsuariosByGenero = async (req: Request, res: Response): Promise<
       return res.status(200).json({ users: usuarioAsociado });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -269,6 +286,7 @@ export const getUsuariosByFecha = async (req: Request, res: Response): Promise<R
       return res.status(200).json({ users: usuarioAsociado });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -290,10 +308,12 @@ export const updateUsuario = async (req: Request, res: Response): Promise<Respon
     }
     else{
       await usuarioSquema.findByIdAndUpdate(usuarioAsociado._id, datosNuevos)
+      log.info("Código: 200 -" + " Mensaje: Usuario actualizado" + " - IP: " + req.socket.remoteAddress + " - IDPub: " + usuarioAsociado._id)
       return res.status(200).json({actualizado: true});
     }
 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -314,10 +334,12 @@ export const updateFoto = async (req: Request, res: Response): Promise<Response>
     }
     else{
       await usuarioSquema.findByIdAndUpdate(usuarioAsociado._id, datosNuevos)
+      log.info("Código: 200 -" + " Mensaje: Enlace foto actualizada" + " - IP: " + req.socket.remoteAddress + " - IDPub: " + usuarioAsociado._id)
       return res.status(200).json({actualizado: true});
     }
 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -331,8 +353,10 @@ export const updateFoto = async (req: Request, res: Response): Promise<Response>
 export const eliminarUsuario = async (req: Request, res: Response) => {
   try{
     await usuarioSquema.findByIdAndDelete(req.body.idUser)
+    log.info("Código: 200 -" + " Mensaje: Usuario eliminado" + " - IP: " + req.socket.remoteAddress + " - IDPub: " + req.body.idUser)
     return res.status(200).json({borrado: true});
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -348,6 +372,10 @@ export const reCaptchaGoogle = async (req: Request, res: Response) => {
   const respuesta = await axios.post("https://www.google.com/recaptcha/api/siteverify?secret=" + process.env.CAPTCHA_SECRET_KEY + "&response=" + token + "");
   console.log(respuesta.data.success)
   const robot = respuesta.data.success
+  if(!robot)
+    log.warn("Código: 200 -" + " Mensaje: Captcha de Google fallido" + " - IP: " + req.socket.remoteAddress)
+  else
+    log.info("Código: 200 -" + " Mensaje: Captcha de Google correcto" + " - IP: " + req.socket.remoteAddress)
   return res.status(200).json({robot: robot});
 }
 
@@ -377,6 +405,18 @@ export const getUsuariosByFilters = async (req: Request, res: Response): Promise
       return res.status(200).json({ users: usuarioAsociado });
     }
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
+}
+
+/**
+ * Inserta en el log un error del login por intentos fallidos repetidos
+ * @param req Request
+ * @param res Response
+ * @returns Código 200
+ */
+export const getErrorLogin = async (req: Request, res: Response): Promise<Response> => {
+  log.error("Código: 200 -" + "Mensaje: Intentos sucesivos de inicio de sesión fallidos" + " - IP: " + req.socket.remoteAddress)
+  return res.status(200).json();
 }

@@ -4,6 +4,8 @@ const publicacionModel = require('../models/publicacionModel');
 
 const comentarioModel = require('../models/comentariosModel');
 
+const log = require("../config/logger")
+
 /**
  * Devuelve las publicaciones de un usuario en un orden específico
  * @param req Request (con el Id del usuario y la ordenación a seguir (por fecha de publicación o por número de me gustas))
@@ -27,7 +29,7 @@ export const getPublicaciones = async (req: Request, res: Response): Promise<Res
         return res.status(200).json({ publicaciones: publicaciones });
       } 
     } catch (error) {
-      console.log(error)
+      log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
       return res.status(500).send(error);
     }
 }
@@ -55,6 +57,7 @@ export const getPublicacionesByTipo = async (req: Request, res: Response): Promi
       return res.status(200).json({ publicaciones: publicaciones });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -71,6 +74,7 @@ export const getPublicacion = async (req: Request, res: Response): Promise<Respo
     const publicacion = await publicacionModel.findOne({_id: id_publicacion});
     return res.status(200).json({ publicacion: publicacion });
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -88,8 +92,10 @@ export const insertarPublicacion = async (req: Request, res: Response): Promise<
     const likes: String[] = []
     const publicacionAInsertar = new publicacionModel({texto, id_usuario, enlace_multimedia, tipo_multimedia, fecha, likes})
     publicacionAInsertar.save();
+    log.info("Código: 200 -" + " Mensaje: Publicación creada" + " - IP: " + req.socket.remoteAddress + " - IDUsu: " + id_usuario)
     return res.status(200).json({pub: publicacionAInsertar});
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -114,6 +120,7 @@ export const actualizarLikes = async (req: Request, res: Response): Promise<Resp
     }
 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -129,10 +136,13 @@ export const eliminarPublicacion = async (req: Request, res: Response): Promise<
     const id_usu = req.body.idUser;
     const id_pub = req.body.idPub;
     const publicacionAsociada = await publicacionModel.findOne({_id: id_pub});
-    if(id_usu !== publicacionAsociada.id_usuario)
+    if(id_usu !== publicacionAsociada.id_usuario){
+      log.warn("Código: 400 -" + " Mensaje: Intento de modificación de una publicación sin ser el autor" + " - IP: " + req.socket.remoteAddress)
       return res.status(400).json();
+    }
     const seBorra = await publicacionModel.deleteOne({_id: id_pub, id_usuario: id_usu});
     await comentarioModel.deleteMany({id_publicacion: id_pub});
+    log.info("Código: 200 -" + " Mensaje: Publicación eliminada" + " - IP: " + req.socket.remoteAddress + " - IDPub: " + id_pub)
     if(seBorra.deletedCount === 1){
       return res.status(200).json({ borrado: true });
     }
@@ -140,6 +150,7 @@ export const eliminarPublicacion = async (req: Request, res: Response): Promise<
       return res.status(200).json({ borrado: false });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -154,8 +165,10 @@ export const eliminarPublicacionesUsuario = async (req: Request, res: Response):
   try {
     const id_usu = req.body.idUser;
     await publicacionModel.deleteMany({id_usuario: id_usu});
+    log.info("Código: 200 -" + " Mensaje: Publicaciones de un usuario eliminadas" + " - IP: " + req.socket.remoteAddress + " - IDUsu: " + id_usu)
     return res.status(200).json({ borrado: true });
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -176,10 +189,12 @@ export const updatePublicacion = async (req: Request, res: Response): Promise<Re
     }
     else{
       await publicacionModel.findByIdAndUpdate(id_publicacion, datosNuevos)
+      log.info("Código: 200 -" + " Mensaje: Publicación actualizada" + " - IP: " + req.socket.remoteAddress + " - IDPub: " + id_publicacion)
       return res.status(200).json({actualizado: true});
     }
 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -194,7 +209,6 @@ export const getPublicacionesWithLimit = async (req: Request, res: Response): Pr
   try {
     
     const skip = req.params.skip;
-
     const publicaciones = await publicacionModel.find().skip(skip).limit(10).sort({fecha: -1});
     if(publicaciones === null){
       return res.status(200).json({ publicaciones: [] });
@@ -203,7 +217,7 @@ export const getPublicacionesWithLimit = async (req: Request, res: Response): Pr
       return res.status(200).json({ publicaciones: publicaciones });
     } 
   } catch (error) {
-    console.log(error)
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }

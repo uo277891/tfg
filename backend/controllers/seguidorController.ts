@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 const seguidorModel = require('../models/seguidoresModel');
 
+const log = require("../config/logger")
+
 /**
  * Devuelve los seguidores de un usuario
  * @param req Request (con el Id del usuario)
@@ -19,6 +21,7 @@ export const getSeguidores = async (req: Request, res: Response): Promise<Respon
         return res.status(200).json({ seguidores: seguidores });
       } 
     } catch (error) {
+      log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
       return res.status(500).send(error);
     }
 }
@@ -41,6 +44,7 @@ export const isSeguidor = async (req: Request, res: Response): Promise<Response>
       return res.status(200).json({ isSeguidor: true });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -57,9 +61,11 @@ export const seguir = async (req: Request, res: Response): Promise<Response> => 
     const id_seguidor = req.body.idSeg;
     const fecha = new Date((new Date().setHours(new Date().getHours() - (new Date().getTimezoneOffset() / 60))))
     const seguidorAInsertar = new seguidorModel({id_usuario, id_seguidor, fecha})
-    seguidorAInsertar.save();
+    await seguidorAInsertar.save();
+    log.info("Código: 200 -" + " Mensaje: Seguidor insertado" + " - IP: " + req.socket.remoteAddress + " - IDUsu: " + id_usuario + " - IDSeg: " + id_seguidor)
     return res.status(200).json({seguidor: true});
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -76,12 +82,14 @@ export const dejarDeSeguir = async (req: Request, res: Response): Promise<Respon
     const id_seguidor = req.body.idSeg;
     const seBorra = await seguidorModel.deleteOne({id_usuario: id_usuario, id_seguidor: id_seguidor});
     if(seBorra.deletedCount === 1){
+      log.info("Código: 200 -" + " Mensaje: Seguidor eliminado" + " - IP: " + req.socket.remoteAddress + " - IDUsu: " + id_usuario + " - IDSeg: " + id_seguidor)
       return res.status(200).json({ borrado: true });
     }
     else{
       return res.status(200).json({ borrado: false });
     } 
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -102,6 +110,7 @@ export const getFollowingUsers = async (req: Request, res: Response): Promise<Re
     })
     return res.status(200).json({ followUsers: listaIds });
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -122,6 +131,7 @@ export const getFollowsByUser = async (req: Request, res: Response): Promise<Res
     })
     return res.status(200).json({ followUsers: listaIds });
   } catch (error) {
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }
@@ -137,9 +147,10 @@ export const eliminarSeguimientos = async (req: Request, res: Response): Promise
     const id_usuario = req.body.idUser;
     await seguidorModel.deleteMany({id_usuario: id_usuario});
     await seguidorModel.deleteMany({id_seguidor: id_usuario});
+    log.info("Código: 200 -" + " Mensaje: Seguidores y seguimientos eliminados" + " - IP: " + req.socket.remoteAddress + " - IDUsu: " + id_usuario)
     return res.status(200).json({ borrado: true });
   } catch (error) {
-    console.log(error)
+    log.error("Código: 500 -" + " Mensaje: " + error + " - IP: " + req.socket.remoteAddress)
     return res.status(500).send(error);
   }
 }

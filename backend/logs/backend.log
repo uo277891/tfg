@@ -1,0 +1,23 @@
+warn: 13/06/2023 13:01:20: 	Código: 200 - Mensaje: Captcha de Google fallido - IP: ::1
+warn: 13/06/2023 13:01:36: 	Código: 200 - Mensaje: Captcha de Google correcto - IP: ::1
+info: 13/06/2023 13:01:36: 	Código: 200 - Mensaje: Usuario insertado - IP: ::1 - IDUsu: 64884c90b5372aa413508bee
+info: 13/06/2023 13:02:14: 	Código: 200 - Mensaje: Seguidores y seguimientos eliminados - IP: ::1 - IDUsu: 64884c90b5372aa413508bee
+info: 13/06/2023 13:02:14: 	Código: 200 - Mensaje: Comentarios de un usuario eliminados - IP: ::1- IDUsu: 64884c90b5372aa413508bee
+info: 13/06/2023 13:02:14: 	Código: 200 - Mensaje: Publicaciones de un usuario eliminadas - IP: ::1 - IDUsu: 64884c90b5372aa413508bee
+info: 13/06/2023 13:02:14: 	Código: 200 - Mensaje: Usuario eliminado - IP: ::1 - IDPub: 64884c90b5372aa413508bee
+info: 13/06/2023 13:02:15: 	Código: 200 - Mensaje: Foto de perfil eliminada - IP: ::1 - IDPub: 64884c90b5372aa413508bee
+warn: 13/06/2023 13:02:27: 	Código: 200 - Mensaje: La contraseña era incorrecta - IP: ::1
+warn: 13/06/2023 13:03:08: 	Código: 200 - Mensaje: (Login) No existe ese nombre en la base de datos - IP: ::1
+error: 13/06/2023 13:03:21: 	Mensaje: Intentos sucesivos de inicio de sesión fallidos - IP: ::1
+error: 13/06/2023 13:03:37: 	Mensaje: Intentos sucesivos de inicio de sesión fallidos - IP: ::1
+error: 13/06/2023 13:03:40: 	Mensaje: Intentos sucesivos de inicio de sesión fallidos - IP: ::1
+error: 13/06/2023 13:04:21: 	Mensaje: Intentos sucesivos de inicio de sesión fallidos - IP: ::1
+error: 13/06/2023 13:04:55: 	Mensaje: Intentos sucesivos de inicio de sesión fallidos - IP: ::1
+error: 13/06/2023 13:05:01: 	Mensaje: Intentos sucesivos de inicio de sesión fallidos - IP: ::1
+error: 13/06/2023 13:05:04: 	Mensaje: Intentos sucesivos de inicio de sesión fallidos - IP: ::1
+info: 13/06/2023 13:06:00: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 647c7b32ac48b9ecee1ee67f
+info: 13/06/2023 13:06:13: 	Código: 200 - Mensaje: Publicación creada - IP: ::1 - IDUsu: 647c7b32ac48b9ecee1ee67f
+info: 13/06/2023 13:06:24: 	Código: 200 - Mensaje: Comentario insertado - IP: ::1 - IDPub: 64884da583a09bd99474f864 - IDUsu: 647c7b32ac48b9ecee1ee67f
+info: 13/06/2023 13:06:31: 	Código: 200 - Mensaje: Comentario eliminado - IP: ::1- IDCom: 64884db083a09bd99474f86f
+info: 13/06/2023 13:06:39: 	Código: 200 - Mensaje: Multimedia de publicación eliminada - IP: ::1 - IDPub: 64884da583a09bd99474f864
+info: 13/06/2023 13:06:39: 	Código: 200 - Mensaje: Publicación eliminada - IP: ::1 - IDPub: 64884da583a09bd99474f864
