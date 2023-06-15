@@ -30,8 +30,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {parseFecha, parseHora} from '../util/parseFecha';
 import SimboloCarga from '../components/SimboloCarga';
-import { Link } from '@mui/material';
+import { Alert, Box, Link } from '@mui/material';
 import DOMPurify from 'dompurify';
+import CloseIcon from '@mui/icons-material/Close';
 
 /**
  * @returns Página para representar una publicación y sus comentarios
@@ -57,6 +58,10 @@ const Publication = (props: any) => {
     const [colorCorazon, setColorCorazon] = useState<string>("");
 
     const [open, setOpen] = React.useState(false);
+
+    const [commentError, setCommentError] = React.useState(false);
+
+    const [error, setError] = useState<string>("");
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -145,6 +150,9 @@ const Publication = (props: any) => {
           setOpen(false);
           setText("");
           await datosIniciales();
+      }else if(textLimpio !== text){
+        setCommentError(true)
+        setError("Se ha detectado texto inválido. Revíselo por favor")
       }
     }
 
@@ -202,8 +210,30 @@ const Publication = (props: any) => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancelar</Button>
-              {text.length > 0 && text.length < 200 && <Button aria-label="Botón para comentar" onClick={enviarComentario}>Publicar</Button>}
+              {text.length > 0 && text.length < 201 && <Button aria-label="Botón para comentar" onClick={enviarComentario}>Publicar</Button>}
             </DialogActions>
+            <Box sx={{ width: '100%' }}>
+            <Collapse in={commentError}>
+                <Alert
+                    severity="error"
+                action={
+                    <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                        setCommentError(false);
+                    }}
+                    >
+                    <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                }
+                sx={{ mb: 2 }}
+                >
+                {error}
+                </Alert>
+            </Collapse>
+            </Box>
           </Dialog>
             <ExpandMore
               expand={expanded}

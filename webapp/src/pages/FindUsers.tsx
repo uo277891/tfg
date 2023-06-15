@@ -71,7 +71,11 @@ const FindUsers = () => {
             const añoActual = Dayjs()
             const users = await getUsuariosByFilters(filtroTipo, filtroPais, añoActual.year() - filtroEdad[1], añoActual.year() - filtroEdad[0], filtroGenero)
             setUsuarios(users)
+            setFiltroGenero("nada")
+            setFiltroPais("nada")
+            setFiltroTipo("nada")
             setCargando(false)
+            toggleDrawer('left', false)
     }
     
       const toggleDrawer =
