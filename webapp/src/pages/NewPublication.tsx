@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext } from "react";
+import React, { ChangeEvent } from "react";
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -61,6 +61,10 @@ const NewPublication = (props: any) => {
         else if(textoFinal === "") {
             setPublicationError(true);
             setError("Se ha detectado texto inválido, modifíquelo por favor.");
+        }
+        else if(textoFinal.length > 200) {
+            setPublicationError(true);
+            setError("El texto debe tener como máximo 200 caracteres.");
         }
         else {
             const textoFinal =DOMPurify.sanitize(text)

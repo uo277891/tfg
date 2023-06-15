@@ -20,7 +20,7 @@ export default function RGPDConditions(props:any) {
     setOpen(false);
   };
 
-  const [acept, setAcept] = React.useState(false);
+  const [acept, setAcept] = React.useState(props.RGPDCond);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setRGPDCond(event.target.checked)

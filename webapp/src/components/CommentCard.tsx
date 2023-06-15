@@ -13,11 +13,12 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useLocalStorage } from "../localStorage/useLocalStorage";
-import { CardActions, Grid, Link } from '@mui/material';
+import { Alert, Box, CardActions, Collapse, IconButton, Link } from '@mui/material';
 import Button from '@mui/material/Button';
 import Textarea from '@mui/base/TextareaAutosize';
 import { añadirRespuestaComentario, eliminarComentarioYRespuestas, getRespuestaComentario } from "../conector/apiComentarios";
 import DOMPurify from 'dompurify';
+import CloseIcon from '@mui/icons-material/Close';
 
 /**
  * Devuelve un componente que renderiza un comentario o una respuesta 
@@ -37,6 +38,10 @@ const CommentCard = (props: any) => {
   const [text, setText] = useState("");
 
   const [open, setOpen] = React.useState(false);
+
+  const [commentError, setCommentError] = React.useState(false);
+
+  const [error, setError] = useState<string>("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -75,6 +80,9 @@ const CommentCard = (props: any) => {
     if(textLimpio === text && textLimpio.length > 0 && textLimpio.length < 201){
       await añadirRespuestaComentario(props.comentario._id, props.comentario.id_publicacion, idUser, props.comentario.id_usu_coment, text)
       await datosIniciales();
+    }else if(textLimpio !== text){
+      setCommentError(true)
+      setError("Se ha detectado texto inválido. Revíselo por favor")
     }
   }
 
@@ -113,6 +121,28 @@ const CommentCard = (props: any) => {
           {(usuarioPublicacion._id === idUser || props.idUsuPub === idUser) && <Button variant="contained" color="error" onClick={handleClickOpen}>Eliminar comentario</Button>}
           {text.length > 0 && text.length < 201 &&<Button aria-label="Comentar" className="boton" variant="contained" onClick={comentar}>Comentar</Button>}
         </CardActions>
+        <Box sx={{ width: '100%' }}>
+            <Collapse in={commentError}>
+                <Alert
+                    severity="error"
+                action={
+                    <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                        setCommentError(false);
+                    }}
+                    >
+                    <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                }
+                sx={{ mb: 2 }}
+                >
+                {error}
+                </Alert>
+            </Collapse>
+            </Box>
         {comentariosRespuesta.map((comentario: Comentario) => 
               <CommentCard key = {comentario._id} respuesta = {true} comentario = {comentario} idUsuPub = {props.idUsuPub}></CommentCard>
         )}

@@ -215,7 +215,7 @@ const Register = () => {
         setRegisterError(true);
         seterror(errorUsuario(numError));
         setCargando(false)
-        if(numError === 4) setValue(1)
+        if(numError === 4 || numError === 8) setValue(1)
         else setValue(0)
       }
       else
@@ -335,7 +335,7 @@ const Register = () => {
                     <TextField required name = "passwd" id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
                     <TextField required name = "repPasswd" id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
                     <br/>
-                    <RGPDConditions setRGPDCond={setRGPDCond}/>
+                    <RGPDConditions setRGPDCond={setRGPDCond} RGPDCond={RGPDCond}/>
                     <Button className="boton" id = "siguiente1" variant="contained" onClick={() => siguiente(1)}>Siguiente</Button>
               </Box>
             </TabPanel>
