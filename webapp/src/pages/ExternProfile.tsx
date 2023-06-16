@@ -233,7 +233,7 @@ const ExternProfile = () => {
                 </section>
                 <Grid container alignItems="center" justifyContent="center">
                     <Stack spacing={2}>
-                        <Pagination color="secondary" count={Math.round(publicaciones.length / numElementos) + 1} page={page} onChange={handleChange} />
+                        <Pagination color="secondary" count={Math.floor((publicaciones.length / numElementos)) + 1} page={page} onChange={handleChange} />
                     </Stack>
                 </Grid>
             </main>

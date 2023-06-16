@@ -121,6 +121,7 @@ export default function BarraDeNavegacion() {
         setUsuarioEstaAcutenticado(false);
         setIdUser("")
         redirigir("/logout")
+        window.location.reload();
     };
 
     const redirigir = useNavigate();

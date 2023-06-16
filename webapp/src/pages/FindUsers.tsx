@@ -150,7 +150,7 @@ const FindUsers = () => {
                 </Grid>
                 <Grid container alignItems="center" justifyContent="center">
                     <Stack spacing={2}>
-                        <Pagination color="secondary" count={Math.round(usuarios.length / numElementos) + 1} page={page} onChange={handleChange} />
+                        <Pagination color="secondary" count={Math.floor((usuarios.length / numElementos)) + 1} page={page} onChange={handleChange} />
                     </Stack>
                 </Grid>
             </main>
