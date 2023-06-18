@@ -1,6 +1,7 @@
 import { render, fireEvent } from '@testing-library/react';
 import NewPublication from '../pages/NewPublication';
 import { BrowserRouter as Ruta} from "react-router-dom";
+import '../i18n'
 
 const setLocalStorage = (key: any, value: any) => {
   window.localStorage.setItem(key, JSON.stringify(value));
@@ -19,5 +20,5 @@ test('Renderiza NewPublication correctamente', () => {
 test('No hay usuario autenticado', () => {
   setLocalStorage("estaAutenticado", false)
   const {getByText} = render(<Ruta><NewPublication/></Ruta>);
-  expect(getByText("Inicia sesión para crear publicaciones")).toBeInTheDocument();
+  expect(getByText("Inicia sesión para acceder a esta página")).toBeInTheDocument();
 });

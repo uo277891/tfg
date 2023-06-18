@@ -19,6 +19,8 @@ import Textarea from '@mui/base/TextareaAutosize';
 import { añadirRespuestaComentario, eliminarComentarioYRespuestas, getRespuestaComentario } from "../conector/apiComentarios";
 import DOMPurify from 'dompurify';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTranslation } from 'react-i18next';
+import { parseFecha, parseHora } from '../util/parseFecha';
 
 /**
  * Devuelve un componente que renderiza un comentario o una respuesta 
@@ -42,6 +44,10 @@ const CommentCard = (props: any) => {
   const [commentError, setCommentError] = React.useState(false);
 
   const [error, setError] = useState<string>("");
+
+  const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+  const { i18n, t } = useTranslation()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -69,7 +75,8 @@ const CommentCard = (props: any) => {
   }, []);
 
   useEffect(() => {
-      datosIniciales();
+    i18n.changeLanguage(idioma)
+    datosIniciales();
   }, [])
 
   /**
@@ -82,7 +89,7 @@ const CommentCard = (props: any) => {
       await datosIniciales();
     }else if(textLimpio !== text){
       setCommentError(true)
-      setError("Se ha detectado texto inválido. Revíselo por favor")
+      setError(t("newPub.errorDesInv"))
     }
   }
 
@@ -106,20 +113,20 @@ const CommentCard = (props: any) => {
                   src={usuarioPublicacion.enlace_foto}/></Button>
                 }
                 title={usuarioPublicacion.nombre}
-                subheader={props.comentario.fecha.toString().replace(/T/, ' ').replace(/\..+/, '')}
+                subheader={parseFecha(props.comentario.fecha.replace(/T/, ' ').replace(/\..+/, '')) + ", " + parseHora(props.comentario.fecha.toString().replace(/T/, ' ').replace(/\..+/, ''))}
         /></Link>
         <CardContent>
-          {props.respuesta && usuarioRespuesta !== undefined && <Typography variant="h6"> En respuesta a
+          {props.respuesta && usuarioRespuesta !== undefined && <Typography variant="h6"> {t("comments.resp")}
             <Typography display={'inline'} color="blue" fontStyle="italic" variant="h6"> {usuarioRespuesta.nombre}: </Typography>
             <Typography variant="h5">{props.comentario.texto}</Typography>
           </Typography>}
           {!props.respuesta && <Typography variant="h5">{props.comentario.texto}</Typography>}
-          <Textarea color="neutral" minRows={5} style={{ width: '100%', fontSize:'1em' }} aria-label="Texto del comentario" placeholder="Responder" id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
+          <Textarea color="neutral" minRows={5} style={{ width: '100%', fontSize:'1em' }} aria-label="Texto del comentario" placeholder={t("comments.text")} id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
                 {text.length + " / 200"}
         </CardContent>
         <CardActions sx={{justifyContent: "space-between"}}>
-          {(usuarioPublicacion._id === idUser || props.idUsuPub === idUser) && <Button variant="contained" color="error" onClick={handleClickOpen}>Eliminar comentario</Button>}
-          {text.length > 0 && text.length < 201 &&<Button aria-label="Comentar" className="boton" variant="contained" onClick={comentar}>Comentar</Button>}
+          {(usuarioPublicacion._id === idUser || props.idUsuPub === idUser) && <Button variant="contained" color="error" onClick={handleClickOpen}>{t("button.delete")}</Button>}
+          {text.length > 0 && text.length < 201 && <Button aria-label="Comentar" className="boton" variant="contained" onClick={comentar}>{t("button.comment")}</Button>}
         </CardActions>
         <Box sx={{ width: '100%' }}>
             <Collapse in={commentError}>
@@ -153,17 +160,17 @@ const CommentCard = (props: any) => {
         aria-describedby="alerta-eliminacion-description"
       >
         <DialogTitle id="alerta-eliminacion-title">
-          {"¿Desea eliminar este comentario?"}
+          {t("comments.delete")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alerta-eliminacion-description">
-            El comentario será eliminado y no podrá deshacer esta acción.
+            {t("comments.deleteText")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={handleClose}>{t("button.cancel")}</Button>
           <Button onClick={eliminarComentario} autoFocus>
-            Eliminar
+            {t("button.delete")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -172,7 +179,7 @@ const CommentCard = (props: any) => {
     );
   }
   else{
-    return (<h1>No se han podido cargar los comentarios</h1>)
+    return (<h1>{t("fallos.noCom")}</h1>)
   }
 }
 

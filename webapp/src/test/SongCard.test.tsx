@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import SongCard from '../components/SongCard';
+import '../i18n'
 
 test('SongCard se renderiza correctamente', () => {
     const images: any[] = []

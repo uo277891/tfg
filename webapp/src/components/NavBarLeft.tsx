@@ -28,11 +28,14 @@ import { eliminarPublicacionesUsuario, getPublicaciones } from '../conector/apiP
 import { getSignature, borrarPublicacion, borrarPublicaciones } from '../conector/apiCloudinary';
 import { useNavigate } from "react-router-dom";
 import SimboloCarga from './SimboloCarga';
+import españa from "../images/españa.png"
+import inglaterra from "../images/inglaterra.png"
+import { useTranslation } from 'react-i18next';
 
-const nombrePagina = ['Sobre SocialFS', "Obtener ID Spotify", "Datos de Spotify"];
+const nombrePagina = ['navBar.about', "navBar.idSpo", "navBar.dataSpo"];
 const linkPagina = ['aboutSocialfs', 'idspotify', 'spotify/explanation/']
 
-const paginasInicioSesion = ['Siguiendo', 'Tus seguidores', 'Buscar usuarios','Crear publicación'];
+const paginasInicioSesion = ['navBar.follow', 'navBar.follows', 'navBar.find','navBar.newPub'];
 const linkPaginaInicioSesion = ['follow', 'follow/you', 'find', 'publication/new']
 
 var hashmap = new Map();
@@ -64,6 +67,13 @@ export default function BarraDeNavegacion() {
 
     const [cargando, setCargando] = React.useState(false);
 
+    const { i18n, t } = useTranslation()
+
+    const cambioIdioma = (idioma:string) => {
+        setIdioma(idioma)
+        i18n.changeLanguage(idioma)
+    }
+
     const handleClickOpen = () => {
         setOpen(!open);
     };
@@ -81,6 +91,8 @@ export default function BarraDeNavegacion() {
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
     const [idUser, setIdUser] = useLocalStorage('idUser', '')
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
     
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -109,6 +121,7 @@ export default function BarraDeNavegacion() {
     }, []);
 
     useEffect(() => {
+        i18n.changeLanguage(idioma)
         datosIniciales();
     }, [])
 
@@ -178,91 +191,97 @@ export default function BarraDeNavegacion() {
                             variant="h6"
                             noWrap
                             >
-                            <Tooltip title={"Página de inicio"}><img src={iconlogo} alt="Icono logo"></img></Tooltip>
+                            <Tooltip title={t("button.home")}><img src={iconlogo} alt="Icono logo"></img></Tooltip>
                         </Link>
                 {usuarioEstaAutenticado && paginasInicioSesion.map((nombre) => (
                         <ListItemButton href={"/" + linkAsociado(nombre)}>
-                            <Tooltip title={nombre}>
+                            <Tooltip title={t(nombre)}>
                                 <ListItemIcon>
-                                    <Icono icono={nombre}></Icono>
+                                    <Icono icono={t(nombre)}></Icono>
                                 </ListItemIcon>
                             </Tooltip>
-                            {width > 1200 && <ListItemText primary={nombre} />}
+                            {width > 1200 && <ListItemText primary={t(nombre)} />}
                         </ListItemButton>
                 ))}
                 {nombrePagina.map((nombre) => (
                         <ListItemButton href={"/" + linkAsociado(nombre)}>
-                            <Tooltip title={nombre}>
+                            <Tooltip title={t(nombre)}>
                                 <ListItemIcon>
-                                    <Icono icono={nombre}></Icono>
+                                    <Icono icono={t(nombre)}></Icono>
                                 </ListItemIcon>
                             </Tooltip>
-                                {width > 1200 && <ListItemText primary={nombre} />}
+                                {width > 1200 && <ListItemText primary={t(nombre)} />}
                         </ListItemButton>
                     ))}
                 {usuario !== undefined && <ListItemButton key="perfil" onClick={handleClickOpen}>
                     <ListItemIcon>
-                    <Tooltip title="Cuenta">
+                    <Tooltip title={t("navBar.acount")}>
                         <IconButton key = "person" sx={{ p: 0 }}>
                             <Avatar sx={{ width: 30, height: 30 }} alt= {"Foto de perfil de " + usuario.nombre} src= {usuario.enlace_foto}></Avatar>
                         </IconButton>
                     </Tooltip> 
                     </ListItemIcon>
-                    { width > 1200 && <ListItemText primary="Cuenta" />}
+                    { width > 1200 && <ListItemText primary={t("navBar.acount")} />}
                     {open ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>}
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     {usuario !== undefined && <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }} href={"/profile/" + idUser}>
-                            <Tooltip title="Perfil">
+                            <Tooltip title={t("navBar.profile")}>
                                 <ListItemIcon>
-                                    <Icono icono="Perfil"></Icono>
+                                    <Icono icono={t("navBar.profile")}></Icono>
                                 </ListItemIcon>
                             </Tooltip>
-                            {width > 1200 && <ListItemText primary="Perfil" />}
+                            {width > 1200 && <ListItemText primary={t("navBar.profile")} />}
                             </ListItemButton>
                             <ListItemButton sx={{ pl: 4 }} href={"/stats/"}>
-                            <Tooltip title="Estadísticas">
+                            <Tooltip title={t("navBar.stats")}>
                                 <ListItemIcon>
-                                    <Icono icono="Estadísticas"></Icono>
+                                    <Icono icono={t("navBar.stats")}></Icono>
                                 </ListItemIcon>
                             </Tooltip>
-                            {width > 1200 && <ListItemText primary="Estadísticas" />}
+                            {width > 1200 && <ListItemText primary={t("navBar.stats")} />}
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} onClick={handleCerrarSesion} id="cerrarSesion">
-                            <Tooltip title="Cerrar sesión">
+                            <ListItemButton key="cerrarsesion" sx={{ pl: 4 }} onClick={handleCerrarSesion} id="cerrarSesion">
+                            <Tooltip title={t("navBar.logout")}>
                                 <ListItemIcon onClick={handleCerrarSesion}>
-                                    <Icono icono="Cerrar Sesión"></Icono>
+                                    <Icono icono={t("navBar.logout")}></Icono>
                                 </ListItemIcon>
                             </Tooltip>
-                            {width > 1200 && <ListItemText primary="Cerrar Sesión" />}
+                            {width > 1200 && <ListItemText primary={t("navBar.logout")} />}
                             </ListItemButton>
                         <ListItemButton sx={{ pl: 4 }} onClick={handleClick}>
-                        <Tooltip title="Eliminar cuenta">
+                        <Tooltip title={t("navBar.delete")}>
                             <ListItemIcon onClick={handleClick}>
-                                <Icono icono="Eliminar Cuenta"></Icono>
+                                <Icono icono={t("navBar.delete")}></Icono>
                             </ListItemIcon>
                         </Tooltip>
-                        {width > 1200 && <ListItemText primary="Eliminar cuenta" />}
+                        {width > 1200 && <ListItemText primary={t("navBar.delete")} />}
                         </ListItemButton>
                 </List>}
             </Collapse>
+            <IconButton aria-label="delete" size="large" onClick={() => cambioIdioma("es")}>
+                <Avatar alt= {"Selección idioma España"} src= {españa}></Avatar>
+            </IconButton>
+            <IconButton aria-label="delete" size="large">
+                <Avatar alt= {"Selección idioma Inglaterra"} src= {inglaterra} onClick={() => cambioIdioma("en")}></Avatar>
+            </IconButton>
             <Dialog
             open={dialog}
             onClose={handleClose}
         >
             <DialogTitle id="alert-dialog-title">
-            {"Eliminación de cuenta"}
+            {t("navBar.deleteTitle")}
             </DialogTitle>
             <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                ¿Está seguro de eliminar su cuenta?, su usuario, junto con sus publicaciones y comentarios serán eliminados permanentemente.
+                {t("navBar.deleteSubtitle")}
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={handleClose}>{t("button.cancel")}</Button>
             <Button onClick={handleEliminarMultimedia} autoFocus>
-                Eliminar
+            {t("button.delete")}
             </Button>
             </DialogActions>
         </Dialog>

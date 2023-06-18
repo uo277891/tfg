@@ -1,10 +1,14 @@
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import React from "react";
+import React, { useEffect } from "react";
 import listaPaises from "../util/listaPaises";
 import Slider from "@mui/material/Slider";
+import { useTranslation } from 'react-i18next';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
+import listaPaisesIngles from "../util/listaPaisesIngles";
 
 const paises = listaPaises()
+const paisesIngles = listaPaisesIngles()
 
 /**
  * Devuelve los filtros a aplicar para los usuarios
@@ -13,9 +17,11 @@ const paises = listaPaises()
  */
 function FiltrosUsuario(props: any) {
 
-    const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
+  const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+  const generosIngles: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Other"]
 
-    const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+  const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
+  const tipoUsuarioIngles: string[] = ["Artist", "Promoter", "Standard"]
 
     const[tipoUsu, setTipoUsu] = React.useState("");
 
@@ -24,6 +30,14 @@ function FiltrosUsuario(props: any) {
     const[genero, setGenero] = React.useState("");
 
     const [filtroEdad, setFiltroEdad] = React.useState<number[]>([16, 150]);
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
+
+    useEffect(() => {
+      i18n.changeLanguage(idioma)
+    }, [])
 
     const handleChangeEdad = (event: Event, newValue: number | number[]) => {
         props.setFiltroEdad(newValue as number[]);
@@ -54,9 +68,14 @@ function FiltrosUsuario(props: any) {
                 fullWidth
                 onChange={(tipo: any) => handleChangeTipoUsu(tipo.target.value)}
               >
-                {tipoUsuario.map((pais) => (
-                  <MenuItem key={pais} value={pais}>
-                    {pais}
+                {idioma === "es" && tipoUsuario.map((tipo) => (
+                  <MenuItem key={tipo} value={tipo}>
+                    {tipo}
+                  </MenuItem>
+                ))}
+                {idioma === "en" && tipoUsuarioIngles.map((tipo, index) => (
+                  <MenuItem key={tipo} value={tipoUsuario[index]}>
+                    {tipo}
                   </MenuItem>
                 ))}
               </TextField>
@@ -70,8 +89,13 @@ function FiltrosUsuario(props: any) {
           fullWidth
           onChange={(country) => handleChangePais(country.target.value)}
           >
-          {paises.map((pais) => (
-            <MenuItem key={pais} value={pais}>
+          {idioma === "es" && paises.map((pais, index) => (
+            <MenuItem key={index} value={pais}>
+              {pais}
+            </MenuItem>
+          ))}
+          {idioma === "en" && paisesIngles.map((pais, index) => (
+            <MenuItem key={pais} value={paises[index]}>
               {pais}
             </MenuItem>
           ))}
@@ -95,9 +119,14 @@ function FiltrosUsuario(props: any) {
         fullWidth
         onChange={(genero) => handleChangeGenero(genero.target.value)}
       >
-        {generos.map((gen) => (
-          <MenuItem key={gen} value={gen}>
-            {gen}
+        {idioma === "es" && generos.map((genero) => (
+          <MenuItem key={genero} value={genero}>
+            {genero}
+          </MenuItem>
+        ))}
+        {idioma === "en" && generosIngles.map((genero, index) => (
+          <MenuItem key={genero} value={generos[index]}>
+            {genero}
           </MenuItem>
         ))}
       </TextField>)

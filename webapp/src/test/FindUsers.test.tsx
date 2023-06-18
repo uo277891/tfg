@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Ruta} from "react-router-dom";
 import FindUsers from '../pages/FindUsers';
+import '../i18n'
 
 test('Renderiza FindUsers correctamente', () => {
   const {getByText} = render(<Ruta><FindUsers/></Ruta>);

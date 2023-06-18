@@ -21,3 +21,18 @@ info: 13/06/2023 13:06:24: 	Código: 200 - Mensaje: Comentario insertado - IP: :
 info: 13/06/2023 13:06:31: 	Código: 200 - Mensaje: Comentario eliminado - IP: ::1- IDCom: 64884db083a09bd99474f86f
 info: 13/06/2023 13:06:39: 	Código: 200 - Mensaje: Multimedia de publicación eliminada - IP: ::1 - IDPub: 64884da583a09bd99474f864
 info: 13/06/2023 13:06:39: 	Código: 200 - Mensaje: Publicación eliminada - IP: ::1 - IDPub: 64884da583a09bd99474f864
+info: 17/06/2023 22:59:25: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:25: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:25: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a47025e73d6bf56559576
+info: 17/06/2023 22:59:25: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:27: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:28: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:31: 	Código: 200 - Mensaje: Seguidor insertado - IP: ::1 - IDUsu: 646a47415e73d6bf56559584 - IDSeg: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:31: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:32: 	Código: 200 - Mensaje: Publicación creada - IP: ::1 - IDUsu: 646a47025e73d6bf56559576
+info: 17/06/2023 22:59:33: 	Código: 200 - Mensaje: Seguidor eliminado - IP: ::1 - IDUsu: 646a47415e73d6bf56559584 - IDSeg: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:35: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a46a95e73d6bf5655955f
+info: 17/06/2023 22:59:37: 	Código: 200 - Mensaje: Multimedia de publicación eliminada - IP: ::1 - IDPub: 648e1eb44c051b6ae766b3ee
+info: 17/06/2023 22:59:37: 	Código: 200 - Mensaje: Publicación eliminada - IP: ::1 - IDPub: 648e1eb44c051b6ae766b3ee
+warn: 17/06/2023 23:00:03: 	Código: 200 - Mensaje: (Login) La contraseña era incorrecta - IP: ::1
+info: 17/06/2023 23:00:05: 	Código: 200 - Mensaje: Usuario identificado - IP: ::1 - IDUsu: 646a46a95e73d6bf5655955f

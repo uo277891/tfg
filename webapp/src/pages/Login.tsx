@@ -13,8 +13,7 @@ import SimboloCarga from "../components/SimboloCarga";
 import  Dayjs  from "dayjs";
 import DOMPurify from 'dompurify';
 import { getLoginError, inicioSesion } from "../conector/apiUsuarios";
-
-const llamadaBase = "http://localhost:5000/usuario/"
+import { useTranslation } from 'react-i18next';
 
 /**
  * @returns Página para representar la identificación de un usuario
@@ -43,6 +42,10 @@ const Login = () => {
 
     const[porcentajeAncho, setPorcentajeAncho] = React.useState("40%");
 
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
+
     const handleResize = () => {
       if(window.innerWidth < 900){
         setPorcentajeAncho("90%")
@@ -52,6 +55,7 @@ const Login = () => {
     };
 
     useEffect(() => {
+      i18n.changeLanguage(idioma)
       setCargando(true)
       window.addEventListener("resize", handleResize);
       setCargando(false)
@@ -67,7 +71,7 @@ const Login = () => {
         setUsuarioAutenticado("")
         setUsuarioEstaAcutenticado(false)
         setIdUser("")
-        seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
+        seterror(t("login.numFallos"));
         setNumIntentos(0)
         await getLoginError()
       }
@@ -82,12 +86,12 @@ const Login = () => {
         setNumIntentos(num);
         setLoginError(true);
         if(num >= 10){
-          seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
+          seterror(t("login.numFallos"));
           setFechaEspera(Dayjs())
           await getLoginError()
         }
         else
-          seterror("La contraseña o el usuario incluye algún caractér no permitido")
+          seterror(t("login.xssError"))
       }
       else{
         setCargando(true)
@@ -101,11 +105,11 @@ const Login = () => {
             setNumIntentos(num)
             if(num >= 10){
               setFechaEspera(Dayjs())
-              seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
+              seterror(t("login.numFallos"));
               await getLoginError()
             }
             else
-              seterror("Algún campo está vacío");
+              seterror(t("login.fieldError"));
         }
         else{
           const usuario = await inicioSesion(userName.toLowerCase(), password)
@@ -129,12 +133,12 @@ const Login = () => {
             setNumIntentos(num);
             setLoginError(true);
             if(num >= 10){
-              seterror("Ha superado el límite de intentos para iniciar sesión. Inténtelo de nuevo más tarde.");
+              seterror(t("login.numFallos"));
               setFechaEspera(Dayjs())
               await getLoginError()
             }
             else
-              seterror("Las credenciales no son correctas")
+              seterror(t("login.badCred"))
           }
         }
       }
@@ -162,14 +166,14 @@ const Login = () => {
               noValidate
               autoComplete="off"
               >
-              <h1>Iniciar Sesión</h1>
-              <TextField id="userName" label="Usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
+              <h1>{t("login.title")}</h1>
+              <TextField id="userName" label={t("register.name")} variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
               <div>
-                  <TextField id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
+                  <TextField id="password" label={t("register.password")} type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
               </div>
-              <Button className="boton" id = "inicioSesion" variant="contained" onClick={iniciarSesion}>Comprobar credenciales</Button>
+              <Button className="boton" id = "inicioSesion" variant="contained" onClick={iniciarSesion}>{t("button.credentials")}</Button>
           </Box>
-          <p>Si no tienes cuenta, ¡crea una ahora pulsando <Link href="/register" >aquí</Link>!</p>
+          <p>{t("login.register")}<Link href="/register" >{t("about.here")}</Link>!</p>
         </main>
         <Box sx={{ width: '100%' }}>
         <Collapse in={loginError}>

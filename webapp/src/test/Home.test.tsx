@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import Home from '../pages/Home';
+import '../i18n'  
 
 test('Home se renderiza correctamente', () => {
   const {getByText} = render(<Home />);

@@ -1,5 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
 import PublicationCard from '../components/PublicationCard';
+import '../i18n'
 
 test('PublicationCard se renderiza correctamente', () => {
     const likes = ["1", "2"]

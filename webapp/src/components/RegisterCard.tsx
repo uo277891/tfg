@@ -1,6 +1,9 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
 
 /**
  * Devuelve un resumen de los datos introducidos por el usuario en un registro
@@ -8,32 +11,41 @@ import Typography from '@mui/material/Typography';
  * @returns Representación del resumen de datos
  */
 function RegisterCard (props: any) {
+
+  const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
+
+    useEffect(() => {
+        i18n.changeLanguage(idioma)
+    }, [])
+
   return (
         <Card sx={{ margin: "auto", maxWidth: 400, minHeight:200 }} id="profileCard">
           <CardContent >
               <Typography gutterBottom variant="h5">
-              <strong>Datos personales:</strong>
+              <strong>{t("regCard.title1")}</strong>
               </Typography>
               <Typography gutterBottom variant="h6">
-                Nombre*: <strong>{props.nombre}</strong>
+              {t("regCard.name")}<strong>{props.nombre}</strong>
               </Typography>
               <Typography variant="h6">
-                Nacionalidad*: <strong>{props.pais}</strong>
+              {t("regCard.country")}<strong>{props.pais}</strong>
               </Typography>
               <Typography variant="h6">
-                Localidad: <strong>{props.localidad}</strong>
+              {t("regCard.location")}<strong>{props.localidad}</strong>
               </Typography>
               <Typography gutterBottom variant="h5">
-                <strong>Datos del perfil:</strong>
+                <strong>{t("regCard.title2")}</strong>
               </Typography>
               <Typography variant="h6">
-                Tipo de usuario: <strong>{props.tipoUsu}</strong>
+              {t("regCard.userType")}<strong>{props.tipoUsu}</strong>
               </Typography>
               <Typography variant="h6">
-                Descripcion: <strong>{props.descripcion}</strong>
+              {t("regCard.description")}<strong>{props.descripcion}</strong>
               </Typography>
               <Typography variant="h6">
-                Perfil de Spotify: <strong>{props.spotyName}</strong>
+              {t("regCard.spoID")}<strong>{props.spotyName}</strong>
               </Typography>
           </CardContent>
       </Card>

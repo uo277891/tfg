@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import Logout from '../pages/Logout';
+import '../i18n'
 
 test('Logout se renderiza correctamente', () => {
   const {getByText} = render(<Logout />);

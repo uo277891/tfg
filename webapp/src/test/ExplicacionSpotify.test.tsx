@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import ExplicacionSpotify from '../pages/ExplicacionSpotify';
+import '../i18n'
 
 test('ExplicacionSpotify se renderiza correctamente', () => {
   const {getByText} = render(<ExplicacionSpotify />);

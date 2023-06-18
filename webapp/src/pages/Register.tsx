@@ -13,6 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import  listaPaises  from '../util/listaPaises';
+import  listaPaisesIngles  from '../util/listaPaisesIngles';
 import { registro, actualizaFoto, reCaptchaGoogle } from '../conector/apiUsuarios';
 import { uploadMultimedia } from '../conector/apiCloudinary';
 import {cumpleRegistro, errorUsuario} from '../util/condicionesRegistro'
@@ -33,12 +34,13 @@ import SimboloCarga from '../components/SimboloCarga';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef } from 'react';
 import RGPDConditions from '../components/RGPDConditions';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import { useTranslation } from 'react-i18next';
 
 const fechaInicio = require('dayjs');
 
 const paises = listaPaises()
+
+const paisesIngles = listaPaisesIngles()
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -79,10 +81,16 @@ function a11yProps(index: number) {
 const Register = () => {
 
   const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
+  const tipoUsuarioIngles: string[] = ["Artist", "Promoter", "Standard"]
 
   const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+  const generosIngles: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Other"]
 
   const [value, setValue] = React.useState(0);
+
+  const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+  const { i18n, t } = useTranslation()
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -106,7 +114,7 @@ const Register = () => {
 
     const[userName, setUserName] = React.useState("");
 
-    const[country, setCountry] = React.useState("España");
+    const[country, setCountry] = React.useState("Argentina");
 
     const[location, setLocation] = React.useState("");
 
@@ -120,7 +128,7 @@ const Register = () => {
 
     const [date, setDate] = React.useState<Dayjs | null>(fechaInicio(1900));
 
-    const[tipoUsu, setTipoUsu] = React.useState("Artista");
+    const[tipoUsu, setTipoUsu] = React.useState("");
 
     const[generoFav, setGeneroFav] = React.useState("FreeStyle");
 
@@ -153,6 +161,7 @@ const Register = () => {
     };
 
     useEffect(() => {
+      i18n.changeLanguage(idioma)
       setCargando(true)
       window.addEventListener("resize", handleResize);
       setCargando(false)
@@ -164,7 +173,7 @@ const Register = () => {
             if(e.target.files[0].type !== undefined){
                 if(e.target.files[0].size > 1000000){
                   setRegisterError(true);
-                  seterror("La multimedia no puede ser superior a 1 MB (si no lo cambia el perfil se creará sin foto)");
+                  seterror(t("newPub.errorMulTam"));
                   setArchivo(undefined);
                 } 
                 else if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png"){
@@ -172,7 +181,7 @@ const Register = () => {
                 }
                 else{
                     setRegisterError(true);
-                    seterror("La foto de perfil debe tener la extensión png o jpg (si no lo cambia el perfil se creará sin foto)");
+                    seterror(t("register.errorMul"));
                     setArchivo(undefined);
                 }
             }
@@ -187,12 +196,12 @@ const Register = () => {
       if(archivo !== undefined){
         if(archivo.size > 3000000){
           setRegisterError(true);
-          seterror("La multimedia no puede ser superior a 1 MB (si no lo cambia el perfil se creará sin foto)");
+          seterror(t("newPub.errorMulTam"));
           setArchivo(undefined);
         }
         else if(archivo.type !== "image/jpeg" && archivo.type !== "image/png" && archivo.type !== "audio/mpeg"){
             setRegisterError(true);
-            seterror("La multimedia debe tener extensión png, jpg o mp3 (si no lo cambia el perfil se creará sin foto)");
+            seterror(t("register.errorMul"));
             setArchivo(undefined);
         }
         else{
@@ -210,26 +219,42 @@ const Register = () => {
     }
 
     function siguiente (sig: number) {
+      let errorTipo = false
+      if(sig === 2){
+        if(tipoUsu === ""){
+          setRegisterError(true);
+          seterror(t("register.errorTip"));
+          setCargando(false)
+          setValue(1)
+          errorTipo = true
+        }
+      }
       const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion, RGPDCond)
       if(numError > -1){
         setRegisterError(true);
-        seterror(errorUsuario(numError));
+        seterror(errorUsuario(numError, idioma));
         setCargando(false)
         if(numError === 4 || numError === 8) setValue(1)
         else setValue(0)
       }
-      else
+      else if(!errorTipo)
         setValue(sig)
     }
 
     async function registrarse() {
       setCargando(true)
       const numError = cumpleRegistro(userName, password, passwordConf, country, location, date, descripcion, RGPDCond)
+      if(tipoUsu === ""){
+        setRegisterError(true);
+        seterror(t("register.errorTip"));
+        setCargando(false)
+        setValue(1)
+      }
       if(numError > -1){
         setRegisterError(true);
-        seterror(errorUsuario(numError));
+        seterror(errorUsuario(numError, idioma));
         setCargando(false)
-        if(numError === 4)
+        if(numError === 4 || numError === 8)
           setValue(1)
         else
           setValue(0)
@@ -257,7 +282,7 @@ const Register = () => {
             }
             else{
               setRegisterError(true);
-              seterror("Usuario creado, la foto no ha podido ser insertada");
+              seterror(t("register.errorNoMul"));
               setCargando(false)
             }
           }else{
@@ -265,14 +290,15 @@ const Register = () => {
             setUsuarioAutenticado("")
             setUsuarioEstaAcutenticado(false)
             setIdUser("")
-            seterror("El nombre ya está en uso");
+            seterror(t("register.errorName"));
             setCargando(false)
           }
         }
         else{
           setRegisterError(true);
-          seterror("Confirme que no es un robot por favor 🤖");
+          seterror(t("register.errorRobot"));
           setCargando(false)
+          setValue(2)
         }
       }
     }
@@ -283,13 +309,13 @@ const Register = () => {
     return (
       <div id="regiter" className="forms">
         <main>
-        <h1>Registro</h1>
+        <h1>{t("register.title")}</h1>
         <Box sx={{ width: '100%' }}>
         <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider' }}>
           <Tabs style={{ width: 'auto' }} value={value} onChange={handleChange}>
-            <Tab label="Datos" {...a11yProps(0)} />
-            <Tab label="Sobre ti" {...a11yProps(1)} />
-            <Tab label="Resumen" {...a11yProps(2)} />
+            <Tab label={t("register.tab1")} {...a11yProps(0)} />
+            <Tab label={t("register.tab2")} {...a11yProps(1)} />
+            <Tab label={t("register.tab3")} {...a11yProps(2)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
@@ -302,29 +328,33 @@ const Register = () => {
                   autoComplete="off"
                   name='Register'
                   >
-                  
-                    <TextField required id="userName" name = "userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
+                    <TextField required id="userName" name = "userName" label={t("register.name")} variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
                     <br/>
                     <TextField
                       id="country"
                       select
                       value={country}
                       name='country'
-                      label="País de nacimiento"
-                      helperText="Selecciona tu país"
+                      label={t("register.country")}
+                      helperText={t("register.countryLabel")}
                       onChange={(country) => setCountry(country.target.value)}
                     >
-                      {paises.map((pais) => (
-                        <MenuItem key={pais} value={pais}>
+                      {idioma === "es" && paises.map((pais, index) => (
+                        <MenuItem key={index} value={pais}>
+                          {pais}
+                        </MenuItem>
+                      ))}
+                      {idioma === "en" && paisesIngles.map((pais, index) => (
+                        <MenuItem key={pais} value={paises[index]}>
                           {pais}
                         </MenuItem>
                       ))}
                     </TextField>
-                    <TextField id="location" name = "location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
+                    <TextField id="location" name = "location" label={t("register.location")} variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
                     <br/>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
-                        label="Fecha de nacimiento"
+                        label={t("register.date")}
                         inputFormat="DD/MM/YYYY"
                         value={date}
                         onChange={handleDate}
@@ -332,11 +362,11 @@ const Register = () => {
                         />
                     </LocalizationProvider>
                     <br/>
-                    <TextField required name = "passwd" id="password" label="Contraseña" type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
-                    <TextField required name = "repPasswd" id="passwordConf" label="Repetir Contraseña" type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
+                    <TextField required name = "passwd" id="password" label={t("register.password")} type="password" variant="outlined" onChange={(pw) => setPassword(pw.target.value)} value={password}/>
+                    <TextField required name = "repPasswd" id="passwordConf" label={t("register.confPassword")} type="password" variant="outlined" onChange={(pw) => setPasswordConf(pw.target.value)} value={passwordConf}/>
                     <br/>
                     <RGPDConditions setRGPDCond={setRGPDCond} RGPDCond={RGPDCond}/>
-                    <Button className="boton" id = "siguiente1" variant="contained" onClick={() => siguiente(1)}>Siguiente</Button>
+                    <Button className="boton" id = "siguiente1" variant="contained" onClick={() => siguiente(1)}>{t("button.next")}</Button>
               </Box>
             </TabPanel>
             <TabPanel value={value} index={1}>
@@ -348,16 +378,26 @@ const Register = () => {
                   noValidate
                   autoComplete="off"
                   >
-                  <TextField id="tipoUsuario" select value={tipoUsu} label="Tipo de perfil" onChange={(tipo) => setTipoUsu(tipo.target.value)}>
-                    {tipoUsuario.map((tipo) => (
+                  <TextField id="tipoUsuario" select value={tipoUsu} label={t("register.typeUser")} onChange={(tipo) => setTipoUsu(tipo.target.value)}>
+                    {idioma === "es" && tipoUsuario.map((tipo) => (
                       <MenuItem key={tipo} value={tipo}>
                         {tipo}
                       </MenuItem>
                     ))}
+                    {idioma === "en" && tipoUsuarioIngles.map((tipo, index) => (
+                      <MenuItem key={tipo} value={tipoUsuario[index]}>
+                        {tipo}
+                      </MenuItem>
+                    ))}
                   </TextField>
-                  <TextField id="generoFav" select value={generoFav} label="Género favorito" onChange={(genero) => setGeneroFav(genero.target.value)}>
-                    {generos.map((genero) => (
+                  <TextField id="generoFav" select value={generoFav} label={t("register.genre")} onChange={(genero) => setGeneroFav(genero.target.value)}>
+                    {idioma === "es" && generos.map((genero) => (
                       <MenuItem key={genero} value={genero}>
+                        {genero}
+                      </MenuItem>
+                    ))}
+                    {idioma === "en" && generosIngles.map((genero, index) => (
+                      <MenuItem key={genero} value={generos[index]}>
                         {genero}
                       </MenuItem>
                     ))}
@@ -372,7 +412,7 @@ const Register = () => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography>¡Añade enlaces a tus redes sociales!</Typography>
+                        <Typography>{t("register.social")}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
                         <TextField style={{ width: 'auto' }} InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
@@ -386,13 +426,13 @@ const Register = () => {
                   </Grid>
                   <br/>
                   
-                  <Textarea color="neutral" style={{ width: '50%', fontSize:'1em' }} minRows={10} placeholder="Introduce una pequeña descripción sobre ti (máximo 200 caracteres)" 
+                  <Textarea color="neutral" style={{ width: '50%', fontSize:'1em' }} minRows={10} placeholder={t("register.description")}
                           id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
                   
                   <br/>
                   {descripcion.length} / 200
                   <br/>
-                  <Button className="boton" id = "siguiente2" variant="contained" onClick={() => siguiente(2)}>Siguiente</Button>
+                  <Button className="boton" id = "siguiente2" variant="contained" onClick={() => siguiente(2)}>{t("button.next")}</Button>
               </Box>
             </TabPanel>
             <TabPanel value={value} index={2}>
@@ -400,15 +440,15 @@ const Register = () => {
               nombre={userName} pais={country} localidad={location} tipoUsu={tipoUsu} descripcion={descripcion} spotyName={nomSpoty}>
               </RegisterCard>
               <br/>
-                  Añade una foto de perfil (opcional): <input type="file" onChange={actualizaArchivo} />
+              {t("register.photo")} <input type="file" onChange={actualizaArchivo} />
               <br/>
               <Grid container justifyContent="center" p={2}>
                 <ReCAPTCHA ref={captchaRef} sitekey={process.env.REACT_APP_CAPTCHA_SITE_KEY + ""}/>
               </Grid>
-              <Button className="boton" id="registrarse" variant="contained" onClick={registrarse}>Registrarse</Button>
+              <Button className="boton" id="registrarse" variant="contained" onClick={registrarse}>{t("button.register")}</Button>
             </TabPanel>
-            <p>¿Ya tienes cuenta?, ¡inicia sesión pulsando <Link href="/login" >aquí</Link>!</p>
-            <p>Consulta cómo obtener tu ID de Spotify <Link href="/idspotify" >aquí</Link></p>
+            <p>{t("register.login")}<Link href="/login" >{t("about.here")}</Link>!</p>
+            <p>{t("register.idSpo")} <Link href="/idspotify" >{t("about.here")}</Link></p>
             <Box sx={{ width: '100%' }}>
             <Collapse in={registerError}>
               <Alert

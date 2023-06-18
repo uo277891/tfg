@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
@@ -22,6 +22,8 @@ import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import SimboloCarga from '../components/SimboloCarga';
 import { Tooltip } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { useLocalStorage } from '../localStorage/useLocalStorage';
 
 type Anchor = 'left';
 
@@ -54,6 +56,10 @@ const FindUsers = () => {
 
     const [state, setState] = React.useState({left: false});
 
+    const { i18n, t } = useTranslation()
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
     const buscarUsuarios = async (text: string) => {
         setCargando(true)
         const users = await getUsuariosByName(text.toLowerCase())
@@ -77,6 +83,10 @@ const FindUsers = () => {
             setCargando(false)
             toggleDrawer('left', false)
     }
+
+    useEffect(() => {
+        i18n.changeLanguage(idioma)
+    }, []);
     
       const toggleDrawer =
         (anchor: Anchor, open: boolean) =>
@@ -91,7 +101,7 @@ const FindUsers = () => {
       const list = () => (
         <Box sx={{ width: 250 }}>
           <List>
-            {['Tipo artista', 'País', 'Rango edad', 'Género'].map((text, index) => (
+            {[t("find.artists"), t("find.country"), t("find.age"), t("find.genre")].map((text, index) => (
                 <Box key = {"texto" + index} padding={'1em'}>
                     <Typography variant='h5' >{text}<br/>
                         <Filtro setFiltroGenero = {setFiltroGenero} setFiltroEdad={setFiltroEdad} setFiltroPais={setFiltroPais} setFiltroTipo={setFiltroTipo} index={index}></Filtro>
@@ -101,7 +111,7 @@ const FindUsers = () => {
             <Divider/>
             <Box key = "buttonFilter" padding={'1em'}>
                 <Button id="btFiltros" fullWidth sx={{color: common.black}} startIcon={<Icono icono="Filtro"></Icono>} onClick={() => handleFiltro()}>
-                    <ListItemText primary="Aplicar filtros" />
+                    <ListItemText primary={t("button.apFilters")} />
                 </Button>
             </Box>
           </List>
@@ -117,13 +127,13 @@ const FindUsers = () => {
             <main>
                 <Grid container spacing={3}>
                     <Grid item xs={10.5}>
-                        <TextField fullWidth label="Buscar usuarios" id="searchName" value={texto}
+                        <TextField fullWidth label={t("find.searchUsersTextField")} id="searchName" value={texto}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 setTexto(event.target.value);
                         }}/>
                     </Grid>
                     <Grid item xs={1}>
-                        <Tooltip title="Buscar">
+                        <Tooltip title={t("button.find")}>
                             <IconButton onClick = {HandleBuscaUsuarios} >
                                 <SearchIcon  id="search" fontSize="large"></SearchIcon>
                             </IconButton>
@@ -132,7 +142,7 @@ const FindUsers = () => {
                 </Grid>
                 <div className='estiloBase'>
                     <React.Fragment key={'left'}>
-                        <Button className="boton" id="buscar" variant="contained" onClick={toggleDrawer('left', true)}>Filtros</Button>
+                        <Button className="boton" id="buscar" variant="contained" onClick={toggleDrawer('left', true)}>{t("button.filters")}</Button>
                         <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
                             {list()}
                         </Drawer>
@@ -140,7 +150,7 @@ const FindUsers = () => {
                 </div>
                 <Grid>
                     <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-                        Usuarios encontrados:
+                        {t("find.searchUsers")}
                     </Typography>
                     <List>
                         {usuarios.slice((page - 1) * numElementos, numElementos * page).map((usuario: Usuario) =>

@@ -30,6 +30,7 @@ import { common } from '@mui/material/colors';
 import Filtro from '../components/FiltrosPublicaciones';
 import SimboloCarga from "../components/SimboloCarga";
 import { getFollowingUsers } from "../conector/apiSeguidores";
+import { useTranslation } from 'react-i18next';
 
 type Anchor = 'left';
 
@@ -68,6 +69,10 @@ const ExternProfile = () => {
 
     const [tamañoImagen, setTamañoImagen] = useState<number[]>([50,60]);
 
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
+
     const numElementos = 9
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -104,6 +109,7 @@ const ExternProfile = () => {
     }, []);
 
     useEffect(() => {
+        i18n.changeLanguage(idioma)
         datosIniciales();
         window.addEventListener("resize", handleResize);
     }, [])
@@ -148,7 +154,7 @@ const ExternProfile = () => {
       const list = () => (
         <Box sx={{ width: 250 }}>
           <List>
-            {['Tipo publicación', 'Ordenar por'].map((text, index) => (
+            {[t("externProfile.pubType"), t("externProfile.pubOrd")].map((text, index) => (
                 <Box key = {text} padding={'1em'}>
                     <Typography variant='h5' >{text}<br/>
                         <Filtro setFiltroPublicacion = {setFiltroPublicacion} setOrdenadoFecha={setOrdenadoFecha} index={index}></Filtro>
@@ -160,7 +166,7 @@ const ExternProfile = () => {
             <Divider/>
             <Box key = "buttonFilter" padding={'1em'}>
                 <Button id="btFiltros" fullWidth sx={{color: common.black}} startIcon={<Icono icono="Filtro"></Icono>} onClick={() => handleFiltro()}>
-                    <ListItemText primary="Aplicar filtros" />
+                    <ListItemText primary={t("button.apFilters")} />
                 </Button>
             </Box>
           </List>
@@ -177,11 +183,11 @@ const ExternProfile = () => {
                     <Table>
                         <TableHead>
                         <TableRow>
-                        <TableCell align="left" sx={{fontSize: tamañoLetra}}>Foto</TableCell>
-                            <TableCell sx={{fontSize: tamañoLetra}} align="center">Publicaciones</TableCell>
-                            <TableCell sx={{fontSize: tamañoLetra}} align="center">Seguidores</TableCell>
-                            <TableCell sx={{fontSize: tamañoLetra}} align="center">Seguidos</TableCell>
-                            {tamañoLetra === 20 && <TableCell sx={{fontSize: tamañoLetra}} align="center">Genero Favorito</TableCell>}
+                        <TableCell align="left" sx={{fontSize: tamañoLetra}}>{t("externProfile.photo")}</TableCell>
+                            <TableCell sx={{fontSize: tamañoLetra}} align="center">{t("externProfile.pubs")}</TableCell>
+                            <TableCell sx={{fontSize: tamañoLetra}} align="center">{t("externProfile.seg")}</TableCell>
+                            <TableCell sx={{fontSize: tamañoLetra}} align="center">{t("externProfile.follows")}</TableCell>
+                            {tamañoLetra === 20 && <TableCell sx={{fontSize: tamañoLetra}} align="center">{t("externProfile.genre")}</TableCell>}
                         </TableRow>
                         </TableHead>
                         <TableBody>
@@ -203,20 +209,20 @@ const ExternProfile = () => {
                 </TableContainer>
                 {usuario._id !== idUser && !leSigue &&<TableCell sx={{fontSize: tamañoLetra}} align="center"><Button id="seguir" size="large" variant="contained" color="info" startIcon={<Icono icono={"Seguir"}/>} onClick={handleSeguir}>Seguir</Button></TableCell>}
                 {usuario._id === idUser && <TableCell sx={{fontSize: tamañoLetra}} align="center">
-                        <Button href="/profile" id="editarPerfil" className="boton" variant="contained" size="large" startIcon={<Icono icono={"Perfil"}/>}>Editar perfil</Button>
+                        <Button href="/profile" id="editarPerfil" className="boton" variant="contained" size="large" startIcon={<Icono icono={t("navBar.profile")}/>}>{t("button.editProf")}</Button>
                 </TableCell>}
                 {usuario._id !== idUser && leSigue && <TableCell sx={{fontSize: 20}} align="center"><Button startIcon={<Icono icono={"Dejar de seguir"}/>} id="dejarSeguir" size="large" variant="contained" color="warning" onClick={handleDejarDeSeguir}>Dejar de seguir</Button></TableCell>}
                 {usuario.nombre_spotify !== "" && usuario.tipo !== "Estándar" && <TableCell sx={{fontSize: tamañoLetra}} align="center">
-                    <Button href={"/spotify/data/" + usuario.nombre_spotify} color="success" className="boton" variant="contained" size="large" startIcon={<Icono icono={"Obtener ID Spotify"}/>}>Estadísticas Spotify</Button>
+                    <Button href={"/spotify/data/" + usuario.nombre_spotify} color="success" className="boton" variant="contained" size="large" startIcon={<Icono icono={t("navBar.idSpo")}/>}>{t("button.spoStats")}</Button>
                 </TableCell>}
                 <h2>{usuario.nombre}</h2>
                 <p>{usuario.descripcion}</p>
-                {(usuario.redes[0] !== "" || usuario.redes[1] !== "" || usuario.redes[2] !== "") && <Typography variant="h4"><AutoAwesomeIcon id ="redes"></AutoAwesomeIcon>  Otras redes sociales</Typography>}
+                {(usuario.redes[0] !== "" || usuario.redes[1] !== "" || usuario.redes[2] !== "") && <Typography variant="h4"><AutoAwesomeIcon id ="redes"></AutoAwesomeIcon>{t("externProfile.social")}</Typography>}
                 <RedesSociales redes = {usuario.redes}></RedesSociales>
-                <h1>Publicaciones:</h1>
+                <h1>{t("externProfile.pubs")}:</h1>
                 <div className='estiloBase'>
                     <React.Fragment key={'left'}>
-                        <Button className="boton" variant="contained" onClick={toggleDrawer('left', true)}>Filtros</Button>
+                        <Button className="boton" variant="contained" onClick={toggleDrawer('left', true)}>{t("button.filters")}</Button>
                         <Drawer anchor={'left'} open={state['left']} onClose={toggleDrawer('left', false)}>
                             {list()}
                         </Drawer>
@@ -243,7 +249,7 @@ const ExternProfile = () => {
         return(
         <div id="externProfile">
             <main>
-                <h1>Inicia sesión para poder ver perfiles ajenos.</h1>
+                <h1>{t("fallos.noIdent")}</h1>
             </main>
         </div>
         )
@@ -252,7 +258,7 @@ const ExternProfile = () => {
         return(
         <div id="externProfile">
             <main>
-                <h1>Usuario no encontrado.</h1>
+                <h1>{t("fallos.noUsu")}</h1>
             </main>
         </div>
         )

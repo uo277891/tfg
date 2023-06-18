@@ -13,6 +13,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { common } from '@mui/material/colors';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Devuelve el icono asociado a un nombre
@@ -20,29 +21,32 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
  * @returns Icono asociado
  */
 function Icono(props: any) {
-	if(props.icono === "Siguiendo")
+
+    const { t } = useTranslation()
+
+	if(props.icono === t("navBar.follow"))
         return (<SupervisedUserCircleIcon sx={{color: common.white}}></SupervisedUserCircleIcon>)
-    if(props.icono === "Tus seguidores")
+    if(props.icono === t("navBar.follows"))
         return (<SentimentSatisfiedAltIcon sx={{color: common.white}}></SentimentSatisfiedAltIcon>)
-    else if(props.icono === "Buscar usuarios")
+    else if(props.icono === t("navBar.find"))
         return (<SearchIcon sx={{color: common.white}}></SearchIcon>)
-    else if(props.icono === "Crear publicación")
+    else if(props.icono === t("navBar.newPub"))
         return (<AddCircleIcon sx={{color: common.white}}></AddCircleIcon>)
-    else if(props.icono === "Sobre SocialFS")
+    else if(props.icono === t("navBar.about"))
         return (<HelpOutlineIcon sx={{color: common.white}}></HelpOutlineIcon>)
-    else if(props.icono === "Obtener ID Spotify")
+    else if(props.icono === t("navBar.idSpo"))
         return (<MusicNoteIcon sx={{color: common.white}}></MusicNoteIcon>)
-    else if(props.icono === "Datos de Spotify")
+    else if(props.icono === t("navBar.dataSpo"))
         return (<AssessmentIcon sx={{color: common.white}}></AssessmentIcon>)
-    else if(props.icono === "Perfil")
+    else if(props.icono === t("navBar.profile"))
         return (<AccountCircleIcon sx={{color: common.white}}></AccountCircleIcon>)
-    else if(props.icono === "Cerrar Sesión")
+    else if(props.icono === t("navBar.logout"))
         return (<LogoutIcon sx={{color: common.white}}></LogoutIcon>)
-    else if(props.icono === "Estadísticas")
+    else if(props.icono === t("navBar.stats"))
         return (<AutoGraphIcon sx={{color: common.white}}></AutoGraphIcon>)
     else if(props.icono === "Filtro")
         return (<FilterAltIcon></FilterAltIcon>)
-    else if(props.icono === "Eliminar Cuenta")
+    else if(props.icono === t("navBar.delete"))
         return (<HighlightOffIcon sx={{color: common.white}}></HighlightOffIcon>)
     else if(props.icono === "Dejar de seguir")
         return (<PersonOffIcon sx={{color: common.white}}></PersonOffIcon>)

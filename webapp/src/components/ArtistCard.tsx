@@ -1,9 +1,12 @@
-import { Button, Link } from '@mui/material';
+import { Button } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
 
 /**
  * Devuelve un componente que renderiza un artista 
@@ -11,6 +14,14 @@ import Typography from '@mui/material/Typography';
  * @returns Representación del artista
  */
 const ArtistCard = (props: any) => {
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
+
+    useEffect(() => {
+        i18n.changeLanguage(idioma)
+    }, [])
 
     const idCss = props.artistaPropio === true ? "artistCard" : "externArtistCard"
     function listadoGeneros () {
@@ -30,12 +41,12 @@ const ArtistCard = (props: any) => {
         />
         <CardContent>
             {!props.artistaPropio && <Typography>{props.artista.name}</Typography>}
-            <Typography variant='h4'>Popularidad: <Typography variant='h5' display={'inline'}>{props.artista.popularity}</Typography></Typography>
-            <Typography variant='h4'>Seguidores: <Typography variant='h5' display={'inline'}>{props.artista.followers.total}</Typography></Typography>
-            <Typography variant='h4'>Géneros: <Typography variant='h5' display={'inline'}>{listadoGeneros()}</Typography></Typography>
+            <Typography variant='h4'>{t("spoCards.pop")}<Typography variant='h5' display={'inline'}>{props.artista.popularity}</Typography></Typography>
+            <Typography variant='h4'>{t("spoCards.seg")}<Typography variant='h5' display={'inline'}>{props.artista.followers.total}</Typography></Typography>
+            <Typography variant='h4'>{t("spoCards.genres")}<Typography variant='h5' display={'inline'}>{listadoGeneros()}</Typography></Typography>
         </CardContent>
         <CardActions sx={{justifyContent: "space-between"}}>
-            <Button sx={{ margin: "auto" }} href={props.artista.external_urls.spotify} className="boton" size="large" variant="contained">Ver perfil en Spotify</Button>
+            <Button sx={{ margin: "auto" }} href={props.artista.external_urls.spotify} className="boton" size="large" variant="contained">{t("spoCards.artistLink")}</Button>
         </CardActions>
     </Card>
   );

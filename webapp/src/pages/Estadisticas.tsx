@@ -22,6 +22,7 @@ import {PolarArea} from 'react-chartjs-2'
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, RadialLinearScale, Tooltip, Legend, ArcElement } from "chart.js";
 import { Grid } from '@mui/material';
 import MapPaises from '../components/MapPaises';
+import { useTranslation } from 'react-i18next';
 
 ChartJS.register(CategoryScale);
 ChartJS.register(LinearScale);
@@ -37,6 +38,7 @@ ChartJS.register(Legend);
 const Estadisticas = () => {
 
   var listadoGeneros: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+  var listadoGenerosIngles: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Other"]
 
   const [open, setOpen] = React.useState(false);
 
@@ -55,6 +57,7 @@ const Estadisticas = () => {
   const [edadMedia, setEdadMedia] = React.useState(0);
 
   const [textoEdad, setTextoEdad] = React.useState<string[]>(["Joven", "Adulto", "Mayor"]);
+  const [textoEdadIngles, setTextoEdadIngles] = React.useState<string[]>(["Young", "Adult", "Senior"]);
 
   const [paises, setPaises] = React.useState<string[]>([]);
 
@@ -63,6 +66,10 @@ const Estadisticas = () => {
   const [generos, setGeneros] = React.useState<string[]>([])
 
   const [totalSeguidores, setTotalSeguidores] = React.useState<number>(0)
+
+  const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+  const { i18n, t } = useTranslation()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -122,6 +129,7 @@ const Estadisticas = () => {
   }, []);
 
   useEffect(() => {
+    i18n.changeLanguage(idioma)
     datosIniciales();
   }, [])
 
@@ -130,10 +138,12 @@ const Estadisticas = () => {
 
   else if(usuarioEstaAutenticado && sinSeguidores && usuario !== undefined){
 
+    const listaEdad = idioma === "es" ? textoEdad : textoEdadIngles
+
     const grafica = {
-      labels: textoEdad,
+      labels: listaEdad,
       datasets:[{
-        label: "Porcentajes (%) por rango de edad",
+        label: t("stats.ageLabel"),
         backgroundColor: [
           'rgba(91, 255, 51, 0.8)',
           'rgba(255, 178, 51, 0.8)',
@@ -145,10 +155,12 @@ const Estadisticas = () => {
       }]
     }
     
+    const listaGenero = idioma === "es" ? listadoGeneros : listadoGenerosIngles
+    
     const graficaPolar = {
-      labels: listadoGeneros,
+      labels: listaGenero,
       datasets:[{
-        label: "Porcentajes (%) por género favorito",
+        label: t("stats.genreLabel"),
         backgroundColor: [
           'rgba(91, 255, 51, 0.8)',
           'rgba(255, 178, 51, 0.8)',
@@ -166,35 +178,35 @@ const Estadisticas = () => {
     return (
       <div className="est">
         <main>
-          <h1>Estadísticas</h1>
-          <p>¡Consulta tus estadísticas en base a las personas que te siguen!</p>
+          <h1>{t("stats.title")}</h1>
+          <p>{t("stats.subtitle")}</p>
             <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content"id="panel1a-header">
-              <Typography variant='h4'>Estadísticas por edad</Typography>
+              <Typography variant='h4'>{t("stats.age")}</Typography>
             </AccordionSummary>
             <Grid container justifyContent="center">
               <Grid item xs={8}>
                 <Bar data={grafica}/>
               </Grid>
             </Grid>
-            <Typography display={'inline'}> La media de edad de tus seguidores es de </Typography>
-            <Typography display={'inline'} variant="h4"> {edadMedia} años </Typography>
+            <Typography display={'inline'}>{t("stats.middleAge")}</Typography>
+            <Typography display={'inline'} variant="h4"> {edadMedia} {t("stats.ageText")} </Typography>
             <br/>
-            <Button variant="contained" className='boton' onClick={handleClickOpen} startIcon={<QuestionMarkIcon />}> Rangos de edad </Button>
+            <Button variant="contained" className='boton' onClick={handleClickOpen} startIcon={<QuestionMarkIcon />}>{t("button.age")}</Button>
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle>
-                {"¿Cuáles son los rangos de edad?"}
+                {t("stats.ageRange")}
               </DialogTitle>
               <DialogContent>
-                <DialogContentText> Jóvenes: Entre 16 y 30 años. </DialogContentText>
-                <DialogContentText> Adultos: Entre 31 y 65 años. </DialogContentText>
-                <DialogContentText> Mayores: Entre 65 y 150 años. </DialogContentText>
+                <DialogContentText> {t("stats.young")} </DialogContentText>
+                <DialogContentText> {t("stats.adult")} </DialogContentText>
+                <DialogContentText> {t("stats.senior")} </DialogContentText>
               </DialogContent>
             </Dialog>
           </Accordion>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
-              <Typography variant='h4'>Estadísticas por país</Typography>
+              <Typography variant='h4'>{t("stats.country")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Grid container justifyContent="center">
@@ -206,7 +218,7 @@ const Estadisticas = () => {
           </Accordion>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
-              <Typography variant='h4'>Estadísticas por géneros</Typography>
+              <Typography variant='h4'>{t("stats.genre")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Grid container justifyContent="center">
@@ -221,9 +233,9 @@ const Estadisticas = () => {
     );
   }
     else if(!usuarioEstaAutenticado)
-      return (<h1>Inicia sesión para ver tus estadísticas</h1>)
+      return (<h1>{t("fallos.noIdent")}</h1>)
     else
-      return (<h1>No tienes seguidores para mostrar tus estadísticas</h1>)
+      return (<h1>{t("fallos.noSeg")}</h1>)
 }
 
 export default Estadisticas;

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import RegisterCard from '../components/RegisterCard';
+import '../i18n'
 
 test('RegisterCard se renderiza correctamente', () => {
   const {getByText} = render(<RegisterCard nombre = "nombre" pais = "Esp" localidad = "Gijon" tipoUsu = "Artista" descripcion = "descripcion" spotyName = "spotify"/>);
@@ -9,7 +10,7 @@ test('RegisterCard se renderiza correctamente', () => {
   expect(getByText("Localidad:")).toBeInTheDocument();
   expect(getByText("Datos del perfil:")).toBeInTheDocument();
   expect(getByText("Tipo de usuario:")).toBeInTheDocument();
-  expect(getByText("Descripcion:")).toBeInTheDocument();
+  expect(getByText("Descripción:")).toBeInTheDocument();
   expect(getByText("Perfil de Spotify:")).toBeInTheDocument();
   expect(getByText("nombre")).toBeInTheDocument();
   expect(getByText("Esp")).toBeInTheDocument();
