@@ -1,48 +1,59 @@
 import logoSpo from "../images/SpotifyLogo.png"
+import { useLocalStorage } from "../localStorage/useLocalStorage";
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 /**
  * @returns Página para representar los datos que se expondrán en caso de proporcionar un ID de Spotify válido
  */
 const ExplicacionSpotify = () => {
 
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
+
+    useEffect(() => {
+        i18n.changeLanguage(idioma)
+    }, [])
+
   return (
     <div className="expSpo">
         <main>
-            <h1>Qué datos se extraen de Spotify</h1>
-            <p>Una vez nos proporciones tu ID de Spotify, a través de la API se sacarán los siguientes datos:</p>
+            <h1>{t("dataSpo.title")}</h1>
+            <p>{t("dataSpo.subtitle")}</p>
         </main>
         <section>
             <ul>
-                <li><strong>Sobre ti</strong></li>
+                <li><strong>{t("dataSpo.artTit")}</strong></li>
                     <ul>
-                        <li>Imagen de perfil.</li>
-                        <li>Géneros con los que se te relaciona.</li>
-                        <li>Popularidad en Spotify.</li>
-                        <li>Número de seguidores.</li>
-                        <li>Enlace a tu perfil de Spotify.</li>
+                        <li>{t("dataSpo.artImg")}</li>
+                        <li>{t("dataSpo.artGen")}</li>
+                        <li>{t("dataSpo.artPop")}</li>
+                        <li>{t("dataSpo.artSeg")}</li>
+                        <li>{t("dataSpo.artLink")}</li>
                     </ul>
-                <li><strong>Tus 6 álbumes más populares</strong></li>
+                <li><strong>{t("dataSpo.albTit")}</strong></li>
                     <ul>
-                        <li>Imagen del álbum.</li>
-                        <li>Fecha de lanzamiento.</li>
-                        <li>Número de canciones.</li>
-                        <li>Artistas.</li>
-                        <li>Enlace al álbum.</li>
+                        <li>{t("dataSpo.albImg")}</li>
+                        <li>{t("dataSpo.albFec")}</li>
+                        <li>{t("dataSpo.albNum")}</li>
+                        <li>{t("dataSpo.albArt")}</li>
+                        <li>{t("dataSpo.albLink")}</li>
                     </ul>
-                <li><strong>Tus 6 canciones más populares</strong></li>
+                <li><strong>{t("dataSpo.sonTit")}</strong></li>
                     <ul>
-                        <li>Imagen del álbum o canción.</li>
-                        <li>Álbum al que pertenece.</li>
-                        <li>Fecha de salida.</li>
-                        <li>Artistas que participan.</li>
-                        <li>Popularidad en la plataforma.</li>
-                        <li>Duración.</li>
-                        <li>Extracto de la canción.</li>
-                        <li>Enlace a la canción.</li>
+                        <li>{t("dataSpo.sonImg")}</li>
+                        <li>{t("dataSpo.sonAlb")}</li>
+                        <li>{t("dataSpo.sonFec")}</li>
+                        <li>{t("dataSpo.sonArt")}</li>
+                        <li>{t("dataSpo.sonPup")}</li>
+                        <li>{t("dataSpo.sonDur")}</li>
+                        <li>{t("dataSpo.sonExt")}</li>
+                        <li>{t("dataSpo.sonLink")}</li>
                     </ul>
-                <li><strong>12 artistas similares a ti (según Spotify)</strong></li>
+                <li><strong>{t("dataSpo.simTit")}</strong></li>
                     <ul>
-                        <li>Mismos datos que se muestran para tu perfil.</li>
+                        <li>{t("dataSpo.simSubTit")}</li>
                     </ul>
             </ul>
         </section>

@@ -15,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { getFollowingUsers, getFollowsByUser } from "../conector/apiSeguidores";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
+import { useTranslation } from 'react-i18next';
 
 /**
  * @returns Página para representar los usuarios que sigue el usuario identificado
@@ -39,6 +40,10 @@ const FollowingUsers = (props: any) => {
 
     const [texto, setTexto] = useState("");
 
+    const { i18n, t } = useTranslation()
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
     const buscarUsuarios = useCallback(async () => {
         if(usuarioEstaAutenticado){
             var users;
@@ -56,6 +61,7 @@ const FollowingUsers = (props: any) => {
     }, []);
  
     useEffect(() => {
+        i18n.changeLanguage(idioma)
         buscarUsuarios();
     }, [])
 
@@ -92,16 +98,17 @@ const FollowingUsers = (props: any) => {
         return (
         <div id="findUsers">
             <main>
-                <h1>Usuarios a los que sigues:</h1>
+                {!props.you && <h1>{t("find.follow")}</h1>}
+                {props.you && <h1>{t("find.findUsers")}</h1>}
                 <Grid container spacing={3}>
                     <Grid item xs={10.5}>
-                        <TextField fullWidth label="Buscar usuarios"  value={texto}
+                        <TextField fullWidth label={t("find.searchUsersTextField")}  value={texto}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 setTexto(event.target.value);
                         }}/>
                     </Grid>
                     <Grid item xs={1}>
-                        <Tooltip title="Buscar">
+                        <Tooltip title={t("button.find")}>
                             <IconButton onClick = {HandleBuscaUsuarios}>
                                 <SearchIcon  id="questionIcon" fontSize="large"></SearchIcon>
                             </IconButton>
@@ -117,7 +124,7 @@ const FollowingUsers = (props: any) => {
                 </Grid>
                 <Grid container alignItems="center" justifyContent="center">
                     <Stack spacing={2}>
-                        <Pagination color="secondary" count={Math.round(usuarios.length / numElementos) + 1} page={page} onChange={handleChange} />
+                        <Pagination color="secondary" count={Math.floor((usuarios.length / numElementos)) + 1} page={page} onChange={handleChange} />
                     </Stack>
                 </Grid>
             </main>
@@ -125,7 +132,7 @@ const FollowingUsers = (props: any) => {
         );
     }
     else{
-        return (<h1>Inicia sesión para ver a quien sigues.</h1>)
+        return (<h1>{t("fallos.noIdent")}</h1>)
     }
 }
 

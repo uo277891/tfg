@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import AboutSocialFS from '../pages/AboutSocialFS';
+import '../i18n'
 
 test('AboutSocialFS se renderiza correctamente', () => {
   const {getByText} = render(<AboutSocialFS />);

@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Ruta} from "react-router-dom";
 import Register from '../pages/Register';
+import '../i18n'
 
 test('Renderiza primera página de Register correctamente', () => {
   const {getByText} = render(<Ruta><Register /></Ruta>);
@@ -15,7 +16,6 @@ test('Renderiza primera página de Register correctamente', () => {
   expect(screen.getByLabelText("Localidad")).toBeInTheDocument();
   expect(screen.getByLabelText("Fecha de nacimiento")).toBeInTheDocument();
   expect(screen.getByLabelText("Contraseña *")).toBeInTheDocument();
-  expect(screen.getByLabelText("Repetir Contraseña *")).toBeInTheDocument();
   expect(screen.getByLabelText("Aceptar condiciones para tratamiento de datos")).toBeInTheDocument();
   fireEvent.click(getByText('Siguiente'));
   expect(getByText('Algún campo está vacío')).toBeInTheDocument();

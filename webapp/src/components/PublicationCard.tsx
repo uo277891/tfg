@@ -6,7 +6,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { red } from '@mui/material/colors';
 import Dialog from '@mui/material/Dialog';
@@ -17,6 +16,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { eliminarPublicacion } from '../conector/apiPublicaciones';
 import { borrarPublicacion } from '../conector/apiCloudinary';
 import {parseFecha} from '../util/parseFecha';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 /**
  * Devuelve un componente que renderiza una publicación 
@@ -28,6 +29,14 @@ function PublicationCard (props: any) {
     const [idUser, setIdUser] = useLocalStorage('idUser', '')
 
     const [open, setOpen] = React.useState(false);
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
+
+    useEffect(() => {
+        i18n.changeLanguage(idioma)
+    }, [])
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -64,19 +73,19 @@ function PublicationCard (props: any) {
                 </Typography>
             </CardContent>
             <CardActions sx={{justifyContent: "space-between"}}>
-                <Button href={"/publication/" + props.publication._id} id = {"pub" + props.numeroPub} size="small" variant="contained">Detalles</Button>
-                {props.propiaPublicacion && <Button id = {"elim" + props.numeroPub} color = 'error' size="small" variant="contained" onClick={handleClickOpen}>Eliminar</Button>}
+                <Button href={"/publication/" + props.publication._id} id = {"pub" + props.numeroPub} size="small" variant="contained">{t("button.details")}</Button>
+                {props.propiaPublicacion && <Button id = {"elim" + props.numeroPub} color = 'error' size="small" variant="contained" onClick={handleClickOpen}>{t("button.delete")}</Button>}
             </CardActions>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Confirmar eliminación</DialogTitle>
+                <DialogTitle>{t("pubCard.title")}</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    La publicación, junto con sus me gusta y comentarios, será eliminada del sistema.
+                    {t("pubCard.text")}
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleClose}>Cancelar</Button>
-                  <Button id="confirmar" onClick={handleEliminar}>Confirmar</Button>
+                  <Button onClick={handleClose}>{t("button.cancel")}</Button>
+                  <Button id="confirmar" onClick={handleEliminar}>{t("button.confirm")}</Button>
                 </DialogActions>
               </Dialog>
         </Card>

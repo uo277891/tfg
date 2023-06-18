@@ -8,6 +8,7 @@ import ArtistCard from '../components/ArtistCard';
 import Grid from '@mui/material/Grid';
 import AlbumCard from '../components/AlbumCard';
 import SongCard from '../components/SongCard';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @returns Página para representar los datos de Spotify
@@ -29,6 +30,10 @@ const SpotifyData = () => {
     const [artistasSimilares, setArtistasSimilaes] = React.useState<any>();
 
     const [primeraVez, setPrimeraVez] = React.useState<any>(true);
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
 
     const datosIniciales = useCallback(async () => {
         if(usuarioEstaAutenticado){
@@ -58,6 +63,7 @@ const SpotifyData = () => {
     }, []);
 
     useEffect(() => {
+        i18n.changeLanguage(idioma)
         datosIniciales();
     }, [])
 
@@ -68,10 +74,10 @@ const SpotifyData = () => {
         return (
         <div className="dataSpo">
             <main>
-                <h1>Datos extraídos de Spotify</h1>
-                <p>Sobre <strong>{artista.name}:</strong></p>
+                <h1>{t("spoData.title")}</h1>
+                <p>{t("spoData.about")} <strong>{artista.name}:</strong></p>
                 <ArtistCard artista = {artista} artistaPropio={true}></ArtistCard>
-                <p><strong>Sus mejores álbumes:</strong></p>
+                <p><strong>{t("spoData.album")}</strong></p>
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                         {albumes.map((album: any, index: number) => 
                             <Grid key = {"alb" + index} item xs={4}>
@@ -79,7 +85,7 @@ const SpotifyData = () => {
                             </Grid>
                         )}
                     </Grid>
-                <p><strong>Sus mejores canciones:</strong></p>
+                <p><strong>{t("spoData.songs")}</strong></p>
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                         {canciones.slice(0, 6).map((cancion: any, index: number) => 
                             <Grid key = {"can" + index} item xs={4}>
@@ -87,7 +93,7 @@ const SpotifyData = () => {
                             </Grid>
                         )}
                     </Grid>
-                <p><strong>Si te gusta {artista.name} también podría gustarte:</strong></p>
+                <p><strong>{t("spoData.ifLike")} {artista.name} {t("spoData.ifLike2")}</strong></p>
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                         {artistasSimilares.slice(0, 12).map((art: any, index: number) => 
                             <Grid key = {"art" + index} item xs={3}>
@@ -99,9 +105,9 @@ const SpotifyData = () => {
         </div>
         );
         else if(!usuarioEstaAutenticado)
-            return (<h1>Inicia sesión para consultar perfiles de spotify ajenos</h1>)
+            return (<h1>{t("fallos.noIdent")}</h1>)
         else
-            return (<h1>No hemos podido cargar los datos de Spotify</h1>)
+            return (<h1>{t("fallos.noSpo")}</h1>)
 }
 
 export default SpotifyData;

@@ -33,6 +33,7 @@ import SimboloCarga from '../components/SimboloCarga';
 import { Alert, Box, Link } from '@mui/material';
 import DOMPurify from 'dompurify';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @returns Página para representar una publicación y sus comentarios
@@ -62,6 +63,10 @@ const Publication = (props: any) => {
     const [commentError, setCommentError] = React.useState(false);
 
     const [error, setError] = useState<string>("");
+
+    const { i18n, t } = useTranslation()
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -123,7 +128,8 @@ const Publication = (props: any) => {
     }, []);
 
     useEffect(() => {
-        datosIniciales();
+      i18n.changeLanguage(idioma)
+      datosIniciales();
     }, [])
 
     async function handleLike(){
@@ -152,7 +158,7 @@ const Publication = (props: any) => {
           await datosIniciales();
       }else if(textLimpio !== text){
         setCommentError(true)
-        setError("Se ha detectado texto inválido. Revíselo por favor")
+        setError(t("newPub.errorDesInv"))
       }
     }
 
@@ -185,7 +191,7 @@ const Publication = (props: any) => {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-        <Tooltip title="Me gusta">
+        <Tooltip title={t("publication.like")}>
             <IconButton onClick={handleLike} id="meGusta" aria-label="add to favorites">
               <FavoriteIcon style={{color: colorCorazon}} />
             </IconButton>
@@ -193,24 +199,24 @@ const Publication = (props: any) => {
           <Typography variant="h5" color="text.primary">
             {publicacion.likes.length}
           </Typography>
-          <Tooltip title="Añadir comentario">
+          <Tooltip title={t("publication.newComment")}>
             <IconButton onClick={handleClickOpen} aria-label="add comment">
               <AddCommentIcon style={{color: "blue"}}/>
             </IconButton>
           </Tooltip>
           <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Añadir comentario</DialogTitle>
+            <DialogTitle>{t("publication.newCom")}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Atención: El comentario será público para todas las personas que puedan visualizar la publicación.
+                {t("publication.comWar")}
               </DialogContentText>
-              <Textarea aria-label="Texto para comentar" color="neutral" style={{ width: '100%', fontSize:'1.4em' }} minRows={10} placeholder="Introducir comentario (máximo 200 caracteres)" 
+              <Textarea aria-label={t("publication.comText")} color="neutral" style={{ width: '100%', fontSize:'1.4em' }} minRows={10} placeholder="Introducir comentario (máximo 200 caracteres)" 
                     id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
                 {text.length} / 200
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>Cancelar</Button>
-              {text.length > 0 && text.length < 201 && <Button aria-label="Botón para comentar" onClick={enviarComentario}>Publicar</Button>}
+              <Button onClick={handleClose}>{t("button.cancel")}</Button>
+              {text.length > 0 && text.length < 201 && <Button aria-label="Botón para comentar" onClick={enviarComentario}>{t("button.publish")}</Button>}
             </DialogActions>
             <Box sx={{ width: '100%' }}>
             <Collapse in={commentError}>
@@ -241,14 +247,14 @@ const Publication = (props: any) => {
               aria-expanded={expanded}
               aria-label="show more"
             >
-              <Tooltip title="Ver comentarios">
+              <Tooltip title={t("publication.comments")}>
                 <ExpandMoreIcon />
               </Tooltip>
             </ExpandMore>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            Comentarios:
+            {t("publication.comment")}
             {comentarios.map((comentario: Comentario, index: number) => 
               <CommentCard key={"com" + index} comentario = {comentario} idUsuPub={usuarioPublicacion._id}></CommentCard>
             )}
@@ -261,7 +267,7 @@ const Publication = (props: any) => {
     return(
     <div id="externProfile">
         <main>
-        <h1>Inicia sesión para poder ver perfiles ajenos.</h1>
+        <h1>{t("fallos.noIdent")}</h1>
         </main>
     </div>
     )
@@ -270,13 +276,13 @@ const Publication = (props: any) => {
       return(
       <div id="externProfile">
           <main>
-            <h1>Publicación no disponible.</h1>
+            <h1>{t("fallos.pub")}</h1>
           </main>
       </div>
       )
   }
   else{
-    return (<h1>Cargando publicación...</h1>)
+    return (<h1>{t("fallos.load")}</h1>)
   }
 }
 

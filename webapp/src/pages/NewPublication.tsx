@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +12,7 @@ import { actualizaPublicacion, añadirPublicacion } from "../conector/apiPublica
 import {uploadMultimedia} from "../conector/apiCloudinary"
 import SimboloCarga from "../components/SimboloCarga";
 import DOMPurify from 'dompurify';
+import { useTranslation } from 'react-i18next';
 
 /**
  * @returns Página para representar la creación de una nueva publicación
@@ -32,13 +33,21 @@ const NewPublication = (props: any) => {
 
     const [idUser, setidUser] = useLocalStorage('idUser', '')
 
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
+
     const redirigir = useNavigate();
+
+    useEffect(() => {
+        i18n.changeLanguage(idioma)
+    }, [])
 
     const actualizaArchivo = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             if(e.target.files[0].size > 1000000){
                 setPublicationError(true);
-                setError("La multimedia no puede ser superior a 1 MB (si no lo cambia la publicación se creará sin multimedia)");
+                setError(t("newPub.errorMulTam"));
                 setArchivo(undefined);
             }
             else if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png" || e.target.files[0].type === "audio/mpeg"){
@@ -46,7 +55,7 @@ const NewPublication = (props: any) => {
             }
             else{
                 setPublicationError(true);
-                setError("La multimedia debe tener extensión png, jpg o mp3 (si no lo cambia la publicación se creará sin multimedia)");
+                setError(t("newPub.errorMulExt"));
                 setArchivo(undefined);
             }
         }
@@ -56,15 +65,15 @@ const NewPublication = (props: any) => {
         const textoFinal = DOMPurify.sanitize(text)
         if(text === "") {
             setPublicationError(true);
-            setError("Se debe escribir algo en el texto para crear la publicación.");
+            setError(t("newPub.errorDes0"));
         }
         else if(textoFinal === "") {
             setPublicationError(true);
-            setError("Se ha detectado texto inválido, modifíquelo por favor.");
+            setError(t("newPub.errorDesInv"));
         }
         else if(textoFinal.length > 200) {
             setPublicationError(true);
-            setError("El texto debe tener como máximo 200 caracteres.");
+            setError(t("newPub.errorDes200"));
         }
         else {
             const textoFinal =DOMPurify.sanitize(text)
@@ -73,12 +82,12 @@ const NewPublication = (props: any) => {
             if(archivo !== undefined){
                 if(archivo.size > 3000000){
                     setPublicationError(true);
-                    setError("La multimedia no puede ser superior a 1 MB (si no lo cambia la publicación se creará sin multimedia)");
+                    setError(t("newPub.errorMulTam"));
                     setArchivo(undefined);
                 }
                 else if(archivo.type !== "image/jpeg" && archivo.type !== "image/png" && archivo.type !== "audio/mpeg"){
                     setPublicationError(true);
-                    setError("La multimedia debe tener extensión png, jpg o mp3 (si no lo cambia la publicación se creará sin multimedia)");
+                    setError(t("newPub.errorMulExt"));
                     setArchivo(undefined);
                 }
                 else{
@@ -98,12 +107,12 @@ const NewPublication = (props: any) => {
                         else{
                             setCargando(false)
                             setPublicationError(true);
-                            setError("La publicación se ha creado, pero la multimedia no ha podido ser añadida.");
+                            setError(t("newPub.errorNoMul"));
                         }
                     }else{
                         setCargando(false)
                         setPublicationError(true);
-                        setError("La publicación se ha creado, pero la multimedia no ha podido ser añadida.");
+                        setError(t("newPub.errorNoMul"));
                     }
                 }
             }
@@ -114,7 +123,7 @@ const NewPublication = (props: any) => {
             else{
                 setCargando(false)
                 setPublicationError(true);
-                setError("Ha ocurrido un error, la publicación no ha podido ser creada.");
+                setError(t("newPub.errorNoPub"));
             }
           }
     }
@@ -133,17 +142,17 @@ const NewPublication = (props: any) => {
                     noValidate
                     autoComplete="off"
                     >
-                    <h1>Nueva publicación</h1>
-                    <Textarea color="neutral" style={{ width: '50%', fontSize:'1.4em' }} minRows={10} placeholder="Introduce el texto de la publicación (máximo 200 caracteres)" 
+                    <h1>{t("newPub.title")}</h1>
+                    <Textarea color="neutral" style={{ width: '50%', fontSize:'1.4em' }} minRows={10} placeholder={t("newPub.text")} 
                         id="texto" onChange={(text) => setText(text.target.value)} value={text}/>
                     <br/>
                         {text.length} / 200
                     <br/>
                     <br/>
-                        ¡Añade una foto o un audio a tu publicación! <input type="file" onChange={actualizaArchivo} />
+                        {t("newPub.photo")} <input type="file" onChange={actualizaArchivo} />
                     <br/>
                     <br/>
-                    <Button id="crearPub" className="boton" variant="contained" onClick={crearPublicacion}>Crear publicación</Button>
+                    <Button id="crearPub" className="boton" variant="contained" onClick={crearPublicacion}>{t("button.newPub")}</Button>
                 </Box>
             </main>
             <Box sx={{ width: '100%' }}>
@@ -173,7 +182,7 @@ const NewPublication = (props: any) => {
         );
     }
     else{
-        return (<h1>Inicia sesión para crear publicaciones</h1>)
+        return (<h1>{t("fallos.noIdent")}</h1>)
     }
 }
 

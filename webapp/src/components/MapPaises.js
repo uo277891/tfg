@@ -17,6 +17,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { useLocalStorage } from '../localStorage/useLocalStorage';
 
 const geoUrl = geoJSON;
 
@@ -37,6 +39,10 @@ const MapPaises = (props) => {
     const [nombrePaises, setNombrePaises] = React.useState([]);
 
     const [totalSeg, setTotalSeg] = React.useState(0);
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
 
     var paises = new Map()
 
@@ -75,8 +81,9 @@ const MapPaises = (props) => {
     }
 
     useEffect(() => {
-        relacionISOPorcentaje()
-      }, []);
+      i18n.changeLanguage(idioma)
+      relacionISOPorcentaje()
+    }, []);
 
     return (
       <Box>
@@ -116,8 +123,8 @@ const MapPaises = (props) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>País</TableCell>
-              <TableCell align="right">Porcentaje</TableCell>
+              <TableCell>{t("stats.countryTable")}</TableCell>
+              <TableCell align="right">{t("stats.percentageTable")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

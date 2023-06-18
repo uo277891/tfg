@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import ArtistCard from '../components/ArtistCard';
+import '../i18n'
 
 test('ArtistCard se renderiza correctamente', () => {
     const images: any[] = []

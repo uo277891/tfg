@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import IDSpotify from '../pages/IDSpotify';
+import '../i18n'
 
 test('IDSpotify se renderiza correctamente', () => {
   const {getByText} = render(<IDSpotify />);

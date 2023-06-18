@@ -7,6 +7,12 @@ const errores: string[] = ["Algún campo está vacío", "Las contraseñas no coi
 "La localidad incluye algún caractér no permitido", "El nombre incluye algún caractér no permitido", "Debe aceptar las condiciones de tratamiento para crear una cuenta", 
 "El nombre solo puede contener números letras minúsculas y '_' y debe comenzar con una letra", "La localidad solo puede contener letras"]
 
+const erroresIngles: string[] = ["Some field is empty", "Passwords do not match", "Password must be at least 8 characters",
+"You must be older than 16 and younger than 150 years old", "Description must be 200 characters maximum", "Username cannot be longer than 15 characters", "Locality cannot be longer than 25 characters",
+"The password includes any impermissible characters", "The description includes any impermissible characters", "The locale includes any impermissible characters",
+"The name includes any impermissible characters", "You must accept the processing conditions to create an account", 
+"The name can only contain numbers, lowercase letters and '_' and must start with a letter", "The locale can only contain letters"]
+
 /**
  * Comprueba si el nombre tiene un formato válido
  * @param nombre Nombre del usuario
@@ -82,6 +88,9 @@ export function cumpleRegistro(userName:string, password: string, passwordConf: 
  * @param codigoError Código de error
  * @returns Mensaje asociado
  */
-export function errorUsuario(codigoError: number){
-    return errores[codigoError];
+export function errorUsuario(codigoError: number, idioma:string){
+    if(idioma === "es")
+        return errores[codigoError];
+    else
+        return erroresIngles[codigoError];
 }

@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Ruta} from "react-router-dom";
 import RGPDConditions from '../components/RGPDConditions';
+import '../i18n'
 
 test('RGPDConditions renderiza correctamente', () => {
   const {getByText} = render(<Ruta><RGPDConditions /></Ruta>);

@@ -26,8 +26,12 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import SimboloCarga from '../components/SimboloCarga';
+import listaPaisesIngles from '../util/listaPaisesIngles';
+import { useTranslation } from 'react-i18next';
 
 const paises = listaPaises()
+
+const paisesIngles = listaPaisesIngles()
 
 /**
  * @returns Página para representar la edición de un perfil
@@ -39,8 +43,10 @@ const EditProfile = () => {
     };
 
     const generos: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Otro"]
+    const generosIngles: string[] = ["FreeStyle", "Rap", "Trap", "Pop", "Rock", "Other"]
 
     const tipoUsuario: string[] = ["Artista", "Promotor", "Estándar"]
+    const tipoUsuarioIngles: string[] = ["Artist", "Promoter", "Standard"]
 
     const [usuarioEstaAutenticado, setUsuarioEstaAcutenticado] = useLocalStorage('estaAutenticado', false)
 
@@ -75,6 +81,10 @@ const EditProfile = () => {
     const [error, seterror] = React.useState("");
 
     const[porcentajeAncho, setPorcentajeAncho] = React.useState("40%");
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
+    const { i18n, t } = useTranslation()
 
     const redirigir = useNavigate();
 
@@ -114,6 +124,7 @@ const EditProfile = () => {
     }, []);
   
     useEffect(() => {
+      i18n.changeLanguage(idioma)
       datosIniciales();
       handleResize();
     }, [])
@@ -127,7 +138,7 @@ const EditProfile = () => {
         }
         else{
             setRegisterError(true);
-            seterror("La foto de perfil debe tener la extensión png o jpg.");
+            seterror(t("register.errorMul"));
             setArchivo(undefined);
         }
     }
@@ -150,7 +161,7 @@ const EditProfile = () => {
     const numError = cumpleRegistro(userName, "contraseñaQuePasa", "contraseñaQuePasa", country, location, date, descripcion, true)
       if(numError > -1){
         setRegisterError(true);
-        seterror(errorUsuario(numError));
+        seterror(errorUsuario(numError, idioma));
         setCargando(false)
       }
     else {
@@ -168,7 +179,7 @@ const EditProfile = () => {
       }
       else{
         setRegisterError(true);
-        seterror("El nombre escogido ya está en uso");
+        seterror(t("register.errorName"));
         setCargando(false)
       }
     }
@@ -187,32 +198,37 @@ const EditProfile = () => {
               noValidate
               autoComplete="off"
               >
-              <h1>Editar perfil</h1>
-              <Button className="boton" variant="contained" onClick={datosIniciales}>Recargar datos iniciales</Button>
+              <h1>{t("edit.title")}</h1>
+              <Button className="boton" variant="contained" onClick={datosIniciales}>{t("button.reload")}</Button>
               <br/>
-              <TextField required id="userName" label="Nombre de usuario" variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
+              <TextField required id="userName" label={t("register.name")} variant="outlined" onChange={(user) => setUserName(user.target.value)} value={userName}/>
               <br/>
               <TextField
                 id="country"
                 select
                 value={country}
-                label="País de nacimiento *"
-                helperText="Selecciona tu país"
+                label={t("register.country")}
+                helperText={t("register.countryLabel")}
                 onChange={(country) => setCountry(country.target.value)}
               >
-                {paises.map((pais) => (
-                  <MenuItem key={pais} value={pais}>
+                {idioma === "es" && paises.map((pais, index) => (
+                  <MenuItem key={index} value={pais}>
+                    {pais}
+                  </MenuItem>
+                ))}
+                {idioma === "en" && paisesIngles.map((pais, index) => (
+                  <MenuItem key={pais} value={paises[index]}>
                     {pais}
                   </MenuItem>
                 ))}
               </TextField>
-              <TextField id="location" label="Localidad" variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
+              <TextField id="location" label={t("register.location")} variant="outlined" onChange={(location) => setLocation(location.target.value)} value={location}/>
               <br/>
               {tipoUsu !== "Estándar" && <TextField id="spotyName" label="ID Spotify" variant="outlined" onChange={(spotyName) => setNomSpoty(spotyName.target.value)} value={nomSpoty}/>}
               <br/>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopDatePicker
-                  label="Fecha de nacimiento"
+                  label={t("register.date")}
                   inputFormat="DD/MM/YYYY"
                   value={date}
                   onChange={handleDate}
@@ -220,17 +236,27 @@ const EditProfile = () => {
                   />
               </LocalizationProvider>
               <br/>
-              <TextField id="generoFav" select value={generoFav} label="Género favorito" onChange={(genero) => setGeneroFav(genero.target.value)}>
-                    {generos.map((genero) => (
-                      <MenuItem key={genero} value={genero}>
-                        {genero}
-                      </MenuItem>
-                    ))}
+              <TextField id="generoFav" select value={generoFav} label={t("register.genre")} onChange={(genero) => setGeneroFav(genero.target.value)}>
+                  {idioma === "es" && generos.map((genero) => (
+                    <MenuItem key={genero} value={genero}>
+                      {genero}
+                    </MenuItem>
+                  ))}
+                  {idioma === "en" && generosIngles.map((genero, index) => (
+                    <MenuItem key={genero} value={generos[index]}>
+                      {genero}
+                    </MenuItem>
+                  ))}
               </TextField>
               <br/>
-              <TextField id="tipoUsuario" select value={tipoUsu} label="Tipo de perfil" onChange={(tipo) => setTipoUsu(tipo.target.value)}>
-                    {tipoUsuario.map((tipo) => (
+              <TextField id="tipoUsuario" select value={tipoUsu} label={t("register.typeUser")} onChange={(tipo) => setTipoUsu(tipo.target.value)}>
+                    {idioma === "es" && tipoUsuario.map((tipo) => (
                       <MenuItem key={tipo} value={tipo}>
+                        {tipo}
+                      </MenuItem>
+                    ))}
+                    {idioma === "en" && tipoUsuarioIngles.map((tipo, index) => (
+                      <MenuItem key={tipo} value={tipoUsuario[index]}>
                         {tipo}
                       </MenuItem>
                     ))}
@@ -243,7 +269,7 @@ const EditProfile = () => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography>¡Actualiza los enlaces a tus redes sociales!</Typography>
+                        <Typography>{t("register.social")}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
                         <TextField style={{ width: 'auto' }} InputProps={{startAdornment: (<InputAdornment position="start"><InstagramIcon /></InputAdornment>),}} 
@@ -255,18 +281,19 @@ const EditProfile = () => {
                       </AccordionDetails>
                     </Accordion>
                   </Grid>
-              <Typography>Descripción</Typography>
+              <Typography>{t("edit.description")}</Typography>
               <Textarea color="neutral" style={{ width: '50%', fontSize:'1em' }} minRows={10} 
                   id="texto" onChange={(text) => setDescripcion(text.target.value)} value={descripcion}/>
               <br/>
                 {descripcion.length} / 200
               <br/>
               <br/>
-              Sube tu foto de perfil: <input type="file" onChange={actualizaArchivo} />
+              {t("register.photo")} <input type="file" onChange={actualizaArchivo} />
               <br/>
-              <Button className="boton" variant="contained" onClick={actualizarPerfil}>Actualizar perfil</Button>
+              <br/>
+              <Button className="boton" variant="contained" onClick={actualizarPerfil}>{t("button.updateProfile")}</Button>
           </Box>
-          <p>¿No quieres actualizar tu perfil?, vuelve atrás pulsando <Link href="/profile" >aquí</Link></p>
+          <p>{t("edit.return")}<Link href="/profile" >{t("about.here")}</Link></p>
         </main>
         <Box component="form"
               sx={{
@@ -299,7 +326,7 @@ const EditProfile = () => {
       </div>
     );
     else
-            return (<h1>Inicia sesión para modificar tu perfil.</h1>)
+            return (<h1>{t("fallos.noIdent")}</h1>)
 }
 
 export default EditProfile;

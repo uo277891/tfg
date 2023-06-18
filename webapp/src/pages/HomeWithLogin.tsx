@@ -5,6 +5,8 @@ import { getPublicacionWithLimit } from "../conector/apiPublicaciones";
 import Grid from "@mui/material/Grid";
 import Publication from "./Publication";
 import { Box, Button } from "@mui/material";
+import { useTranslation } from 'react-i18next';
+import { useLocalStorage } from "../localStorage/useLocalStorage";
 
 /**
  * @returns Página para representar el inicio de un usuario identificado
@@ -23,6 +25,10 @@ const HomeWithLogin = () => {
 
     const posicionBoton = useRef<HTMLDivElement>(null);
 
+    const { i18n, t } = useTranslation()
+
+    const [idioma, setIdioma] = useLocalStorage('idioma', 'es')
+
     const handleResize = () => {
         setHeigth(window.innerHeight);
         setWidth(window.innerWidth);
@@ -35,6 +41,7 @@ const HomeWithLogin = () => {
     }, []);
 
     useEffect(() => {
+        i18n.changeLanguage(idioma)
         datosIniciales();
         window.addEventListener("resize", handleResize);
     }, [])
@@ -61,7 +68,7 @@ const HomeWithLogin = () => {
         return (
             <div id="profile">
             <main>
-                <h1>Últimas publicaciones</h1>
+                <h1>{t("home.pubs")}</h1>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                         {publicaciones.map((publicacion: Publicacion, index: number) => 
                             <Grid key={"pub" + (index + saltarPubs)} item xs={12}>
